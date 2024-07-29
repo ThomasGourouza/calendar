@@ -1,54 +1,63 @@
 body {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 .calendar-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .calendar {
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .calendar-header {
-    text-align: center;
-    background-color: #007bff;
-    color: white;
-    padding: 10px 0;
-    font-size: 1.2em;
+  text-align: center;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 0;
+  font-size: 1.2em;
 }
 
 .calendar-table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.calendar-table th, .calendar-table td {
-    width: 50px;
-    text-align: center;
-    padding: 5px;
-    border: 1px solid #d0d0d0;
-}
-
+.calendar-table th,
 .calendar-table td {
-    height: 35px;
+  width: 50px;
+  text-align: center;
+  padding: 5px;
+  border: 1px solid #d0d0d0;
 }
 
-.calendar-table tbody tr:nth-child(even) {
+.calendar-table th {
+  background-color: #f1f8ff;
+}
+.calendar-table td {
+  height: 35px;
+}
+
+.calendar-table tbody {
+  tr:nth-child(odd) {
     background-color: #f1f8ff;
+  }
+  tr:nth-child(even) {
+    background-color: #e3f1ff;
+  }
 }
 
 .highlight-circle {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    border-radius: 50%;
-    background-color: #007bff;
-    color: white;
-    text-align: center;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  text-align: center;
 }
