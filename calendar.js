@@ -1,4 +1,51 @@
-const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const monthNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+const teacherNames = [];
+const levelNames = [];
+const roomNames = [];
+
+// for each calendarInfo (day)
+data = [
+  {
+    calendarInfo: {
+      weekDay: 7,
+      day: 31,
+      month: 12,
+      year: 2024,
+    },
+    timeAndPlaces: [
+      {
+        roomName: "Name",
+        availabilities: [
+          [6, 10],
+          [12, 22],
+        ],
+      },
+    ],
+  },
+];
+// function fun(calendarInfo) -> timeAndPlaces
+
+const result = [
+  {
+    calendarInfo: {
+      weekDay: 7,
+      day: 31,
+      month: 12,
+      year: 2024,
+    },
+    lessons: [
+      {
+        startTime: 6,
+        endTime: 22,
+        teacher: "Name",
+        level: "B2",
+        room: "Name",
+      },
+    ],
+  },
+];
 
 // public
 function submitForm() {
@@ -9,7 +56,7 @@ function submitForm() {
   if (daysBetween <= 0) {
     console.log(`End date must be after the start date.`);
   } else {
-    const dateSelectionList = generatedateSelectionList(startDate, endDate);
+    const dateSelectionList = generateDateSelectionList(startDate, endDate);
 
     const monthsList = getMonths(dateSelectionList);
     console.log(monthsList);
@@ -19,7 +66,7 @@ function submitForm() {
 }
 
 // private
-function generatedateSelectionList(startDate, endDate) {
+function generateDateSelectionList(startDate, endDate) {
   const dateArray = [];
   for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
     dateArray.push({
@@ -129,7 +176,7 @@ function buildStructureAndGetTableBody(month, year) {
   table.appendChild(thead);
   const tr = document.createElement("tr");
   thead.appendChild(tr);
-  days.forEach((item) => {
+  dayNames.forEach((item) => {
     const th = document.createElement("th");
     th.innerHTML = item;
     tr.appendChild(th);
