@@ -3,6 +3,7 @@
   --table-border-radius: 15px;
   --table-border-color: black;
   --table-border: 1px solid var(--table-border-color);
+  --table-border-thick: 2px solid var(--table-border-color);
   --table-header-title: beige;
   --table-header-day: chartreuse;
   --table-header-day-height: 50px;
@@ -32,69 +33,70 @@ table.calendar {
   border-spacing: 0px;
   border-radius: var(--table-border-radius);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-  thead {
-    tr {
-      &:first-child th {
-        height: var(--table-header-day-height);
-        &:first-child {
-          /* Titre du tableau */
-          border-radius: var(--table-border-radius) 0 0 0;
-          background-color: var(--table-header-title);
-        }
-        &:last-child {
-          border-radius: 0 var(--table-border-radius) 0 0;
-        }
-        &:not(:first-child) {
-          /* Les jours */
-          border-left: none;
-          border-bottom: none;
-          background-color: var(--table-header-day);
-        }
-      }
-      &:not(:first-child) th {
-        /* Les salles */
-        height: var(--table-header-room-height);
-        border-left: none;
-        background-color: var(--table-header-room);
-      }
-      th {
-        border: var(--table-border);
-      }
-    }
-  }
-  tbody {
-    tr {
-      height: var(--table-quarter-height);
-      border: none;
-      &:nth-child(4n) td {
-        border-bottom: var(--table-border);
+  thead tr {
+    &:first-child th {
+      height: var(--table-header-day-height);
+      &:first-child {
+        /* Titre du tableau */
+        border-radius: var(--table-border-radius) 0 0 0;
+        background-color: var(--table-header-title);
       }
       &:last-child {
-        td {
-          border-bottom: var(--table-border);
-          &:last-child {
-            border-radius: 0 0 var(--table-border-radius) 0;
-          }
-          &:first-child {
-            border-radius: 0 0 0 var(--table-border-radius);
-          }
+        border-radius: 0 var(--table-border-radius) 0 0;
+      }
+      &:not(:first-child) {
+        /* Les jours */
+        border-left: none;
+        border-bottom: none;
+        background-color: var(--table-header-day);
+      }
+    }
+    &:not(:first-child) th {
+      /* Les salles */
+      height: var(--table-header-room-height);
+      border-left: none;
+      background-color: var(--table-header-room);
+    }
+    th {
+      border: var(--table-border);
+    }
+  }
+  tbody tr {
+    height: var(--table-quarter-height);
+    /* border: none; */
+    &:nth-child(4n) td {
+      border-bottom: var(--table-border-thick);
+    }
+    &:last-child {
+      td {
+        border-bottom: var(--table-border);
+        &:last-child {
+          border-radius: 0 0 var(--table-border-radius) 0;
+        }
+        &:first-child {
+          border-radius: 0 0 0 var(--table-border-radius);
         }
       }
-      td {
-        width: var(--table-content-td-width);
-        min-width: var(--table-content-td-width);
-        border-right: var(--table-border);
-        &:first-child {
-          /* Les heures */
-          /* lignes en plus (remove?) */
-          border-bottom: var(--table-border);
-          border-left: var(--table-border);
-          background-color: var(--table-time);
-        }
-        &:not(:first-child) {
-          /* Le contenu */
-          background-color: var(--table-content);
-        }
+    }
+    td {
+      width: var(--table-content-td-width);
+      min-width: var(--table-content-td-width);
+      border-right: var(--table-border);
+      /* lignes en plus (remove?) */
+      border-bottom: var(--table-border);
+      &:first-child {
+        /* Les heures */
+        /* lignes en plus (remove?) */
+        border-bottom: var(--table-border);
+        border-left: var(--table-border);
+        background-color: var(--table-time);
+      }
+      &:not(:first-child) {
+        /* Le contenu */
+        background-color: var(--table-content);
+      }
+      &:nth-child(3n + 1):not(:first-child):not(:last-child) {
+        border-right: var(--table-border-thick);
       }
     }
   }
