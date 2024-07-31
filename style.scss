@@ -1,3 +1,12 @@
+:root {
+  --table-border-radius: 15px;
+  --table-border-color: black;
+  --table-header-title: beige;
+  --table-header-day: chartreuse;
+  --table-header-room: aqua;
+  --table-time: red;
+}
+
 body {
   font-family: Arial, sans-serif;
   overflow: auto;
@@ -6,82 +15,37 @@ body {
   height: 100%;
 }
 
-#calendar-wrapper {
-  //   display: grid;
-  //   grid-template-columns: repeat(4, 1fr);
-  //   justify-items: center;
-  //   align-items: center;
-  //   & > div {
-  //     border-radius: 10px;
-  //     overflow: hidden;
-  //     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  //     margin: 30px 0;
-  //   }
-}
-
-// .calendar-header {
-//   text-align: center;
-//   background-color: #007bff;
-//   color: white;
-//   padding: 10px 0;
-//   font-size: 1.2em;
-// }
-
-// .calendar-table {
-//   width: 100%;
-//   border-collapse: collapse;
-// }
-
-// .calendar-table th,
-// .calendar-table td {
-//   width: 50px;
-//   text-align: center;
-//   padding: 5px;
-//   border: 1px solid #d0d0d0;
-// }
-
-// .calendar-table th {
-//   background-color: #f1f8ff;
-// }
-// .calendar-table td {
-//   height: 35px;
-// }
-
-// .calendar-table tbody {
-//   tr:nth-child(odd) {
-//     td:not(.not-selected) {
-//       background-color: #f1f8ff;
-//     }
-//   }
-//   tr:nth-child(even) {
-//     td:not(.not-selected) {
-//       background-color: #e3f1ff;
-//     }
-//   }
-//   td.not-selected {
-//     background-color: #ffffff;
-//   }
-// }
-
-// .highlight-circle {
-//   display: inline-block;
-//   width: 30px;
-//   height: 30px;
-//   line-height: 30px;
-//   border-radius: 50%;
-//   background-color: #007bff;
-//   color: white;
-//   text-align: center;
-// }
-
 table.calendar {
-  border-collapse: collapse;
-  border: 1px solid;
+  margin-top: 30px;
+  border-collapse: separate;
+  border-spacing: 0px;
+  border-radius: var(--table-border-radius);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   thead {
     tr {
       height: 50px;
+      &:first-child {
+        th {
+          &:first-child {
+            border-radius: var(--table-border-radius) 0 0 0;
+            background-color: var(--table-header-title);
+          }
+          &:last-child {
+            border-radius: 0 var(--table-border-radius) 0 0;
+          }
+          &:not(:first-child) {
+            border-left: none;
+            border-bottom: none;
+            background-color: var(--table-header-day);
+          }
+        }
+      }
+      &:not(:first-child) th {
+        border-left: none;
+        background-color: var(--table-header-room);
+      }
       th {
-        border: 1px solid black;
+        border: 1px solid var(--table-border-color);
       }
     }
   }
@@ -90,16 +54,29 @@ table.calendar {
       height: 15px;
       border: none;
       &:nth-child(4n) {
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid var(--table-border-color);
+        background-color: yellowgreen;
+      }
+      &:last-child {
+        td {
+          border-bottom: 1px solid var(--table-border-color);
+          &:last-child {
+            border-radius: 0 0 var(--table-border-radius) 0;
+          }
+          &:first-child {
+            border-radius: 0 0 0 var(--table-border-radius);
+          }
+        }
       }
       td {
         width: 150px;
         min-width: 150px;
-        border-left: 1px solid black;
-        border-right: 1px solid black;
-      }
-      td:first-child {
-        border: 1px solid black;
+        border-right: 1px solid var(--table-border-color);
+        &:first-child {
+          border-bottom: 1px solid var(--table-border-color);
+          border-left: 1px solid var(--table-border-color);
+          background-color: var(--table-time);;
+        }
       }
     }
   }
