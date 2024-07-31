@@ -1,5 +1,5 @@
+const lang = "fr";
 const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
 const teachers = [];
 
 // les quart d'heures de la journée de 8h00 à 20h00
@@ -20,8 +20,6 @@ const roomNames = [
 ];
 const rooms = roomNames.map((name) => new Room(name));
 
-const lang = "fr";
-
 // public
 function submitForm() {
   const startDate = new Date(document.getElementById("startDate").value);
@@ -32,7 +30,7 @@ function submitForm() {
     console.log(`End date must be after the start date.`);
   } else {
     const calendarData = getCalendarData(startDate, endDate);
-    console.log(calendarData);
+    generateCalendar(calendarData);
   }
 }
 
@@ -48,6 +46,15 @@ function getCalendarData(startDate, endDate) {
     );
   }
   return calendarData;
+}
+
+// private
+function generateCalendar(calendarData) {
+  console.log(calendarData);
+  const wrapper = document.getElementById("calendar-wrapper");
+  while (wrapper.firstChild) {
+    wrapper.removeChild(wrapper.firstChild);
+  }
 }
 
 // private
@@ -68,16 +75,6 @@ function getCalendarData(startDate, endDate) {
 //       },
 //       { seen: new Set(), result: [] }
 //     ).result;
-// }
-
-// function generateNewCalendar(monthsList, dateSelectionList) {
-//   const wrapper = document.getElementById("calendar-wrapper");
-//   while (wrapper.firstChild) {
-//     wrapper.removeChild(wrapper.firstChild);
-//   }
-//   monthsList.forEach((month) =>
-//     generateCalendar(month.month - 1, month.year, dateSelectionList)
-//   );
 // }
 
 // function generateCalendar(month, year, dateSelectionList) {
