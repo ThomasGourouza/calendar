@@ -8,13 +8,15 @@
   --table-border-dashed: 1px dashed var(--table-border-color);
   --table-header-title: beige;
   --table-header-day: chartreuse;
-  --table-header-day-height: 50px;
+  /* hauteur des headers des jours */
+  --table-header-day-height: 40px;
   --table-header-room: aqua;
-  --table-header-room-height: 30px;
+  /* hauteur des headers des salles */
+  --table-header-room-height: 25px;
   --table-time: red;
   --table-content: burlywood;
   /* longueur des cellules du calendrier: modifier dynamiquement avec JS */
-  --table-content-td-width: 150px;
+  --table-content-td-width: 100px;
   /* hauteur des quarts de cellule du calendrier */
   --table-quarter-height: calc(var(--table-content-td-width) / 10);
   /* Largeur de la page */
