@@ -1,65 +1,77 @@
 :root {
+  --table-margin-top: 30px;
   --table-border-radius: 15px;
   --table-border-color: black;
+  --table-border: 1px solid var(--table-border-color);
   --table-header-title: beige;
   --table-header-day: chartreuse;
+  --table-header-day-height: 50px;
   --table-header-room: aqua;
+  --table-header-room-height: 30px;
   --table-time: red;
+  --table-content: burlywood;
+  /* longueur des cellules du calendrier: modifier dynamiquement avec JS */
+  --table-content-td-width: 150px;
+  /* hauteur des quarts de cellule du calendrier */
+  --table-quarter-height: calc(var(--table-content-td-width) / 10);
+  /* Largeur de la page */
+  --page-width: calc(300px + 7 * 3 * var(--table-content-td-width));
 }
 
 body {
   font-family: Arial, sans-serif;
   overflow: auto;
   margin: 50px;
-  width: calc(300px + 7 * 3 * 150px);
+  width: var(--page-width);
   height: 100%;
 }
 
 table.calendar {
-  margin-top: 30px;
+  margin-top: var(--table-margin-top);
   border-collapse: separate;
   border-spacing: 0px;
   border-radius: var(--table-border-radius);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   thead {
     tr {
-      height: 50px;
-      &:first-child {
-        th {
-          &:first-child {
-            border-radius: var(--table-border-radius) 0 0 0;
-            background-color: var(--table-header-title);
-          }
-          &:last-child {
-            border-radius: 0 var(--table-border-radius) 0 0;
-          }
-          &:not(:first-child) {
-            border-left: none;
-            border-bottom: none;
-            background-color: var(--table-header-day);
-          }
+      &:first-child th {
+        height: var(--table-header-day-height);
+        &:first-child {
+          /* Titre du tableau */
+          border-radius: var(--table-border-radius) 0 0 0;
+          background-color: var(--table-header-title);
+        }
+        &:last-child {
+          border-radius: 0 var(--table-border-radius) 0 0;
+        }
+        &:not(:first-child) {
+          /* Les jours */
+          border-left: none;
+          border-bottom: none;
+          background-color: var(--table-header-day);
         }
       }
       &:not(:first-child) th {
+        /* Les salles */
+        height: var(--table-header-room-height);
         border-left: none;
         background-color: var(--table-header-room);
       }
       th {
-        border: 1px solid var(--table-border-color);
+        border: var(--table-border);
       }
     }
   }
   tbody {
     tr {
-      height: 15px;
+      height: var(--table-quarter-height);
       border: none;
-      &:nth-child(4n) {
-        border-bottom: 1px solid var(--table-border-color);
-        background-color: yellowgreen;
+      &:nth-child(4n) td {
+        border-bottom: var(--table-border);
       }
       &:last-child {
         td {
-          border-bottom: 1px solid var(--table-border-color);
+          border-bottom: var(--table-border);
           &:last-child {
             border-radius: 0 0 var(--table-border-radius) 0;
           }
@@ -69,13 +81,19 @@ table.calendar {
         }
       }
       td {
-        width: 150px;
-        min-width: 150px;
-        border-right: 1px solid var(--table-border-color);
+        width: var(--table-content-td-width);
+        min-width: var(--table-content-td-width);
+        border-right: var(--table-border);
         &:first-child {
-          border-bottom: 1px solid var(--table-border-color);
-          border-left: 1px solid var(--table-border-color);
-          background-color: var(--table-time);;
+          /* Les heures */
+          /* lignes en plus (remove?) */
+          border-bottom: var(--table-border);
+          border-left: var(--table-border);
+          background-color: var(--table-time);
+        }
+        &:not(:first-child) {
+          /* Le contenu */
+          background-color: var(--table-content);
         }
       }
     }

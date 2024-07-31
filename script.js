@@ -155,3 +155,15 @@ function generateCalendar(calendarData) {
 
 //   return calendarBody;
 // }
+
+function changeTableStyle() {
+  // Access the :root element
+  const root = document.documentElement;
+
+  // Change the values of the CSS variables
+  root.style.setProperty('--table-border-radius', '25px');
+  root.style.setProperty('--table-border-color', 'blue');
+  root.style.setProperty('--table-border-width', '3px');
+  root.style.setProperty('--table-header-bg-color', '#ffcccc');
+  root.style.setProperty('--table-padding', '15px');
+}
