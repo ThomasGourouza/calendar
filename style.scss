@@ -95,9 +95,6 @@ table {
         /* Le contenu */
         background-color: var(--table-content);
       }
-      &:nth-child(3n + 1):not(:last-child) {
-        border-right: var(--table-border-thick);
-      }
     }
   }
 }

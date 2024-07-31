@@ -18,4 +18,10 @@ class Room {
   isAvailable() {
     return this.lesson == null;
   }
+
+  printLesson() {
+    return this.lesson != null
+      ? this.lesson.teacher + " - " + this.lesson.level
+      : "";
+  }
 }

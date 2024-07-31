@@ -23,7 +23,19 @@ class QuarterTime {
     };
   }
 
-  getNumberFromStartTime(hourFrom, minuteFrom) {
-    return (hourFrom + minuteFrom / 60 - 8) * 4 + 1;
+  getTimeText() {
+    return (
+      this.time.from.hour +
+      ":" +
+      this.format(this.time.from.minute) +
+      " - " +
+      this.time.to.hour +
+      ":" +
+      this.format(this.time.to.minute)
+    );
+  }
+
+  format(minute) {
+    return minute === 0 ? "00" : minute;
   }
 }
