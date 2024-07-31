@@ -6,8 +6,8 @@ class Room {
 
   setLesson(teacher, level) {
     this.lesson = {
-      teacher: teacher,
-      level: level,
+      teacher,
+      level,
     };
   }
 

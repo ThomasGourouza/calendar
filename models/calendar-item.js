@@ -12,14 +12,14 @@ class CalendarItem {
     );
   }
 
-  setLessonQuarter(hourFrom, minuteFrom, roomName, teacher, level) {
-    this.calendarItemTimeRooms
-      .find(
-        (item) =>
-          item.quarterTime.number ===
-          getNumberFromStartTime(hourFrom, minuteFrom)
-      )
-      .rooms.find((room) => room.name === roomName)
-      .setLesson(teacher, level);
-  }
+  // setLessonQuarter(hourFrom, minuteFrom, roomName, teacher, level) {
+  //   this.calendarItemTimeRooms
+  //     .find(
+  //       (item) =>
+  //         item.quarterTime.number ===
+  //         getNumberFromStartTime(hourFrom, minuteFrom)
+  //     )
+  //     .rooms.find((room) => room.name === roomName)
+  //     .setLesson(teacher, level);
+  // }
 }

@@ -30,7 +30,7 @@ function submitForm() {
     console.log(`End date must be after the start date.`);
   } else {
     const calendarData = getCalendarData(startDate, endDate);
-    setLesson(calendarData, 9, 7, 2024, 9, 15, "Room 2", "Thomas", "C1");
+    // setLesson(calendarData, 9, 7, 2024, 9, 15, "Room 2", "Thomas", "C1");
     generateCalendar(calendarData);
   }
 }
@@ -83,13 +83,21 @@ function generateCalendar(calendarData) {
     const td = putElementIn("td", tr);
     td.innerHTML = item.getTimeText();
 
+    // TODO: Refacto (2 loops -> 1)
     calendarData.forEach((data) => {
       const dataRooms = data.calendarItemTimeRooms.find(
         (timeRoom) => timeRoom.quarterTime.number === item.number
       ).rooms;
       dataRooms.forEach((dataRoom) => {
         const td = putElementIn("td", tr);
-        td.innerHTML = dataRoom.printLesson();
+        // td.innerHTML = dataRoom.printLesson();
+        td.innerHTML = getLesson(
+          data.calendarItemDate.date,
+          data.calendarItemDate.month,
+          data.calendarItemDate.year,
+          item.number,
+          dataRoom.name
+        );
       });
     });
   });
@@ -127,18 +135,59 @@ function styleBorderThick(number) {
   });
 }
 
-function setLesson(
-  calendarData,
+function getLesson(
   date,
   month,
   year,
-  hourFrom,
-  minuteFrom,
-  roomName,
-  teacher,
-  level
+  quarterTimeNumber,
+  roomName
 ) {
-  calendarData
-    .find((item) => item.isDate(date, month, year))
-    .setLessonQuarter(hourFrom, minuteFrom, roomName, teacher, level);
+  const obj = {
+    date,
+    month,
+    year,
+    quarterTimeNumber,
+    roomName
+  };
+  const lessons = [
+    {
+      date: 9,
+      month: 7,
+      year: 2024,
+      quarterTimeNumber: 6,
+      roomName: "Room 2",
+      teacher: "Thomas",
+      level: "C1",
+    },
+    {
+      date: 9,
+      month: 7,
+      year: 2024,
+      quarterTimeNumber: 7,
+      roomName: "Room 2",
+      teacher: "Thomas",
+      level: "C1",
+    },
+    {
+      date: 10,
+      month: 7,
+      year: 2024,
+      quarterTimeNumber: 3,
+      roomName: "Room 1",
+      teacher: "Jean",
+      level: "B1",
+    },
+  ];
+  const lesson = lessons.find(
+    (l) =>
+      l.date === obj.date &&
+      l.month === obj.month &&
+      l.year === obj.year &&
+      l.quarterTimeNumber === obj.quarterTimeNumber &&
+      l.roomName === obj.roomName
+  );
+  if (!!lesson) {
+    return lesson.teacher + " - " + lesson.level;
+  }
+  return "";
 }
