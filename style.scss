@@ -18,7 +18,7 @@
   /* hauteur des cellules du calendrier */
   --table-content-td-height: 10px;
   /* longueur des cellules des heures du calendrier */
-  --table-time-td-width: 50px;
+  --table-time-td-width: 35px;
   /* longueur des cellules du calendrier: modifier dynamiquement avec JS */
   --table-content-td-width: 100px;
   /* hauteur des quarts de cellule du calendrier */
@@ -119,6 +119,7 @@ table {
         font-size: small;
         &.booked {
           background-color: blueviolet;
+          cursor: pointer;
         }
       }
     }

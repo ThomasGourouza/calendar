@@ -65,7 +65,7 @@ function generateCalendar(calendarData) {
   const thTitle = putElementIn("th", tr1);
   thTitle.setAttribute("rowspan", 2);
   thTitle.setAttribute("colspan", 2);
-  thTitle.innerHTML = "Calendrier";
+  // thTitle.innerHTML = "Calendrier";
 
   calendarData.forEach((item) => {
     const thDay = putElementIn("th", tr1);
@@ -78,17 +78,17 @@ function generateCalendar(calendarData) {
     });
   });
 
-  itemQuarterTimes.forEach((item) => {
+  itemQuarterTimes.forEach((quarterTime) => {
     const tr = putElementIn("tr", tbody);
     const td1 = putElementIn("td", tr);
-    td1.innerHTML = item.getTimeTextFrom();
+    td1.innerHTML = quarterTime.getTimeTextFrom();
     const td2 = putElementIn("td", tr);
-    td2.innerHTML = item.getTimeTextTo();
+    td2.innerHTML = quarterTime.getTimeTextTo();
 
     // TODO: Refacto (2 loops -> 1)
     calendarData.forEach((data) => {
       const dataRooms = data.calendarItemTimeRooms.find(
-        (timeRoom) => timeRoom.quarterTime.number === item.number
+        (timeRoom) => timeRoom.quarterTime.number === quarterTime.number
       ).rooms;
       dataRooms.forEach((dataRoom) => {
         const td = putElementIn("td", tr);
@@ -97,12 +97,13 @@ function generateCalendar(calendarData) {
           data.calendarItemDate.date,
           data.calendarItemDate.month,
           data.calendarItemDate.year,
-          item.number,
+          quarterTime.number,
           dataRoom.name
         );
         if (!!lessonText) {
           td.innerHTML = lessonText;
           td.className = "booked";
+          td.setAttribute("title", printTime(quarterTime));
         }
       });
     });
@@ -196,4 +197,8 @@ function getLesson(
     return lesson.teacher + " - " + lesson.level;
   }
   return null;
+}
+
+function printTime(quarterTime) {
+  return quarterTime.getTimeTextFrom() + " - " + quarterTime.getTimeTextTo();
 }
