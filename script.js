@@ -2,7 +2,7 @@ const lang = "fr";
 const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const teachers = [];
 
-const calendarData = [];
+let calendarData = [];
 
 // les quart d'heures de la journée de 8h00 à 20h00
 const allQuarterTimes = [];
@@ -12,7 +12,7 @@ for (let i = 1; i <= 48; i++) {
 
 const roomObjects = rooms.map((name) => new RoomObject(name));
 
-const lessons = [
+let lessons = [
   {
     itemDate: new ItemDate(9, 6, 2024),
     quarterTimes: [6, 7, 8, 9],
@@ -44,7 +44,7 @@ document.forms["calendarForm"].onsubmit = function (e) {
   if (getDaysNumberBetween(startDate, endDate) <= 0) {
     console.log(`End date must be after the start date.`);
   } else {
-    fillCalendarData(startDate, endDate);
+    calendarData = getCalendarData(startDate, endDate);
     generateCalendar(calendarData);
   }
 };
@@ -83,7 +83,8 @@ document.forms["addLessonForm"].onsubmit = function (e) {
 };
 
 // private
-function fillCalendarData(startDate, endDate) {
+function getCalendarData(startDate, endDate) {
+  const calendarData = [];
   for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
     calendarData.push(
       new CalendarItem(
@@ -105,6 +106,7 @@ function generateCalendar(calendarData) {
     wrapper.removeChild(wrapper.firstChild);
   }
   const table = putElementIn("table", wrapper);
+  table.className = "calendar";
   const thead = putElementIn("thead", table);
   const tbody = putElementIn("tbody", table);
   const tr1 = putElementIn("tr", thead);
@@ -204,7 +206,7 @@ function styleBorderThick(number) {
     document.documentElement
   ).getPropertyValue("--table-border-thick");
   const cells = document.querySelectorAll(
-    `table tbody tr td:nth-child(${number}n + 2):not(:last-child)`
+    `table.calendar tbody tr td:nth-child(${number}n + 2):not(:last-child)`
   );
   cells.forEach((cell) => {
     cell.style.borderRight = borderThick;
@@ -225,4 +227,20 @@ function printTime(date, month, year, quarterTime, roomName) {
     ": " +
     roomName
   );
+}
+
+function generateLessonList() {
+  //
+}
+
+function remove(date, month, year, startTime, room) {
+  lessons = lessons.filter(
+    (lesson) =>
+      lesson.itemDate.date !== date &&
+      lesson.itemDate.month !== month &&
+      lesson.itemDate.year !== year &&
+      lesson.quarterTimes[0] !== startTime &&
+      lesson.room !== room
+  );
+  generateCalendar(calendarData);
 }
