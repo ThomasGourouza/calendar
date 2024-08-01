@@ -72,9 +72,7 @@ document.forms["addLessonForm"].onsubmit = function (e) {
     this.level.value
   );
   lessons.push(lesson);
-  if (calendarData.length > 0) {
-    generateCalendar(calendarData);
-  }
+  generateCalendar(calendarData);
   this.reset();
 
   // const startTime = new QuarterTime(startTimeNumber);
@@ -100,7 +98,9 @@ function getCalendarData(startDate, endDate) {
 
 // private
 function generateCalendar(calendarData) {
-  // console.log(calendarData);
+  if (calendarData.length === 0) {
+    return;
+  }
   const wrapper = document.getElementById("calendar-wrapper");
   while (wrapper.firstChild) {
     wrapper.removeChild(wrapper.firstChild);
@@ -236,10 +236,10 @@ function generateLessonList() {
 function remove(date, month, year, startTime, room) {
   lessons = lessons.filter(
     (lesson) =>
-      lesson.itemDate.date !== date &&
-      lesson.itemDate.month !== month &&
-      lesson.itemDate.year !== year &&
-      lesson.quarterTimes[0] !== startTime &&
+      lesson.itemDate.date !== date ||
+      lesson.itemDate.month !== month ||
+      lesson.itemDate.year !== year ||
+      lesson.quarterTimes[0] !== startTime ||
       lesson.room !== room
   );
   generateCalendar(calendarData);
