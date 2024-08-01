@@ -1,4 +1,7 @@
-function getDaysNumberBetween(endDate, startDate) {
+function getDaysNumberBetween(startDate, endDate) {
+  if (isNaN(startDate) || isNaN(endDate)) {
+    return -1;
+  }
   return (endDate - startDate) / (1000 * 3600 * 24) + 1;
 }
 

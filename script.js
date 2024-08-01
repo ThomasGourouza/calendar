@@ -24,8 +24,8 @@ const rooms = roomNames.map((name) => new Room(name));
 function submitForm() {
   const startDate = new Date(document.getElementById("startDate").value);
   const endDate = new Date(document.getElementById("endDate").value);
-
-  const daysBetween = getDaysNumberBetween(endDate, startDate);
+  
+  const daysBetween = getDaysNumberBetween(startDate, endDate);
   if (daysBetween <= 0) {
     console.log(`End date must be after the start date.`);
   } else {
@@ -85,27 +85,25 @@ function generateCalendar(calendarData) {
     const td2 = putElementIn("td", tr);
     td2.innerHTML = quarterTime.getTimeTextTo();
 
-    // TODO: Refacto (2 loops -> 1)
+    // TODO: Refacto ?
     calendarData.forEach((data) => {
-      const dataRooms = data.calendarItemTimeRooms.find(
-        (timeRoom) => timeRoom.quarterTime.number === quarterTime.number
-      ).rooms;
-      dataRooms.forEach((dataRoom) => {
-        const td = putElementIn("td", tr);
-        // td.innerHTML = dataRoom.printLesson();
-        const lessonText = getLesson(
-          data.calendarItemDate.date,
-          data.calendarItemDate.month,
-          data.calendarItemDate.year,
-          quarterTime.number,
-          dataRoom.name
-        );
-        if (!!lessonText) {
-          td.innerHTML = lessonText;
-          td.className = "booked";
-          td.setAttribute("title", printTime(quarterTime));
-        }
-      });
+      data.calendarItemTimeRooms
+        .find((timeRoom) => timeRoom.quarterTime.number === quarterTime.number)
+        .rooms.forEach((dataRoom) => {
+          const td = putElementIn("td", tr);
+          const lessonText = getLesson(
+            data.calendarItemDate.date,
+            data.calendarItemDate.month,
+            data.calendarItemDate.year,
+            quarterTime.number,
+            dataRoom.name
+          );
+          if (!!lessonText) {
+            td.className = "booked";
+            td.innerHTML = lessonText;
+            td.setAttribute("title", printTime(quarterTime));
+          }
+        });
     });
   });
   styleBorderThick(roomNames.length);
@@ -142,19 +140,13 @@ function styleBorderThick(number) {
   });
 }
 
-function getLesson(
-  date,
-  month,
-  year,
-  quarterTimeNumber,
-  roomName
-) {
+function getLesson(date, month, year, quarterTimeNumber, roomName) {
   const obj = {
     date,
     month,
     year,
     quarterTimeNumber,
-    roomName
+    roomName,
   };
   const lessons = [
     {
@@ -162,6 +154,7 @@ function getLesson(
       month: 7,
       year: 2024,
       quarterTimeNumber: 6,
+      quarterDuration: 4,
       roomName: "Room 2",
       teacher: "Thomas",
       level: "C1",
@@ -170,8 +163,9 @@ function getLesson(
       date: 9,
       month: 7,
       year: 2024,
-      quarterTimeNumber: 7,
-      roomName: "Room 2",
+      quarterTimeNumber: 13,
+      quarterDuration: 4,
+      roomName: "Room 3",
       teacher: "Thomas",
       level: "C1",
     },
@@ -180,6 +174,7 @@ function getLesson(
       month: 7,
       year: 2024,
       quarterTimeNumber: 3,
+      quarterDuration: 2,
       roomName: "Room 1",
       teacher: "Jean",
       level: "B1",
@@ -190,7 +185,8 @@ function getLesson(
       l.date === obj.date &&
       l.month === obj.month &&
       l.year === obj.year &&
-      l.quarterTimeNumber === obj.quarterTimeNumber &&
+      l.quarterTimeNumber <= obj.quarterTimeNumber &&
+      l.quarterTimeNumber + l.quarterDuration - 1 >= obj.quarterTimeNumber &&
       l.roomName === obj.roomName
   );
   if (!!lesson) {
