@@ -1,9 +1,9 @@
 class ItemDate {
-  constructor(year, month, date) {
-    this.year = year;
-    this.month = month + 1;
-    this.date = date;
+  constructor(date, month, year) {
     this.day = this.getDay();
+    this.date = date;
+    this.month = month + 1;
+    this.year = year;
   }
 
   getDay() {

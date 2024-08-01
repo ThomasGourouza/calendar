@@ -32,7 +32,7 @@ class QuarterTime {
   }
 
   getTimeText(hour, minute) {
-    return hour + ":" + this.format(minute);
+    return `${hour}:${this.format(minute)}`;
   }
 
   format(minute) {

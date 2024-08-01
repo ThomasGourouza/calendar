@@ -1,4 +1,4 @@
-class Room {
+class RoomObject {
   constructor(name) {
     this.name = name;
     this.lesson = null;

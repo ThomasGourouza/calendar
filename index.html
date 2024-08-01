@@ -7,18 +7,41 @@
     <link rel="stylesheet" href="style.scss" />
   </head>
   <body>
-    <form id="dateForm">
-      <label for="startDate">Start Date:</label>
-      <input type="date" id="startDate" name="startDate" required />
+    <form name="calendarForm">
+      <h2>Calendrier</h2>
+      <label>Start Date:</label>
+      <input type="date" name="startDate" required />
       <br /><br />
-      <label for="endDate">End Date:</label>
-      <input type="date" id="endDate" name="endDate" required />
+      <label>End Date:</label>
+      <input type="date" name="endDate" required />
       <br /><br />
-      <input type="button" onclick="submitForm()" value="Submit" />
+      <input type="submit" value="Submit" />
+    </form>
+
+    <form name="addLessonForm">
+      <h2>Ajouter une leçon</h2>
+      <label>Date:</label>
+      <input type="date" name="date" required />
+      <br /><br />
+      <label>Start time:</label>
+      <input type="time" name="startTime" min="08:00" max="19:45" required />
+      <label>End time:</label>
+      <input type="time" name="endTime" min="08:15" max="20:00" required />
+      <br /><br />
+      <label>Salle:</label>
+      <input type="text" name="room" required />
+      <br /><br />
+      <label>Teacher:</label>
+      <input type="text" name="teacher" required />
+      <br /><br />
+      <label>Niveau:</label>
+      <input type="text" name="level" required />
+      <br /><br />
+      <input type="submit" value="Submit" />
     </form>
 
     <div id="calendar-wrapper"></div>
-    
+
     <!-- <table>
       <thead>
         <tr>
@@ -554,10 +577,11 @@
 
     <!-- Load util files -->
     <script src="utils.js"></script>
-    <!-- Load enums -->
-    <script src="enums/level.js"></script>
+    <!-- Load constants -->
+    <script src="constants/levels.js"></script>
+    <script src="constants/rooms.js"></script>
     <!-- Load models -->
-    <script src="models/room.js"></script>
+    <script src="models/roomObject.js"></script>
     <script src="models/quarter-time.js"></script>
     <script src="models/calendar-item-date.js"></script>
     <script src="models/calendar-item-time-room.js"></script>
