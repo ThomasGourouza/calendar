@@ -28,9 +28,11 @@
   /* Lessons */
   --table-lesson-margin-top: 10px;
   --table-lesson-header: rgb(214, 255, 173);
-  --table-lesson-remove: rgb(255, 147, 147);
-  --table-lesson-add: rgb(8, 255, 41);
   --table-lesson-content: rgb(252, 232, 207);
+  --table-button-remove: rgb(160, 7, 7);
+  --table-button-remove-hover: rgb(247, 5, 5);
+  --table-button-add: rgb(0, 91, 12);
+  --table-button-add-hover: rgb(0, 187, 25);
   --table-lesson-header-height: calc(
     var(--table-lesson-content-td-height) + 10px
   );
@@ -40,7 +42,6 @@
   --table-lesson-action-td-width: 100px;
   --table-lesson-content-td-width: 150px;
   --input-select-width: calc(var(--table-lesson-content-td-width) - 20px);
-  --button-width: calc(var(--table-lesson-action-td-width) - 20px);
 }
 
 body {
@@ -176,17 +177,12 @@ table.lessons {
     form {
       border-left: var(--table-border);
     }
-    &:first-child td:last-child {
-      background-color: var(--table-lesson-add);
-    }
-    &:not(:first-child) td:last-child {
-      background-color: var(--table-lesson-remove);
-    }
     td {
       height: var(--table-lesson-content-td-height);
       text-align: center;
       width: var(--table-lesson-content-td-width);
       min-width: var(--table-lesson-content-td-width);
+      background-color: var(--table-lesson-content);
       border-right: var(--table-border);
       border-bottom: var(--table-border);
       font-size: small;
@@ -195,9 +191,6 @@ table.lessons {
       }
       &:not(:first-child) {
         border-left: none;
-      }
-      &:not(:last-child) {
-        background-color: var(--table-lesson-content);
       }
       &:last-child {
         width: var(--table-lesson-action-td-width);
@@ -220,13 +213,29 @@ table.lessons {
     width: var(--input-select-width);
     min-width: var(--input-select-width);
   }
-  button,
+
+  input[type="submit"],
+  div.button {
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    border: none; 
+    border-radius: 5px;
+    font-size: small;
+  }
   input[type="submit"] {
-    width: var(--button-width);
-    min-width: var(--button-width);
+    background-color: var(--table-button-add);
+    &:hover {
+      background-color: var(--table-button-add-hover);
+    }
+  }
+  div.button {
+    background-color: var(--table-button-remove);
+    &:hover {
+      background-color: var(--table-button-remove-hover);
+    }
   }
 }
 
-button {
-  cursor: pointer;
-}
