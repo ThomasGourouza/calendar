@@ -29,13 +29,26 @@
       <input type="time" name="endTime" min="08:15" max="20:00" required />
       <br /><br />
       <label>Salle:</label>
-      <input type="text" name="room" required />
+      <select name="room" required>
+        <option value=""></option>
+        <option value="Room 1">Room 1</option>
+        <option value="Room 2">Room 2</option>
+        <option value="Room 3">Room 3</option>
+      </select>
       <br /><br />
       <label>Teacher:</label>
       <input type="text" name="teacher" required />
       <br /><br />
       <label>Niveau:</label>
-      <input type="text" name="level" required />
+      <select name="level" required>
+        <option value=""></option>
+        <option value="A1">A1</option>
+        <option value="A2">A2</option>
+        <option value="B1">B1</option>
+        <option value="B2">B2</option>
+        <option value="C1">C1</option>
+        <option value="C2">C2</option>
+      </select>
       <br /><br />
       <input type="submit" value="Submit" />
     </form>
@@ -583,7 +596,8 @@
     <!-- Load models -->
     <script src="models/roomObject.js"></script>
     <script src="models/quarter-time.js"></script>
-    <script src="models/calendar-item-date.js"></script>
+    <script src="models/lesson.js"></script>
+    <script src="models/item-date.js"></script>
     <script src="models/calendar-item-time-room.js"></script>
     <script src="models/calendar-item.js"></script>
     <!-- Load script -->
