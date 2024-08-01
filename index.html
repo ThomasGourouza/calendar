@@ -20,7 +20,7 @@
 
     <form name="addLessonForm">
       <h2>Leçons</h2>
-      <table id="lessons" class="lessons">
+      <table class="lessons">
         <thead>
           <tr>
             <th>Date</th>
@@ -32,7 +32,7 @@
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="lessons">
           <tr>
             <td>
               <input type="date" name="date" required />
@@ -56,65 +56,17 @@
               />
             </td>
             <td>
-              <select name="room" required>
+              <select id="rooms" name="room" required>
                 <option value=""></option>
-                <option value="Room 1">Room 1</option>
-                <option value="Room 2">Room 2</option>
-                <option value="Room 3">Room 3</option>
               </select>
             </td>
             <td><input type="text" name="teacher" required /></td>
             <td>
-              <select name="level" required>
+              <select id="levels" name="level" required>
                 <option value=""></option>
-                <option value="A1">A1</option>
-                <option value="A2">A2</option>
-                <option value="B1">B1</option>
-                <option value="B2">B2</option>
-                <option value="C1">C1</option>
-                <option value="C2">C2</option>
               </select>
             </td>
             <td><input type="submit" value="+" /></td>
-          </tr>
-          <tr>
-            <td>Mercredi 10 Juillet 2024</td>
-            <td>8:30</td>
-            <td>9:00</td>
-            <td>Room 1</td>
-            <td>Jean</td>
-            <td>B2</td>
-            <td>
-              <div class="button" onclick="remove(10, 7, 2024, 3, 'Room 1')">
-                -
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Mercredi 10 Juillet 2024</td>
-            <td>8:30</td>
-            <td>9:00</td>
-            <td>Room 1</td>
-            <td>Jean</td>
-            <td>B2</td>
-            <td>
-              <div class="button" onclick="remove(10, 7, 2024, 3, 'Room 1')">
-                -
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Mercredi 10 Juillet 2024</td>
-            <td>8:30</td>
-            <td>9:00</td>
-            <td>Room 1</td>
-            <td>Jean</td>
-            <td>B2</td>
-            <td>
-              <div class="button" onclick="remove(10, 7, 2024, 3, 'Room 1')">
-                -
-              </div>
-            </td>
           </tr>
         </tbody>
       </table>
@@ -127,6 +79,7 @@
     <!-- Load constants -->
     <script src="constants/levels.js"></script>
     <script src="constants/rooms.js"></script>
+    <script src="constants/teachers.js"></script>
     <!-- Load models -->
     <script src="models/roomObject.js"></script>
     <script src="models/quarter-time.js"></script>

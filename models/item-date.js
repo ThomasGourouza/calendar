@@ -13,7 +13,7 @@ class ItemDate {
 
   printDate() {
     return (
-      this.toDayText(this.day) +
+      this.getDayText(this.day) +
       " " +
       this.date +
       " " +
@@ -23,7 +23,7 @@ class ItemDate {
     );
   }
 
-  toDayText() {
+  getDayText() {
     switch (this.day) {
       case 1:
         return lang === "en" ? "Monday" : "Lundi";

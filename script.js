@@ -1,6 +1,5 @@
 const lang = "fr";
 const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const teachers = [];
 
 let calendarData = [];
 
@@ -36,6 +35,11 @@ let lessons = [
   },
 ];
 
+fillSelectOptions("rooms", rooms);
+fillSelectOptions("levels", levels);
+
+generateLessonList();
+
 document.forms["calendarForm"].onsubmit = function (e) {
   e.preventDefault();
   const startDate = new Date(this.startDate.value);
@@ -45,7 +49,7 @@ document.forms["calendarForm"].onsubmit = function (e) {
     console.log(`End date must be after the start date.`);
   } else {
     calendarData = getCalendarData(startDate, endDate);
-    generateCalendar(calendarData);
+    generateCalendar();
   }
 };
 
@@ -72,12 +76,9 @@ document.forms["addLessonForm"].onsubmit = function (e) {
     this.level.value
   );
   lessons.push(lesson);
-  generateCalendar(calendarData);
+  generateLessonList();
+  generateCalendar();
   this.reset();
-
-  // const startTime = new QuarterTime(startTimeNumber);
-  // const endTime = new QuarterTime(endTimeNumber);
-  // const timeStartEndText = getTimeTextFromTo(startTime, endTime);
 };
 
 // private
@@ -97,7 +98,7 @@ function getCalendarData(startDate, endDate) {
 }
 
 // private
-function generateCalendar(calendarData) {
+function generateCalendar() {
   if (calendarData.length === 0) {
     return;
   }
@@ -230,10 +231,55 @@ function printTime(date, month, year, quarterTime, roomName) {
 }
 
 function generateLessonList() {
-  //
+  const lessonsTbody = document.getElementById("lessons");
+  const trs = lessonsTbody.querySelectorAll("tr");
+
+  for (let i = trs.length - 1; i > 0; i--) {
+    lessonsTbody.removeChild(trs[i]);
+  }
+
+  lessons.forEach((lesson) => {
+    const tr = putElementIn("tr", lessonsTbody);
+    const dateTd = putElementIn("td", tr);
+    dateTd.innerHTML = lesson.itemDate.printDate();
+
+    const timeFromTd = putElementIn("td", tr);
+    const startTime = new QuarterTime(lesson.quarterTimes[0]);
+    timeFromTd.innerHTML = startTime.getTimeTextFrom();
+
+    const timeToTd = putElementIn("td", tr);
+    const endTime = new QuarterTime(
+      lesson.quarterTimes[lesson.quarterTimes.length - 1]
+    );
+    timeToTd.innerHTML = endTime.getTimeTextTo();
+
+    const roomTd = putElementIn("td", tr);
+    roomTd.innerHTML = lesson.room;
+
+    const teacherTd = putElementIn("td", tr);
+    teacherTd.innerHTML = lesson.teacher;
+
+    const levelTd = putElementIn("td", tr);
+    levelTd.innerHTML = lesson.level;
+
+    const removeButtonTd = putElementIn("td", tr);
+    const removeButtonDiv = putElementIn("div", removeButtonTd);
+    removeButtonDiv.className = "button";
+    removeButtonDiv.onclick = () => {
+      removeLesson(
+        lesson.itemDate.date,
+        lesson.itemDate.month,
+        lesson.itemDate.year,
+        lesson.quarterTimes[0],
+        lesson.room
+      );
+    };
+    removeButtonDiv.innerHTML = "-";
+  });
 }
 
-function remove(date, month, year, startTime, room) {
+function removeLesson(date, month, year, startTime, room) {
+  console.log(lessons);
   lessons = lessons.filter(
     (lesson) =>
       lesson.itemDate.date !== date ||
@@ -242,5 +288,15 @@ function remove(date, month, year, startTime, room) {
       lesson.quarterTimes[0] !== startTime ||
       lesson.room !== room
   );
-  generateCalendar(calendarData);
+  generateLessonList();
+  generateCalendar();
+}
+
+function fillSelectOptions(selectId, optionList) {
+  const select = document.getElementById(selectId);
+  optionList.forEach((value) => {
+    const option = putElementIn("option", select);
+    option.setAttribute("value", value);
+    option.innerHTML = value;
+  });
 }
