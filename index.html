@@ -22,54 +22,14 @@
 
         <form name="addLessonForm">
           <h2>Ajouter une leçon</h2>
-          <label>Date:</label>
-          <input type="date" name="date" required />
-          <br /><br />
-          <label>Start time:</label>
-          <input
-            type="time"
-            name="startTime"
-            min="08:00"
-            max="19:45"
-            required
-          />
-          <label>End time:</label>
-          <input type="time" name="endTime" min="08:15" max="20:00" required />
-          <br /><br />
-          <label>Salle:</label>
-          <select name="room" required>
-            <option value=""></option>
-            <option value="Room 1">Room 1</option>
-            <option value="Room 2">Room 2</option>
-            <option value="Room 3">Room 3</option>
-          </select>
-          <br /><br />
-          <label>Teacher:</label>
-          <input type="text" name="teacher" required />
-          <br /><br />
-          <label>Niveau:</label>
-          <select name="level" required>
-            <option value=""></option>
-            <option value="A1">A1</option>
-            <option value="A2">A2</option>
-            <option value="B1">B1</option>
-            <option value="B2">B2</option>
-            <option value="C1">C1</option>
-            <option value="C2">C2</option>
-          </select>
-          <br /><br />
-          <input type="submit" value="Submit" />
-        </form>
-      </div>
-      <div>
-          <h2>Supprimer une leçon</h2>
-          <div id="lessons-wrapper">
-            <table class="lessons">
+          <div id="createLesson">
+            <table class="create-lesson">
               <thead>
                 <tr>
                   <th></th>
                   <th>Date</th>
-                  <th>Heure</th>
+                  <th>Heure de début</th>
+                  <th>Heure de fin</th>
                   <th>Salle</th>
                   <th>Enseignant</th>
                   <th>Niveau</th>
@@ -77,32 +37,106 @@
               </thead>
               <tbody>
                 <tr>
-                  <td><button onclick="remove(10, 7, 2024, 3, 'Room 1')">Supprimer</button></td>
-                  <td>Mercredi 10 Juillet 2024</td>
-                  <td>8:30 - 9:00</td>
-                  <td>Room 1</td>
-                  <td>Jean</td>
-                  <td>B2</td>
-                </tr>
-                <tr>
-                  <td><button onclick="remove(10, 7, 2024, 3, 'Room 1')">Supprimer</button></td>
-                  <td>Mercredi 10 Juillet 2024</td>
-                  <td>8:30 - 9:00</td>
-                  <td>Room 1</td>
-                  <td>Jean</td>
-                  <td>B2</td>
-                </tr>
-                <tr>
-                  <td><button onclick="remove(10, 7, 2024, 3, 'Room 1')">Supprimer</button></td>
-                  <td>Mercredi 10 Juillet 2024</td>
-                  <td>8:30 - 9:00</td>
-                  <td>Room 1</td>
-                  <td>Jean</td>
-                  <td>B2</td>
+                  <td><input type="submit" value="Submit" /></td>
+                  <td><input type="date" name="date" required /></td>
+                  <td>
+                    <input
+                      type="time"
+                      name="startTime"
+                      min="08:00"
+                      max="19:45"
+                      required
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="time"
+                      name="endTime"
+                      min="08:15"
+                      max="20:00"
+                      required
+                    />
+                  </td>
+                  <td>
+                    <select name="room" required>
+                      <option value=""></option>
+                      <option value="Room 1">Room 1</option>
+                      <option value="Room 2">Room 2</option>
+                      <option value="Room 3">Room 3</option>
+                    </select>
+                  </td>
+                  <td><input type="text" name="teacher" required /></td>
+                  <td>
+                    <select name="level" required>
+                      <option value=""></option>
+                      <option value="A1">A1</option>
+                      <option value="A2">A2</option>
+                      <option value="B1">B1</option>
+                      <option value="B2">B2</option>
+                      <option value="C1">C1</option>
+                      <option value="C2">C2</option>
+                    </select>
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
+        </form>
+      </div>
+      <div>
+        <h2>Supprimer une leçon</h2>
+        <div id="lessons-wrapper">
+          <table class="lessons">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Date</th>
+                <th>Heure</th>
+                <th>Salle</th>
+                <th>Enseignant</th>
+                <th>Niveau</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <button onclick="remove(10, 7, 2024, 3, 'Room 1')">
+                    Supprimer
+                  </button>
+                </td>
+                <td>Mercredi 10 Juillet 2024</td>
+                <td>8:30 - 9:00</td>
+                <td>Room 1</td>
+                <td>Jean</td>
+                <td>B2</td>
+              </tr>
+              <tr>
+                <td>
+                  <button onclick="remove(10, 7, 2024, 3, 'Room 1')">
+                    Supprimer
+                  </button>
+                </td>
+                <td>Mercredi 10 Juillet 2024</td>
+                <td>8:30 - 9:00</td>
+                <td>Room 1</td>
+                <td>Jean</td>
+                <td>B2</td>
+              </tr>
+              <tr>
+                <td>
+                  <button onclick="remove(10, 7, 2024, 3, 'Room 1')">
+                    Supprimer
+                  </button>
+                </td>
+                <td>Mercredi 10 Juillet 2024</td>
+                <td>8:30 - 9:00</td>
+                <td>Room 1</td>
+                <td>Jean</td>
+                <td>B2</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 

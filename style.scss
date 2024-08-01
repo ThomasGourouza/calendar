@@ -35,6 +35,16 @@
   --table-lesson-content-td-height: calc(var(--table-lesson-content-td-width) / 5);
   --table-lesson-remove-td-width: 100px;
   --table-lesson-content-td-width: 150px;
+
+  /* Create lesson */
+  --table-create-lesson-header-title: rgb(254, 254, 180);
+  --table-create-lesson-header: rgb(214, 255, 173);
+  --table-create-lesson-submit: rgb(73, 241, 17);
+  --table-create-lesson-content: rgb(252, 232, 207);
+  --table-create-lesson-header-height: calc(var(--table-create-lesson-content-td-height) + 10px);
+  --table-create-lesson-content-td-height: calc(var(--table-create-lesson-content-td-width) / 3);
+  --table-create-lesson-submit-td-width: 60px;
+  --table-create-lesson-content-td-width: 100px;
 }
 
 body {
@@ -185,6 +195,62 @@ table.lessons {
       &:not(:first-child) {
         border-left: none;
         background-color: var(--table-lesson-content);
+      }
+    }
+    &:last-child {
+      td {
+        &:last-child {
+          border-radius: 0 0 var(--table-border-radius) 0;
+        }
+        &:first-child {
+          border-radius: 0 0 0 var(--table-border-radius);
+        }
+      }
+    }
+  }
+}
+
+table.create-lesson {
+  margin-top: var(--table-lesson-margin-top);
+  border-collapse: separate;
+  border-spacing: 0px;
+  border-radius: var(--table-border-radius);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  thead tr {
+    th {
+      height: var(--table-create-lesson-header-height);
+      border: var(--table-border);
+      &:first-child {
+        border-radius: var(--table-border-radius) 0 0 0;
+        background-color: var(--table-create-lesson-header-title);
+      }
+      &:not(:first-child) {
+        border-left: none;
+        background-color: var(--table-create-lesson-header);
+      }
+      &:last-child {
+        border-radius: 0 var(--table-border-radius) 0 0;
+      }
+    }
+  }
+  tbody tr {
+    td {
+      height: var(--table-create-lesson-content-td-height);
+      text-align: center;
+      width: var(---create-lesson-content-td-width);
+      min-width: var(--table-create-lesson-content-td-width);
+      border-right: var(--table-border);
+      border-bottom: var(--table-border);
+      font-size: small;
+      &:first-child {
+        border-left: var(--table-border);
+        background-color: var(--table-create-lesson-submit);
+        width: var(--table-create-lesson-submit-td-width);
+        min-width: var(--table-create-lesson-submit-td-width);
+      }
+      &:not(:first-child) {
+        border-left: none;
+        background-color: var(--table-create-lesson-content);
       }
     }
     &:last-child {
