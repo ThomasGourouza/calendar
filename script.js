@@ -24,7 +24,7 @@ const rooms = roomNames.map((name) => new Room(name));
 function submitForm() {
   const startDate = new Date(document.getElementById("startDate").value);
   const endDate = new Date(document.getElementById("endDate").value);
-  
+
   const daysBetween = getDaysNumberBetween(startDate, endDate);
   if (daysBetween <= 0) {
     console.log(`End date must be after the start date.`);
@@ -101,7 +101,16 @@ function generateCalendar(calendarData) {
           if (!!lessonText) {
             td.className = "booked";
             td.innerHTML = lessonText;
-            td.setAttribute("title", printTime(quarterTime));
+            td.setAttribute(
+              "title",
+              printTime(
+                data.calendarItemDate.date,
+                data.calendarItemDate.month,
+                data.calendarItemDate.year,
+                quarterTime,
+                dataRoom.name
+              )
+            );
           }
         });
     });
@@ -195,6 +204,18 @@ function getLesson(date, month, year, quarterTimeNumber, roomName) {
   return null;
 }
 
-function printTime(quarterTime) {
-  return quarterTime.getTimeTextFrom() + " - " + quarterTime.getTimeTextTo();
+function printTime(date, month, year, quarterTime, roomName) {
+  return (
+    (date < 10 ? "0" + date : date) +
+    "/" +
+    (month < 10 ? "0" + month : month) +
+    "/" +
+    year +
+    " " +
+    quarterTime.getTimeTextFrom() +
+    "-" +
+    quarterTime.getTimeTextTo() +
+    ": " +
+    roomName
+  );
 }
