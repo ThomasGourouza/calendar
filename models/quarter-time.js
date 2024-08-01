@@ -23,16 +23,16 @@ class QuarterTime {
     };
   }
 
-  getTimeText() {
-    return (
-      this.time.from.hour +
-      ":" +
-      this.format(this.time.from.minute) +
-      " - " +
-      this.time.to.hour +
-      ":" +
-      this.format(this.time.to.minute)
-    );
+  getTimeTextFrom() {
+    return this.getTimeText(this.time.from.hour, this.time.from.minute);
+  }
+
+  getTimeTextTo() {
+    return this.getTimeText(this.time.to.hour, this.time.to.minute);
+  }
+
+  getTimeText(hour, minute) {
+    return hour + ":" + this.format(minute);
   }
 
   format(minute) {

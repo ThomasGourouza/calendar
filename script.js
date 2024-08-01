@@ -64,8 +64,8 @@ function generateCalendar(calendarData) {
 
   const thTitle = putElementIn("th", tr1);
   thTitle.setAttribute("rowspan", 2);
+  thTitle.setAttribute("colspan", 2);
   thTitle.innerHTML = "Calendrier";
-  // thTitle.className = "class";
 
   calendarData.forEach((item) => {
     const thDay = putElementIn("th", tr1);
@@ -80,8 +80,10 @@ function generateCalendar(calendarData) {
 
   itemQuarterTimes.forEach((item) => {
     const tr = putElementIn("tr", tbody);
-    const td = putElementIn("td", tr);
-    td.innerHTML = item.getTimeText();
+    const td1 = putElementIn("td", tr);
+    td1.innerHTML = item.getTimeTextFrom();
+    const td2 = putElementIn("td", tr);
+    td2.innerHTML = item.getTimeTextTo();
 
     // TODO: Refacto (2 loops -> 1)
     calendarData.forEach((data) => {
@@ -91,13 +93,17 @@ function generateCalendar(calendarData) {
       dataRooms.forEach((dataRoom) => {
         const td = putElementIn("td", tr);
         // td.innerHTML = dataRoom.printLesson();
-        td.innerHTML = getLesson(
+        const lessonText = getLesson(
           data.calendarItemDate.date,
           data.calendarItemDate.month,
           data.calendarItemDate.year,
           item.number,
           dataRoom.name
         );
+        if (!!lessonText) {
+          td.innerHTML = lessonText;
+          td.className = "booked";
+        }
       });
     });
   });
@@ -128,7 +134,7 @@ function styleBorderThick(number) {
     document.documentElement
   ).getPropertyValue("--table-border-thick");
   const cells = document.querySelectorAll(
-    `table tbody tr td:nth-child(${number}n + 1):not(:last-child)`
+    `table tbody tr td:nth-child(${number}n + 2):not(:last-child)`
   );
   cells.forEach((cell) => {
     cell.style.borderRight = borderThick;
@@ -189,5 +195,5 @@ function getLesson(
   if (!!lesson) {
     return lesson.teacher + " - " + lesson.level;
   }
-  return "";
+  return null;
 }

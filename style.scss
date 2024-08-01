@@ -9,12 +9,16 @@
   --table-header-title: beige;
   --table-header-day: chartreuse;
   /* hauteur des headers des jours */
-  --table-header-day-height: 40px;
+  --table-header-day-height: calc(var(--table-header-room-height) + 10px);
   --table-header-room: aqua;
   /* hauteur des headers des salles */
-  --table-header-room-height: 25px;
+  --table-header-room-height: calc(var(--table-content-td-height) + 15px);
   --table-time: red;
   --table-content: burlywood;
+  /* hauteur des cellules du calendrier */
+  --table-content-td-height: 10px;
+  /* longueur des cellules des heures du calendrier */
+  --table-time-td-width: 50px;
   /* longueur des cellules du calendrier: modifier dynamiquement avec JS */
   --table-content-td-width: 100px;
   /* hauteur des quarts de cellule du calendrier */
@@ -82,18 +86,40 @@ table {
       }
     }
     td {
-      width: var(--table-content-td-width);
-      min-width: var(--table-content-td-width);
-      border-right: var(--table-border);
+      height: var(--table-content-td-height);
       border-bottom: var(--table-border-dashed);
-      &:first-child {
-        /* Les heures */
-        border-left: var(--table-border);
+      text-align: center;
+      /* Les heures */
+      &:first-child,
+      &:nth-child(2) {
         background-color: var(--table-time);
+        width: var(--table-time-td-width);
+        min-width: var(--table-time-td-width);
+        font-size: x-small;
       }
-      &:not(:first-child) {
-        /* Le contenu */
+      &:first-child {
+        border-left: var(--table-border);
+        border-right: none;
+        text-align: left;
+        vertical-align: top;
+        padding-left: 5px;
+      }
+      &:nth-child(2) {
+        border-left: none;
+        text-align: right;
+        vertical-align: bottom;
+        padding-right: 5px;
+      }
+      /* Le contenu */
+      &:not(:first-child):not(:nth-child(2)) {
+        width: var(--table-content-td-width);
+        min-width: var(--table-content-td-width);
+        border-right: var(--table-border);
         background-color: var(--table-content);
+        font-size: small;
+        &.booked {
+          background-color: blueviolet;
+        }
       }
     }
   }
