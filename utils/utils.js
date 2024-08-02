@@ -168,7 +168,16 @@ function getLessonToPrint(date, month, year, quarterTime, room) {
 }
 
 function setLunchTime(td, quarterTimeNumber) {
-  if (quarterTimeNumber >= 17 && quarterTimeNumber <= 24) {
+  const minLunchTimeText = `${Math.floor(minLunchTime)}:${
+    (minLunchTime - Math.floor(minLunchTime)) * 60
+  }`;
+  const maxLunchTimeText = `${Math.floor(maxLunchTime)}:${
+    (maxLunchTime - Math.floor(maxLunchTime)) * 60
+  }`;
+  if (
+    quarterTimeNumber >= getNumberFromStartTime(minLunchTimeText) &&
+    quarterTimeNumber <= getNumberFromEndTime(maxLunchTimeText)
+  ) {
     td.className = "lunch";
   }
 }

@@ -5,7 +5,7 @@ class QuarterTime {
   }
 
   getTime() {
-    const timeNumber = 8 + (this.number - 1) / 4;
+    const timeNumber = minTime + (this.number - 1) / 4;
     const hourFrom = Math.floor(timeNumber);
     const minuteFrom = (timeNumber - hourFrom) * 60;
     const timeNumberTo = timeNumber + 0.25;

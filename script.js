@@ -2,18 +2,20 @@ const lang = "fr";
 
 let calendarItems = [];
 
-// les quarts d'heures de la journée de 8h00 à 20h00
+// les quarts d'heures de la journée
 const allQuarterTimes = [];
-for (let i = 1; i <= 48; i++) {
+for (let i = 1; i <= (maxTime - minTime) * 4; i++) {
   allQuarterTimes.push(new QuarterTime(i));
 }
 
-// fill options in html template
-fillSelectOptions("rooms", rooms);
-fillSelectOptions("levels", levels);
-fillSelectOptions("teachers", teachers);
+document.addEventListener("DOMContentLoaded", function () {
+  // fill options in html template
+  fillSelectOptions("rooms", rooms);
+  fillSelectOptions("levels", levels);
+  fillSelectOptions("teachers", teachers);
 
-buildLessonList();
+  buildLessonList();
+});
 
 document.forms["calendarForm"].onsubmit = function (e) {
   e.preventDefault();
@@ -75,9 +77,7 @@ function getCalendarData(startDate, endDate) {
     calendarItems.push(
       new CalendarItem(
         new CalendarItemDate(d.getDate(), d.getMonth(), d.getFullYear()),
-        allQuarterTimes.map(
-          (item) => new CalendarItemTimeRoom(item, rooms)
-        )
+        allQuarterTimes.map((item) => new CalendarItemTimeRoom(item, rooms))
       )
     );
   }
@@ -136,11 +136,9 @@ function buildCalendar() {
 function buildLessonList() {
   const lessonsTbody = document.getElementById("lessons");
   const trs = lessonsTbody.querySelectorAll("tr");
-
   for (let i = trs.length - 1; i > 0; i--) {
     lessonsTbody.removeChild(trs[i]);
   }
-
   lessons.forEach((lesson) => {
     const tr = putElementIn("tr", lessonsTbody);
     const dateTd = putElementIn("td", tr);
