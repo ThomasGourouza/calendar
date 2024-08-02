@@ -167,6 +167,7 @@ function generateCalendar() {
     });
   });
   styleBorderThick(rooms.length);
+  styleColorCells(rooms.length);
 }
 
 function getLesson(date, month, year, quarterTime, room) {
@@ -207,11 +208,47 @@ function styleBorderThick(number) {
   const borderThick = getComputedStyle(
     document.documentElement
   ).getPropertyValue("--table-border-thick");
-  const cells = document.querySelectorAll(
+  const cellsRoomHeaders = document.querySelectorAll(
+    `table.calendar thead tr:not(:first-child) th:nth-child(${number}n):not(:last-child)`
+  );
+  const cellContentCells = document.querySelectorAll(
     `table.calendar tbody tr td:nth-child(${number}n + 2):not(:last-child)`
   );
-  cells.forEach((cell) => {
+  cellsRoomHeaders.forEach((cell) => {
     cell.style.borderRight = borderThick;
+  });
+  cellContentCells.forEach((cell) => {
+    cell.style.borderRight = borderThick;
+  });
+}
+
+function styleColorCells(number) {
+  const colorOdd = getComputedStyle(document.documentElement).getPropertyValue(
+    "--table-content-odd"
+  );
+  const colorEven = getComputedStyle(document.documentElement).getPropertyValue(
+    "--table-content-even"
+  );
+  const oddCellsSelector = `table.calendar tbody tr td:not(:first-child):not(:nth-child(2)):not(.booked)`;
+  const oddCells = document.querySelectorAll(oddCellsSelector);
+  oddCells.forEach((cell) => {
+    cell.style.backgroundColor = colorOdd;
+  });
+
+  let evenCellsSelector = "";
+  for (let i = 0; i < number; i++) {
+    const a = 2 * number;
+    const b = i + 3 - number;
+    const signB = b < 0 ? "-" : "+";
+    const absB = Math.abs(b);
+    evenCellsSelector += `${oddCellsSelector}:nth-child(${a}n ${signB} ${absB})`;
+    if (i < number - 1) {
+      evenCellsSelector += ", ";
+    }
+  }
+  const evenCells = document.querySelectorAll(evenCellsSelector);
+  evenCells.forEach((cell) => {
+    cell.style.backgroundColor = colorEven;
   });
 }
 

@@ -1,12 +1,14 @@
 :root {
   /* Calendar */
   --table-margin-top: 30px;
+  --box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   --table-border-radius: 15px;
-  --table-border-color: rgb(100, 100, 100);
+  --table-border-color: rgb(105, 105, 105);
+  --table-border-dashed-color: rgb(154, 154, 154);
   --table-border-thick-color: black;
   --table-border: 1px solid var(--table-border-color);
   --table-border-thick: 1px solid var(--table-border-thick-color);
-  --table-border-dashed: 1px dashed var(--table-border-color);
+  --table-border-dashed: 1px dashed var(--table-border-dashed-color);
   --table-header-title: beige;
   --table-header-day: chartreuse;
   /* hauteur des headers des jours */
@@ -15,7 +17,8 @@
   /* hauteur des headers des salles */
   --table-header-room-height: calc(var(--table-content-td-height) + 15px);
   --table-time: red;
-  --table-content: burlywood;
+  --table-content-odd: burlywood;
+  --table-content-even: rgb(245, 202, 147);
   /* hauteur des cellules du calendrier */
   --table-content-td-height: calc(var(--table-content-td-width) / 5);
   /* longueur des cellules des heures du calendrier */
@@ -57,7 +60,7 @@ table.calendar {
   border-collapse: separate;
   border-spacing: 0px;
   border-radius: var(--table-border-radius);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--box-shadow);
   thead tr {
     &:first-child th {
       height: var(--table-header-day-height);
@@ -131,7 +134,6 @@ table.calendar {
         width: var(--table-content-td-width);
         min-width: var(--table-content-td-width);
         border-right: var(--table-border);
-        background-color: var(--table-content);
         font-size: small;
         &.booked {
           background-color: blueviolet;
@@ -156,7 +158,7 @@ table.lessons {
   border-collapse: separate;
   border-spacing: 0px;
   border-radius: var(--table-border-radius);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--box-shadow);
   thead tr {
     th {
       height: var(--table-lesson-header-height);
@@ -221,7 +223,7 @@ table.lessons {
     text-align: center;
     display: inline-block;
     cursor: pointer;
-    border: none; 
+    border: none;
     border-radius: 5px;
     font-size: small;
   }
@@ -238,4 +240,3 @@ table.lessons {
     }
   }
 }
-
