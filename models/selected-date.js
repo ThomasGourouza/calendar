@@ -1,4 +1,4 @@
-class CalendarItemDate {
+class CalendarDate {
   constructor(date, month, year) {
     this.date = date;
     this.month = month + 1;

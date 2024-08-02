@@ -1,6 +1,6 @@
 class Lesson {
-  constructor(calendarItemDate, quarterTimes, room, teacher, level) {
-    this.calendarItemDate = calendarItemDate;
+  constructor(date, quarterTimes, room, teacher, level) {
+    this.date = date;
     this.quarterTimes = quarterTimes;
     this.room = room;
     this.teacher = teacher;

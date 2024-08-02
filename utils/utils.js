@@ -128,11 +128,11 @@ function putElementIn(element, node) {
   return elmt;
 }
 
-function checkLesson(td, quarterTime, calendarItemDate, room) {
+function checkLesson(td, quarterTime, selectedDate, room) {
   const lessonText = getLessonToPrint(
-    calendarItemDate.date,
-    calendarItemDate.month,
-    calendarItemDate.year,
+    selectedDate.date,
+    selectedDate.month,
+    selectedDate.year,
     quarterTime.number,
     room
   );
@@ -142,9 +142,9 @@ function checkLesson(td, quarterTime, calendarItemDate, room) {
     td.setAttribute(
       "title",
       printTime(
-        calendarItemDate.date,
-        calendarItemDate.month,
-        calendarItemDate.year,
+        selectedDate.date,
+        selectedDate.month,
+        selectedDate.year,
         quarterTime,
         room
       )
@@ -152,13 +152,13 @@ function checkLesson(td, quarterTime, calendarItemDate, room) {
   }
 }
 
-function getLessonToPrint(date, month, year, quarterTime, room) {
+function getLessonToPrint(date, month, year, quarterTimeNumber, room) {
   const lesson = lessons.find(
     (l) =>
-      l.calendarItemDate.date === date &&
-      l.calendarItemDate.month === month &&
-      l.calendarItemDate.year === year &&
-      l.quarterTimes.includes(quarterTime) &&
+      l.date.date === date &&
+      l.date.month === month &&
+      l.date.year === year &&
+      l.quarterTimes.includes(quarterTimeNumber) &&
       l.room === room
   );
   if (!!lesson) {

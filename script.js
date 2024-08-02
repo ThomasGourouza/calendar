@@ -1,6 +1,6 @@
 const lang = "fr";
 
-let calendarItems = [];
+let selectedDates = [];
 
 // les quarts d'heures de la journée
 const allQuarterTimes = [];
@@ -25,18 +25,18 @@ document.forms["calendarForm"].onsubmit = function (e) {
   if (getDaysNumberBetween(startDate, endDate) <= 0) {
     alert(`End date must be after the start date.`);
   } else {
-    fillCalendarItems(startDate, endDate);
+    fillSelectedDates(startDate, endDate);
     buildCalendar();
   }
 };
 
 document.forms["addLessonForm"].onsubmit = function (e) {
   e.preventDefault();
-  const date = new Date(this.date.value);
-  const calendarItemDate = new CalendarItemDate(
-    date.getDate(),
-    date.getMonth(),
-    date.getFullYear()
+  const lessonDate = new Date(this.date.value);
+  const date = new CalendarDate(
+    lessonDate.getDate(),
+    lessonDate.getMonth(),
+    lessonDate.getFullYear()
   );
   const startTimeNumber = getNumberFromStartTime(this.startTime.value);
   const endTimeNumber = getNumberFromEndTime(this.endTime.value);
@@ -45,7 +45,7 @@ document.forms["addLessonForm"].onsubmit = function (e) {
     quarterTimes.push(i);
   }
   const lesson = new Lesson(
-    calendarItemDate,
+    date,
     quarterTimes,
     this.room.value,
     this.teacher.value,
@@ -60,9 +60,9 @@ document.forms["addLessonForm"].onsubmit = function (e) {
 function removeLesson(date, month, year, startTime, room) {
   lessons = lessons.filter(
     (lesson) =>
-      lesson.calendarItemDate.date !== date ||
-      lesson.calendarItemDate.month !== month ||
-      lesson.calendarItemDate.year !== year ||
+      lesson.date.date !== date ||
+      lesson.date.month !== month ||
+      lesson.date.year !== year ||
       lesson.quarterTimes[0] !== startTime ||
       lesson.room !== room
   );
@@ -70,17 +70,17 @@ function removeLesson(date, month, year, startTime, room) {
   buildCalendar();
 }
 
-function fillCalendarItems(startDate, endDate) {
-  calendarItems = [];
+function fillSelectedDates(startDate, endDate) {
+  selectedDates = [];
   for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-    calendarItems.push(
-      new CalendarItemDate(d.getDate(), d.getMonth(), d.getFullYear())
+    selectedDates.push(
+      new CalendarDate(d.getDate(), d.getMonth(), d.getFullYear())
     );
   }
 }
 
 function buildCalendar() {
-  if (calendarItems.length === 0) {
+  if (selectedDates.length === 0) {
     return;
   }
   const wrapper = document.getElementById("calendar-wrapper");
@@ -98,10 +98,10 @@ function buildCalendar() {
   thTitle.setAttribute("rowspan", 2);
 
   // Headers jours et salles
-  calendarItems.forEach((item) => {
+  selectedDates.forEach((selectedDate) => {
     const thDay = putElementIn("th", tr1);
     thDay.setAttribute("colspan", rooms.length);
-    thDay.innerHTML = item.printDate();
+    thDay.innerHTML = selectedDate.printDate();
 
     rooms.forEach((name) => {
       const thRoom = putElementIn("th", tr2);
@@ -116,11 +116,11 @@ function buildCalendar() {
     if ([1, 3].includes(quarterTime.number % 4)) {
       td.innerHTML = quarterTime.getTimeTextFrom();
     }
-    calendarItems.forEach((calendarItem) => {
+    selectedDates.forEach((selectedDate) => {
       rooms.forEach((room) => {
           const td = putElementIn("td", tr);
           checkLunchTime(td, quarterTime.number);
-          checkLesson(td, quarterTime, calendarItem, room);
+          checkLesson(td, quarterTime, selectedDate, room);
         });
     });
   });
@@ -137,7 +137,7 @@ function buildLessonList() {
   lessons.forEach((lesson) => {
     const tr = putElementIn("tr", lessonsTbody);
     const dateTd = putElementIn("td", tr);
-    dateTd.innerHTML = lesson.calendarItemDate.printDate();
+    dateTd.innerHTML = lesson.date.printDate();
 
     const timeFromTd = putElementIn("td", tr);
     const startTime = new QuarterTime(lesson.quarterTimes[0]);
@@ -163,9 +163,9 @@ function buildLessonList() {
     removeButtonDiv.className = "button";
     removeButtonDiv.onclick = () => {
       removeLesson(
-        lesson.calendarItemDate.date,
-        lesson.calendarItemDate.month,
-        lesson.calendarItemDate.year,
+        lesson.date.date,
+        lesson.date.month,
+        lesson.date.year,
         lesson.quarterTimes[0],
         lesson.room
       );
