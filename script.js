@@ -1,7 +1,7 @@
 const lang = "fr";
 const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-let calendarData = [];
+let calendarItems = [];
 
 // les quart d'heures de la journée de 8h00 à 20h00
 const allQuarterTimes = [];
@@ -13,21 +13,21 @@ const roomObjects = rooms.map((name) => new RoomObject(name));
 
 let lessons = [
   {
-    itemDate: new ItemDate(9, 6, 2024),
+    calendarItemDate: new CalendarItemDate(9, 6, 2024),
     quarterTimes: [6, 7, 8, 9],
     room: "Room 2",
     teacher: "Thomas",
     level: "C1",
   },
   {
-    itemDate: new ItemDate(9, 6, 2024),
+    calendarItemDate: new CalendarItemDate(9, 6, 2024),
     quarterTimes: [13, 14, 15, 16],
     room: "Room 3",
     teacher: "Thomas",
     level: "C1",
   },
   {
-    itemDate: new ItemDate(10, 6, 2024),
+    calendarItemDate: new CalendarItemDate(10, 6, 2024),
     quarterTimes: [3, 4],
     room: "Room 1",
     teacher: "Jean",
@@ -48,7 +48,7 @@ document.forms["calendarForm"].onsubmit = function (e) {
   if (getDaysNumberBetween(startDate, endDate) <= 0) {
     console.log(`End date must be after the start date.`);
   } else {
-    calendarData = getCalendarData(startDate, endDate);
+    calendarItems = getCalendarData(startDate, endDate);
     generateCalendar();
   }
 };
@@ -57,7 +57,7 @@ document.forms["addLessonForm"].reset();
 document.forms["addLessonForm"].onsubmit = function (e) {
   e.preventDefault();
   const date = new Date(this.date.value);
-  const itemDate = new ItemDate(
+  const calendarItemDate = new CalendarItemDate(
     date.getDate(),
     date.getMonth(),
     date.getFullYear()
@@ -69,7 +69,7 @@ document.forms["addLessonForm"].onsubmit = function (e) {
     quarterTimes.push(i);
   }
   const lesson = new Lesson(
-    itemDate,
+    calendarItemDate,
     quarterTimes,
     this.room.value,
     this.teacher.value,
@@ -83,23 +83,23 @@ document.forms["addLessonForm"].onsubmit = function (e) {
 
 // private
 function getCalendarData(startDate, endDate) {
-  const calendarData = [];
+  const calendarItems = [];
   for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-    calendarData.push(
+    calendarItems.push(
       new CalendarItem(
-        new ItemDate(d.getDate(), d.getMonth(), d.getFullYear()),
+        new CalendarItemDate(d.getDate(), d.getMonth(), d.getFullYear()),
         allQuarterTimes.map(
           (item) => new CalendarItemTimeRoom(item, roomObjects)
         )
       )
     );
   }
-  return calendarData;
+  return calendarItems;
 }
 
 // private
 function generateCalendar() {
-  if (calendarData.length === 0) {
+  if (calendarItems.length === 0) {
     return;
   }
   const wrapper = document.getElementById("calendar-wrapper");
@@ -118,7 +118,7 @@ function generateCalendar() {
   thTitle.setAttribute("colspan", 2);
   // thTitle.innerHTML = "Calendrier";
 
-  calendarData.forEach((item) => {
+  calendarItems.forEach((item) => {
     const thDay = putElementIn("th", tr1);
     thDay.setAttribute("colspan", rooms.length);
     thDay.innerHTML = item.calendarItemDate.printDate();
@@ -136,7 +136,7 @@ function generateCalendar() {
     const td2 = putElementIn("td", tr);
     td2.innerHTML = quarterTime.getTimeTextTo();
 
-    calendarData.forEach((data) => {
+    calendarItems.forEach((data) => {
       data.calendarItemTimeRooms
         .find((timeRoom) => timeRoom.quarterTime.number === quarterTime.number)
         .roomObjects.forEach((roomObject) => {
@@ -171,9 +171,9 @@ function generateCalendar() {
 function getLesson(date, month, year, quarterTime, room) {
   const lesson = lessons.find(
     (l) =>
-      l.itemDate.date === date &&
-      l.itemDate.month === month &&
-      l.itemDate.year === year &&
+      l.calendarItemDate.date === date &&
+      l.calendarItemDate.month === month &&
+      l.calendarItemDate.year === year &&
       l.quarterTimes.includes(quarterTime) &&
       l.room === room
   );
@@ -241,7 +241,7 @@ function generateLessonList() {
   lessons.forEach((lesson) => {
     const tr = putElementIn("tr", lessonsTbody);
     const dateTd = putElementIn("td", tr);
-    dateTd.innerHTML = lesson.itemDate.printDate();
+    dateTd.innerHTML = lesson.calendarItemDate.printDate();
 
     const timeFromTd = putElementIn("td", tr);
     const startTime = new QuarterTime(lesson.quarterTimes[0]);
@@ -267,9 +267,9 @@ function generateLessonList() {
     removeButtonDiv.className = "button";
     removeButtonDiv.onclick = () => {
       removeLesson(
-        lesson.itemDate.date,
-        lesson.itemDate.month,
-        lesson.itemDate.year,
+        lesson.calendarItemDate.date,
+        lesson.calendarItemDate.month,
+        lesson.calendarItemDate.year,
         lesson.quarterTimes[0],
         lesson.room
       );
@@ -282,9 +282,9 @@ function removeLesson(date, month, year, startTime, room) {
   console.log(lessons);
   lessons = lessons.filter(
     (lesson) =>
-      lesson.itemDate.date !== date ||
-      lesson.itemDate.month !== month ||
-      lesson.itemDate.year !== year ||
+      lesson.calendarItemDate.date !== date ||
+      lesson.calendarItemDate.month !== month ||
+      lesson.calendarItemDate.year !== year ||
       lesson.quarterTimes[0] !== startTime ||
       lesson.room !== room
   );
