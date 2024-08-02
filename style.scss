@@ -114,7 +114,7 @@ table.calendar {
         background-color: var(--table-time);
         width: var(--table-time-td-width);
         min-width: var(--table-time-td-width);
-        font-size: x-small;
+        font-size: small;
       }
       &:first-child {
         border-left: var(--table-border);

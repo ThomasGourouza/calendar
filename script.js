@@ -133,9 +133,10 @@ function generateCalendar() {
   allQuarterTimes.forEach((quarterTime) => {
     const tr = putElementIn("tr", tbody);
     const td1 = putElementIn("td", tr);
-    td1.innerHTML = quarterTime.getTimeTextFrom();
+    if ([1, 3].includes(quarterTime.number % 4)) {
+      td1.innerHTML = quarterTime.getTimeTextFrom();
+    }
     const td2 = putElementIn("td", tr);
-    td2.innerHTML = quarterTime.getTimeTextTo();
 
     calendarItems.forEach((data) => {
       data.calendarItemTimeRooms
