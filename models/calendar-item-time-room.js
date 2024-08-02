@@ -1,6 +1,6 @@
 class CalendarItemTimeRoom {
-  constructor(quarterTime, roomObjects) {
+  constructor(quarterTime, rooms) {
     this.quarterTime = quarterTime;
-    this.roomObjects = roomObjects;
+    this.rooms = rooms;
   }
 }

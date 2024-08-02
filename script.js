@@ -8,8 +8,6 @@ for (let i = 1; i <= 48; i++) {
   allQuarterTimes.push(new QuarterTime(i));
 }
 
-const roomObjects = rooms.map((name) => new RoomObject(name));
-
 fillSelectOptions("rooms", rooms);
 fillSelectOptions("levels", levels);
 fillSelectOptions("teachers", teachers);
@@ -65,7 +63,7 @@ function getCalendarData(startDate, endDate) {
       new CalendarItem(
         new CalendarItemDate(d.getDate(), d.getMonth(), d.getFullYear()),
         allQuarterTimes.map(
-          (item) => new CalendarItemTimeRoom(item, roomObjects)
+          (item) => new CalendarItemTimeRoom(item, rooms)
         )
       )
     );
@@ -112,10 +110,10 @@ function generateCalendar() {
     calendarItems.forEach((data) => {
       data.calendarItemTimeRooms
         .find((timeRoom) => timeRoom.quarterTime.number === quarterTime.number)
-        .roomObjects.forEach((roomObject) => {
+        .rooms.forEach((room) => {
           const td = putElementIn("td", tr);
           setLunchTime(td, quarterTime.number);
-          setLessonIfExist(td, quarterTime, data, roomObject);
+          setLessonIfExist(td, quarterTime, data, room);
         });
     });
   });
@@ -129,13 +127,13 @@ function setLunchTime(td, quarterTimeNumber) {
   }
 }
 
-function setLessonIfExist(td, quarterTime, data, roomObject) {
+function setLessonIfExist(td, quarterTime, data, room) {
   const lessonText = getLesson(
     data.calendarItemDate.date,
     data.calendarItemDate.month,
     data.calendarItemDate.year,
     quarterTime.number,
-    roomObject.name
+    room
   );
   if (!!lessonText) {
     td.className = "booked";
@@ -147,7 +145,7 @@ function setLessonIfExist(td, quarterTime, data, roomObject) {
         data.calendarItemDate.month,
         data.calendarItemDate.year,
         quarterTime,
-        roomObject.name
+        room
       )
     );
   }
