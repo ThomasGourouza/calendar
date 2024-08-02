@@ -37,6 +37,7 @@ let lessons = [
 
 fillSelectOptions("rooms", rooms);
 fillSelectOptions("levels", levels);
+fillSelectOptions("teachers", teachers);
 
 generateLessonList();
 
