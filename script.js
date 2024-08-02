@@ -116,8 +116,6 @@ function generateCalendar() {
 
   const thTitle = putElementIn("th", tr1);
   thTitle.setAttribute("rowspan", 2);
-  thTitle.setAttribute("colspan", 2);
-  // thTitle.innerHTML = "Calendrier";
 
   calendarItems.forEach((item) => {
     const thDay = putElementIn("th", tr1);
@@ -132,12 +130,10 @@ function generateCalendar() {
 
   allQuarterTimes.forEach((quarterTime) => {
     const tr = putElementIn("tr", tbody);
-    const td1 = putElementIn("td", tr);
+    const td = putElementIn("td", tr);
     if ([1, 3].includes(quarterTime.number % 4)) {
-      td1.innerHTML = quarterTime.getTimeTextFrom();
+      td.innerHTML = quarterTime.getTimeTextFrom();
     }
-    const td2 = putElementIn("td", tr);
-
     calendarItems.forEach((data) => {
       data.calendarItemTimeRooms
         .find((timeRoom) => timeRoom.quarterTime.number === quarterTime.number)
@@ -213,7 +209,7 @@ function styleBorderThick(number) {
     `table.calendar thead tr:not(:first-child) th:nth-child(${number}n):not(:last-child)`
   );
   const cellContentCells = document.querySelectorAll(
-    `table.calendar tbody tr td:nth-child(${number}n + 2):not(:last-child)`
+    `table.calendar tbody tr td:nth-child(${number}n + 1):not(:last-child)`
   );
   cellsRoomHeaders.forEach((cell) => {
     cell.style.borderRight = borderThick;
@@ -230,7 +226,7 @@ function styleColorCells(number) {
   const colorEven = getComputedStyle(document.documentElement).getPropertyValue(
     "--table-content-even"
   );
-  const oddCellsSelector = `table.calendar tbody tr td:not(:first-child):not(:nth-child(2)):not(.booked)`;
+  const oddCellsSelector = `table.calendar tbody tr td:not(:first-child):not(.booked)`;
   const oddCells = document.querySelectorAll(oddCellsSelector);
   oddCells.forEach((cell) => {
     cell.style.backgroundColor = colorOdd;
@@ -239,7 +235,7 @@ function styleColorCells(number) {
   let evenCellsSelector = "";
   for (let i = 0; i < number; i++) {
     const a = 2 * number;
-    const b = i + 3 - number;
+    const b = i + 2 - number;
     const signB = b < 0 ? "-" : "+";
     const absB = Math.abs(b);
     evenCellsSelector += `${oddCellsSelector}:nth-child(${a}n ${signB} ${absB})`;
