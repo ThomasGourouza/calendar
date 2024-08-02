@@ -23,7 +23,7 @@ document.forms["calendarForm"].onsubmit = function (e) {
   const endDate = new Date(this.endDate.value);
 
   if (getDaysNumberBetween(startDate, endDate) <= 0) {
-    console.log(`End date must be after the start date.`);
+    alert(`End date must be after the start date.`);
   } else {
     calendarItems = getCalendarData(startDate, endDate);
     buildCalendar();
@@ -58,7 +58,6 @@ document.forms["addLessonForm"].onsubmit = function (e) {
 };
 
 function removeLesson(date, month, year, startTime, room) {
-  console.log(lessons);
   lessons = lessons.filter(
     (lesson) =>
       lesson.calendarItemDate.date !== date ||
