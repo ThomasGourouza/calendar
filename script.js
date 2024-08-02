@@ -74,10 +74,7 @@ function fillCalendarItems(startDate, endDate) {
   calendarItems = [];
   for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
     calendarItems.push(
-      new CalendarItem(
-        new CalendarItemDate(d.getDate(), d.getMonth(), d.getFullYear()),
-        allQuarterTimes.map((item) => new CalendarItemTimeRoom(item, rooms))
-      )
+      new CalendarItemDate(d.getDate(), d.getMonth(), d.getFullYear())
     );
   }
 }
@@ -100,10 +97,11 @@ function buildCalendar() {
   const thTitle = putElementIn("th", tr1);
   thTitle.setAttribute("rowspan", 2);
 
+  // Headers jours et salles
   calendarItems.forEach((item) => {
     const thDay = putElementIn("th", tr1);
     thDay.setAttribute("colspan", rooms.length);
-    thDay.innerHTML = item.calendarItemDate.printDate();
+    thDay.innerHTML = item.printDate();
 
     rooms.forEach((name) => {
       const thRoom = putElementIn("th", tr2);
@@ -111,19 +109,18 @@ function buildCalendar() {
     });
   });
 
+  // Contenu du calendrier
   allQuarterTimes.forEach((quarterTime) => {
     const tr = putElementIn("tr", tbody);
     const td = putElementIn("td", tr);
     if ([1, 3].includes(quarterTime.number % 4)) {
       td.innerHTML = quarterTime.getTimeTextFrom();
     }
-    calendarItems.forEach((data) => {
-      data.calendarItemTimeRooms
-        .find((timeRoom) => timeRoom.quarterTime.number === quarterTime.number)
-        .rooms.forEach((room) => {
+    calendarItems.forEach((calendarItem) => {
+      rooms.forEach((room) => {
           const td = putElementIn("td", tr);
-          setLunchTime(td, quarterTime.number);
-          printLessonIfExist(td, quarterTime, data, room);
+          checkLunchTime(td, quarterTime.number);
+          checkLesson(td, quarterTime, calendarItem, room);
         });
     });
   });

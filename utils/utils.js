@@ -128,11 +128,11 @@ function putElementIn(element, node) {
   return elmt;
 }
 
-function printLessonIfExist(td, quarterTime, data, room) {
+function checkLesson(td, quarterTime, calendarItemDate, room) {
   const lessonText = getLessonToPrint(
-    data.calendarItemDate.date,
-    data.calendarItemDate.month,
-    data.calendarItemDate.year,
+    calendarItemDate.date,
+    calendarItemDate.month,
+    calendarItemDate.year,
     quarterTime.number,
     room
   );
@@ -142,9 +142,9 @@ function printLessonIfExist(td, quarterTime, data, room) {
     td.setAttribute(
       "title",
       printTime(
-        data.calendarItemDate.date,
-        data.calendarItemDate.month,
-        data.calendarItemDate.year,
+        calendarItemDate.date,
+        calendarItemDate.month,
+        calendarItemDate.year,
         quarterTime,
         room
       )
@@ -167,7 +167,7 @@ function getLessonToPrint(date, month, year, quarterTime, room) {
   return null;
 }
 
-function setLunchTime(td, quarterTimeNumber) {
+function checkLunchTime(td, quarterTimeNumber) {
   const minLunchTimeText = `${Math.floor(minLunchTime)}:${
     (minLunchTime - Math.floor(minLunchTime)) * 60
   }`;
