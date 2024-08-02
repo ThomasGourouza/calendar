@@ -11,14 +11,6 @@ class CalendarDate {
     return day === 0 ? 7 : day;
   }
 
-  isDate(date, month, year) {
-    return (
-      this.date === date &&
-      this.month === month &&
-      this.year === year
-    );
-  }
-
   printDate() {
     return (
       this.getDayText(this.day) +

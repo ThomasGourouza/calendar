@@ -12,7 +12,7 @@ function getNumberFromStartTime(timeString) {
 function getNumberFromEndTime(timeString) {
   const timeArray = timeString.split(":");
   const time = roundQuarter(+timeArray[0], +timeArray[1]);
-  return (time.hours + time.roundedMinutes / 60 - 8) * 4;
+  return (time.hours + time.roundedMinutes / 60 - minTime) * 4;
 }
 
 function roundQuarter(hours, minutes) {
