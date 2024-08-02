@@ -25,7 +25,7 @@ document.forms["calendarForm"].onsubmit = function (e) {
   if (getDaysNumberBetween(startDate, endDate) <= 0) {
     alert(`End date must be after the start date.`);
   } else {
-    calendarItems = getCalendarData(startDate, endDate);
+    fillCalendarItems(startDate, endDate);
     buildCalendar();
   }
 };
@@ -70,8 +70,8 @@ function removeLesson(date, month, year, startTime, room) {
   buildCalendar();
 }
 
-function getCalendarData(startDate, endDate) {
-  const calendarItems = [];
+function fillCalendarItems(startDate, endDate) {
+  calendarItems = [];
   for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
     calendarItems.push(
       new CalendarItem(
@@ -80,7 +80,6 @@ function getCalendarData(startDate, endDate) {
       )
     );
   }
-  return calendarItems;
 }
 
 function buildCalendar() {
