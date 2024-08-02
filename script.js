@@ -33,20 +33,22 @@ document.forms["calendarForm"].onsubmit = function (e) {
 document.forms["addLessonForm"].onsubmit = function (e) {
   e.preventDefault();
   const lessonDate = new Date(this.date.value);
-  const date = new CalendarDate(
+  const calendarDate = new CalendarDate(
     lessonDate.getDate(),
     lessonDate.getMonth(),
     lessonDate.getFullYear()
   );
-  const startTimeNumber = getNumberFromStartTime(this.startTime.value);
-  const endTimeNumber = getNumberFromEndTime(this.endTime.value);
-  const quarterTimes = [];
-  for (let i = startTimeNumber; i <= endTimeNumber; i++) {
-    quarterTimes.push(i);
-  }
+
+  // const startTimeId = getIdFromStartTime(this.startTime.value);
+  // const endTimeId = getIdFromEndTime(this.endTime.value);
+  // const quarterTimes = [];
+  // for (let i = startTimeId; i <= endTimeId; i++) {
+  //   quarterTimes.push(i);
+  // }
+
   const lesson = new Lesson(
-    date,
-    quarterTimes,
+    calendarDate.getDate(),
+    getTime(this.startTime.value, this.endTime.value),
     this.room.value,
     this.teacher.value,
     this.level.value
@@ -57,14 +59,10 @@ document.forms["addLessonForm"].onsubmit = function (e) {
   this.reset();
 };
 
-function removeLesson(date, month, year, startTime, room) {
+function removeLesson(date, time, room) {
   lessons = lessons.filter(
     (lesson) =>
-      lesson.date.date !== date ||
-      lesson.date.month !== month ||
-      lesson.date.year !== year ||
-      lesson.quarterTimes[0] !== startTime ||
-      lesson.room !== room
+      lesson.date !== date || lesson.time !== time || lesson.room !== room
   );
   buildLessonList();
   buildCalendar();
@@ -113,15 +111,21 @@ function buildCalendar() {
   allQuarterTimes.forEach((quarterTime) => {
     const tr = putElementIn("tr", tbody);
     const td = putElementIn("td", tr);
-    if ([1, 3].includes(quarterTime.number % 4)) {
+    if ([1, 3].includes(quarterTime.id % 4)) {
       td.innerHTML = quarterTime.getTimeTextFrom();
     }
     selectedDates.forEach((selectedDate) => {
       rooms.forEach((room) => {
-          const td = putElementIn("td", tr);
-          checkLunchTime(td, quarterTime.number);
-          checkLesson(td, quarterTime, selectedDate, room);
-        });
+        const td = putElementIn("td", tr);
+        checkLunchTime(td, quarterTime.id);
+        checkLesson(
+          td,
+          quarterTime.getTimeTextFrom(),
+          quarterTime.getTimeTextTo(),
+          selectedDate.getDate(),
+          room
+        );
+      });
     });
   });
   styleBorderThick();
@@ -137,17 +141,13 @@ function buildLessonList() {
   lessons.forEach((lesson) => {
     const tr = putElementIn("tr", lessonsTbody);
     const dateTd = putElementIn("td", tr);
-    dateTd.innerHTML = lesson.date.printDate();
+    dateTd.innerHTML = printDate(lesson.date);
 
     const timeFromTd = putElementIn("td", tr);
-    const startTime = new QuarterTime(lesson.quarterTimes[0]);
-    timeFromTd.innerHTML = startTime.getTimeTextFrom();
+    timeFromTd.innerHTML = printTimeFrom(lesson.time);
 
     const timeToTd = putElementIn("td", tr);
-    const endTime = new QuarterTime(
-      lesson.quarterTimes[lesson.quarterTimes.length - 1]
-    );
-    timeToTd.innerHTML = endTime.getTimeTextTo();
+    timeToTd.innerHTML = printTimeTo(lesson.time);
 
     const roomTd = putElementIn("td", tr);
     roomTd.innerHTML = lesson.room;
@@ -162,13 +162,7 @@ function buildLessonList() {
     const removeButtonDiv = putElementIn("div", removeButtonTd);
     removeButtonDiv.className = "button";
     removeButtonDiv.onclick = () => {
-      removeLesson(
-        lesson.date.date,
-        lesson.date.month,
-        lesson.date.year,
-        lesson.quarterTimes[0],
-        lesson.room
-      );
+      removeLesson(lesson.date, lesson.time, lesson.room);
     };
     removeButtonDiv.innerHTML = "-";
   });

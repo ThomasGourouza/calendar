@@ -6,6 +6,12 @@ class CalendarDate {
     this.day = this.getDay();
   }
 
+  getDate() {
+    const d = this.date < 10 ? `0${this.date}` : this.date;
+    const m = this.month < 10 ? `0${this.month}` : this.month;
+    return `${d}/${m}/${this.year}`;
+  }
+
   getDay() {
     const day = new Date(this.year, this.month - 1, this.date).getDay();
     return day === 0 ? 7 : day;

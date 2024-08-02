@@ -1,11 +1,11 @@
 class QuarterTime {
-  constructor(number) {
-    this.number = number;
+  constructor(id) {
+    this.id = id;
     this.time = this.getTime();
   }
 
   getTime() {
-    const timeNumber = minTime + (this.number - 1) / 4;
+    const timeNumber = minTime + (this.id - 1) / 4;
     const hourFrom = Math.floor(timeNumber);
     const minuteFrom = (timeNumber - hourFrom) * 60;
     const timeNumberTo = timeNumber + 0.25;
@@ -24,21 +24,11 @@ class QuarterTime {
   }
 
   getTimeTextFrom() {
-    return this.getTimeText(this.time.from.hour, this.time.from.minute);
+    return getTimeText(this.time.from.hour, this.time.from.minute);
   }
 
   getTimeTextTo() {
-    return this.getTimeText(this.time.to.hour, this.time.to.minute);
+    return getTimeText(this.time.to.hour, this.time.to.minute);
   }
 
-  getTimeText(hour, minute) {
-    return `${this.formatHour(hour)}:${this.formatMinute(minute)}`;
-  }
-
-  formatMinute(minute) {
-    return minute === 0 ? "00" : minute;
-  }
-  formatHour(hour) {
-    return hour < 10 ? `0${hour}` : hour;
-  }
 }

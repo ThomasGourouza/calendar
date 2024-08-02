@@ -5,38 +5,35 @@ function getDaysNumberBetween(startDate, endDate) {
   return (endDate - startDate) / (1000 * 3600 * 24) + 1;
 }
 
-function getNumberFromStartTime(timeString) {
-  return getNumberFromEndTime(timeString) + 1;
+function getIdFromStartTime(timeString) {
+  return getIdFromEndTime(timeString) + 1;
 }
 
-function getNumberFromEndTime(timeString) {
+function getIdFromEndTime(timeString) {
   const timeArray = timeString.split(":");
   const time = roundQuarter(+timeArray[0], +timeArray[1]);
-  return (time.hours + time.roundedMinutes / 60 - minTime) * 4;
+  return (time.hour + time.roundedMinute / 60 - minTime) * 4;
 }
 
-function roundQuarter(hours, minutes) {
-  let roundedMinutes = Math.round(minutes / 15) * 15;
-  if (roundedMinutes >= 60) {
-    roundedMinutes -= 60;
-    hours += 1;
+function roundQuarter(hour, minute) {
+  let roundedMinute = Math.round(minute / 15) * 15;
+  if (roundedMinute >= 60) {
+    roundedMinute -= 60;
+    hour += 1;
   }
-  if (hours >= 24) {
-    hours -= 24;
+  if (hour >= 24) {
+    hour -= 24;
   }
-  return { hours, roundedMinutes };
+  return { hour, roundedMinute };
 }
 
 function getTimeTextFromTo(quarterTimeStart, quarterTimeEnd) {
   return `${quarterTimeStart.getTimeTextFrom()} - ${quarterTimeEnd.getTimeTextTo()}`;
 }
 
-function printTime(date, month, year, quarterTime, roomName) {
-  const d = date < 10 ? "0" + date : date;
-  const m = month < 10 ? "0" + month : month;
-  const timeFrom = quarterTime.getTimeTextFrom();
-  const timeTo = quarterTime.getTimeTextTo();
-  return `${d}/${m}/${year} ${timeFrom}-${timeTo}: ${roomName}`;
+// TODO: duplicate ?
+function printTime(date, timeTextFrom, timeTextTo, room) {
+  return `${date} ${timeTextFrom}-${timeTextTo}: ${room}`;
 }
 
 function fillSelectOptions(selectId, optionList) {
@@ -128,37 +125,21 @@ function putElementIn(element, node) {
   return elmt;
 }
 
-function checkLesson(td, quarterTime, selectedDate, room) {
-  const lessonText = getLessonToPrint(
-    selectedDate.date,
-    selectedDate.month,
-    selectedDate.year,
-    quarterTime.number,
-    room
-  );
+function checkLesson(td, timeTextFrom, timeTextTo, date, room) {
+  const lessonText = getLessonToPrint(date, timeTextFrom, timeTextTo, room);
   if (!!lessonText) {
     td.className = "booked";
     td.innerHTML = lessonText;
-    td.setAttribute(
-      "title",
-      printTime(
-        selectedDate.date,
-        selectedDate.month,
-        selectedDate.year,
-        quarterTime,
-        room
-      )
-    );
+    td.setAttribute("title", printTime(date, timeTextFrom, timeTextTo, room));
   }
 }
 
-function getLessonToPrint(date, month, year, quarterTimeNumber, room) {
+function getLessonToPrint(date, timeTextFrom, timeTextTo, room) {
   const lesson = lessons.find(
     (l) =>
-      l.date.date === date &&
-      l.date.month === month &&
-      l.date.year === year &&
-      l.quarterTimes.includes(quarterTimeNumber) &&
+      l.date === date &&
+      (l.time.split("-")[0] === timeTextFrom ||
+        l.time.split("-")[1] === timeTextTo) &&
       l.room === room
   );
   if (!!lesson) {
@@ -167,7 +148,7 @@ function getLessonToPrint(date, month, year, quarterTimeNumber, room) {
   return null;
 }
 
-function checkLunchTime(td, quarterTimeNumber) {
+function checkLunchTime(td, quarterTimeId) {
   const minLunchTimeText = `${Math.floor(minLunchTime)}:${
     (minLunchTime - Math.floor(minLunchTime)) * 60
   }`;
@@ -175,9 +156,43 @@ function checkLunchTime(td, quarterTimeNumber) {
     (maxLunchTime - Math.floor(maxLunchTime)) * 60
   }`;
   if (
-    quarterTimeNumber >= getNumberFromStartTime(minLunchTimeText) &&
-    quarterTimeNumber <= getNumberFromEndTime(maxLunchTimeText)
+    quarterTimeId >= getIdFromStartTime(minLunchTimeText) &&
+    quarterTimeId <= getIdFromEndTime(maxLunchTimeText)
   ) {
     td.className = "lunch";
   }
+}
+
+function formatMinute(minute) {
+  return minute === 0 ? "00" : minute;
+}
+
+function formatHour(hour) {
+  return hour < 10 ? `0${hour}` : hour;
+}
+
+function getTimeText(hour, minute) {
+  return `${formatHour(hour)}:${formatMinute(minute)}`;
+}
+
+function getTimeTextFromInput(value) {
+  const timeArray = value.split(":");
+  const roundTime = roundQuarter(+timeArray[0], +timeArray[1]);
+  return getTimeText(roundTime.hour, roundTime.roundedMinute);
+}
+
+function getTime(start, end) {
+  return `${start}-${end}`;
+}
+
+function printDate(date) {
+  return date + " en lettres";
+}
+
+function printTimeFrom(time) {
+  return time + " From";
+}
+
+function printTimeTo(time) {
+  return time + " To";
 }

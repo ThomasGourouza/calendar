@@ -1,9 +1,9 @@
 class Lesson {
-  constructor(date, quarterTimes, room, teacher, level) {
+  constructor(date, time, room, teacher, level) {
     this.date = date;
-    this.quarterTimes = quarterTimes;
+    this.time = time;
     this.room = room;
     this.teacher = teacher;
     this.level = level;
-  }  
+  }
 }
