@@ -33,6 +33,13 @@ let lessons = [
     teacher: "Jean",
     level: "B2",
   },
+  {
+    calendarItemDate: new CalendarItemDate(9, 6, 2024),
+    quarterTimes: [18, 19, 20],
+    room: "Room 2",
+    teacher: "New",
+    level: "B2",
+  },
 ];
 
 fillSelectOptions("rooms", rooms);
@@ -139,32 +146,43 @@ function generateCalendar() {
         .find((timeRoom) => timeRoom.quarterTime.number === quarterTime.number)
         .roomObjects.forEach((roomObject) => {
           const td = putElementIn("td", tr);
-          const lessonText = getLesson(
-            data.calendarItemDate.date,
-            data.calendarItemDate.month,
-            data.calendarItemDate.year,
-            quarterTime.number,
-            roomObject.name
-          );
-          if (!!lessonText) {
-            td.className = "booked";
-            td.innerHTML = lessonText;
-            td.setAttribute(
-              "title",
-              printTime(
-                data.calendarItemDate.date,
-                data.calendarItemDate.month,
-                data.calendarItemDate.year,
-                quarterTime,
-                roomObject.name
-              )
-            );
-          }
+          setLunchTime(td, quarterTime.number);
+          setLessonIfExist(td, quarterTime, data, roomObject);
         });
     });
   });
-  styleBorderThick(rooms.length);
-  styleColorCells(rooms.length);
+  styleBorderThick();
+  styleColorCells();
+}
+
+function setLunchTime(td, quarterTimeNumber) {
+  if (quarterTimeNumber >= 17 && quarterTimeNumber <= 24) {
+    td.className = "lunch";
+  }
+}
+
+function setLessonIfExist(td, quarterTime, data, roomObject) {
+  const lessonText = getLesson(
+    data.calendarItemDate.date,
+    data.calendarItemDate.month,
+    data.calendarItemDate.year,
+    quarterTime.number,
+    roomObject.name
+  );
+  if (!!lessonText) {
+    td.className = "booked";
+    td.innerHTML = lessonText;
+    td.setAttribute(
+      "title",
+      printTime(
+        data.calendarItemDate.date,
+        data.calendarItemDate.month,
+        data.calendarItemDate.year,
+        quarterTime,
+        roomObject.name
+      )
+    );
+  }
 }
 
 function getLesson(date, month, year, quarterTime, room) {
@@ -201,15 +219,16 @@ function changeTableStyle() {
   root.style.setProperty("--table-padding", "15px");
 }
 
-function styleBorderThick(number) {
+function styleBorderThick() {
+  const roomLength = rooms.length;
   const borderThick = getComputedStyle(
     document.documentElement
   ).getPropertyValue("--table-border-thick");
   const cellsRoomHeaders = document.querySelectorAll(
-    `table.calendar thead tr:not(:first-child) th:nth-child(${number}n):not(:last-child)`
+    `table.calendar thead tr:not(:first-child) th:nth-child(${roomLength}n):not(:last-child)`
   );
   const cellContentCells = document.querySelectorAll(
-    `table.calendar tbody tr td:nth-child(${number}n + 1):not(:last-child)`
+    `table.calendar tbody tr td:nth-child(${roomLength}n + 1):not(:last-child)`
   );
   cellsRoomHeaders.forEach((cell) => {
     cell.style.borderRight = borderThick;
@@ -219,50 +238,62 @@ function styleBorderThick(number) {
   });
 }
 
-function styleColorCells(number) {
-  const colorOdd = getComputedStyle(document.documentElement).getPropertyValue(
-    "--table-content-odd"
+function styleColorCells() {
+  // normal cells
+  const allCellsSelector = `table.calendar tbody tr td:not(:first-child):not(.booked)`;
+  styleColorEvenCells(
+    "--table-content-odd",
+    "--table-content-even",
+    allCellsSelector
   );
-  const colorEven = getComputedStyle(document.documentElement).getPropertyValue(
-    "--table-content-even"
+  // lunch cells
+  const allLunchCellsSelector = `table.calendar td.lunch:not(.booked)`;
+  styleColorEvenCells(
+    "--table-lunch-odd",
+    "--table-lunch-even",
+    allLunchCellsSelector
   );
-  const oddCellsSelector = `table.calendar tbody tr td:not(:first-child):not(.booked)`;
-  const oddCells = document.querySelectorAll(oddCellsSelector);
-  oddCells.forEach((cell) => {
-    cell.style.backgroundColor = colorOdd;
-  });
+}
 
+function styleColorEvenCells(
+  colorOddCssVariable,
+  colorEvenCssVariable,
+  allCellsSelector
+) {
+  colorCells(allCellsSelector, getStyle(colorOddCssVariable));
+  const roomLength = rooms.length;
   let evenCellsSelector = "";
-  for (let i = 0; i < number; i++) {
-    const a = 2 * number;
-    const b = i + 2 - number;
+  for (let i = 0; i < roomLength; i++) {
+    const a = 2 * roomLength;
+    const b = i + 2 - roomLength;
     const signB = b < 0 ? "-" : "+";
     const absB = Math.abs(b);
-    evenCellsSelector += `${oddCellsSelector}:nth-child(${a}n ${signB} ${absB})`;
-    if (i < number - 1) {
+    evenCellsSelector += `${allCellsSelector}:nth-child(${a}n ${signB} ${absB})`;
+    if (i < roomLength - 1) {
       evenCellsSelector += ", ";
     }
   }
-  const evenCells = document.querySelectorAll(evenCellsSelector);
-  evenCells.forEach((cell) => {
-    cell.style.backgroundColor = colorEven;
+  colorCells(evenCellsSelector, getStyle(colorEvenCssVariable));
+}
+
+function colorCells(cellsSelector, color) {
+  document.querySelectorAll(cellsSelector).forEach((cell) => {
+    cell.style.backgroundColor = color;
   });
 }
 
-function printTime(date, month, year, quarterTime, roomName) {
-  return (
-    (date < 10 ? "0" + date : date) +
-    "/" +
-    (month < 10 ? "0" + month : month) +
-    "/" +
-    year +
-    " " +
-    quarterTime.getTimeTextFrom() +
-    "-" +
-    quarterTime.getTimeTextTo() +
-    ": " +
-    roomName
+function getStyle(cssVariable) {
+  return getComputedStyle(document.documentElement).getPropertyValue(
+    cssVariable
   );
+}
+
+function printTime(date, month, year, quarterTime, roomName) {
+  const d = date < 10 ? "0" + date : date;
+  const m = month < 10 ? "0" + month : month;
+  const timeFrom = quarterTime.getTimeTextFrom();
+  const timeTo = quarterTime.getTimeTextTo();
+  return `${d}/${m}/${year} ${timeFrom}-${timeTo}: ${roomName}`;
 }
 
 function generateLessonList() {

@@ -19,8 +19,10 @@
   --table-time: red;
   --table-content-odd: burlywood;
   --table-content-even: rgb(245, 202, 147);
+  --table-lunch-odd: rgb(171, 181, 193);
+  --table-lunch-even: rgb(209, 219, 231);
   /* hauteur des cellules du calendrier */
-  --table-content-td-height: calc(var(--table-content-td-width) / 5);
+  --table-content-td-height: calc(var(--table-content-td-width) / 6);
   /* longueur des cellules des heures du calendrier */
   --table-time-td-width: 70px;
   /* longueur des cellules du calendrier: modifier dynamiquement avec JS */
