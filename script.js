@@ -1,8 +1,10 @@
 const lang = "fr";
 
+// TODO: form
 const filterBy = {
-  field: "teacher",
-  value: "Pauline",
+  active: true,
+  field: "roomName",
+  value: "Room 3",
 };
 
 // les quarts d'heures de la journée
@@ -77,13 +79,15 @@ function highlightLesson(date, time, roomName) {
   const lesson = lessons.find((l) =>
     matchLessonCondition(l, date, time, roomName)
   );
-  const previousHighlight = lesson.highlight;
-  // reset all
-  lessons.forEach((lesson) => (lesson.highlight = false));
-  // set new
-  lesson.highlight = !previousHighlight;
-  buildLessonList();
-  buildCalendar(filterAndSort(lessons));
+  if (!!lesson) {
+    const previousHighlight = lesson.highlight;
+    // reset all
+    lessons.forEach((lesson) => (lesson.highlight = false));
+    // set new
+    lesson.highlight = !previousHighlight;
+    buildLessonList();
+    buildCalendar(filterAndSort(lessons));
+  }
 }
 
 function matchLessonCondition(lesson, date, time, roomName) {
@@ -142,8 +146,10 @@ function buildCalendar(lessonList) {
     selectedDates.forEach((selectedDate) => {
       rooms.forEach((room) => {
         const td = putElementIn("td", tr);
-        checkLunchTime(td, quarterTime);
-        const lesson = checkLesson(
+        if (isLunchTime(quarterTime)) {
+          td.className = "lunch";
+        }
+        const lesson = existingLesson(
           lessonList,
           selectedDate.getDate(),
           quarterTime,
@@ -211,28 +217,4 @@ function buildLessonList() {
       removeButton.innerHTML = "-";
     }
   });
-}
-
-function filterAndSort(lessonList) {
-  return sort(filter(lessonList));
-}
-
-function sort(lessonList) {
-  function getComparableDateTime(dateStr, timeStr) {
-    const [day, month, year] = dateStr.split("/");
-    const [startTime] = timeStr.split("-");
-    return new Date(`${year}-${month}-${day}T${startTime}:00`);
-  }
-  lessonList.sort((a, b) => {
-    const dateTimeA = getComparableDateTime(a.date, a.time);
-    const dateTimeB = getComparableDateTime(b.date, b.time);
-    return dateTimeA - dateTimeB;
-  });
-  return lessonList;
-}
-
-function filter(lessonList) {
-  if (filterBy.field === "teacher") {
-    return lessonList.filter((lesson) => lesson.teacherName === filterBy.value);
-  }
 }

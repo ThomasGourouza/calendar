@@ -127,26 +127,26 @@ function putElementIn(element, node) {
   return elmt;
 }
 
-function checkLesson(lessonList, date, quarterTime, roomName) {
+function existingLesson(lessonList, date, quarterTime, roomName) {
   return lessonList.find(
     (l) =>
-      l.date === date && l.quarterIds.includes(quarterTime) && l.roomName === roomName
+      l.date === date &&
+      l.quarterIds.includes(quarterTime) &&
+      l.roomName === roomName
   );
 }
 
-function checkLunchTime(td, quarterTimeId) {
+function isLunchTime(quarterTimeId) {
   const minLunchTimeText = `${Math.floor(parameter.minLunchTime)}:${
     (parameter.minLunchTime - Math.floor(parameter.minLunchTime)) * 60
   }`;
   const maxLunchTimeText = `${Math.floor(parameter.maxLunchTime)}:${
     (parameter.maxLunchTime - Math.floor(parameter.maxLunchTime)) * 60
   }`;
-  if (
+  return (
     quarterTimeId >= getQuarterIdFromStartTime(minLunchTimeText) &&
     quarterTimeId <= getQuarterIdFromEndTime(maxLunchTimeText)
-  ) {
-    td.className = "lunch";
-  }
+  );
 }
 
 function formatMinute(minute) {
@@ -198,4 +198,27 @@ function getTimeTextFrom(quarterTimeId) {
 function getTimeTextTo(quarterTimeId) {
   const time = getTimeFromQuarterId(quarterTimeId);
   return getTimeText(time.to.hour, time.to.minute);
+}
+function filterAndSort(lessonList) {
+  return sort(filter(lessonList));
+}
+
+function sort(lessonList) {
+  function getComparableDateTime(dateStr, timeStr) {
+    const [day, month, year] = dateStr.split("/");
+    const [startTime] = timeStr.split("-");
+    return new Date(`${year}-${month}-${day}T${startTime}:00`);
+  }
+  lessonList.sort((a, b) => {
+    const dateTimeA = getComparableDateTime(a.date, a.time);
+    const dateTimeB = getComparableDateTime(b.date, b.time);
+    return dateTimeA - dateTimeB;
+  });
+  return lessonList;
+}
+
+function filter(lessonList) {
+  return filterBy.active
+    ? lessonList.filter((lesson) => lesson[filterBy.field] === filterBy.value)
+    : lessonList;
 }
