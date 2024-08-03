@@ -29,7 +29,7 @@
             <th>Salle</th>
             <th>Enseignant</th>
             <th>Niveau</th>
-            <th>Action</th>
+            <th colspan="2">Action</th>
           </tr>
         </thead>
         <tbody id="lessons">
@@ -71,6 +71,9 @@
               </select>
             </td>
             <td><input type="submit" value="+" /></td>
+            <td>
+              <div class="button filter" onclick="filterLessons()">Filtrer</div>
+            </td>
           </tr>
         </tbody>
       </table>

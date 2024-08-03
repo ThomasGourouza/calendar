@@ -39,6 +39,8 @@
   --table-lesson-content-highlighted: rgb(255, 201, 135);
   --table-button-remove: rgb(160, 7, 7);
   --table-button-remove-hover: rgb(247, 5, 5);
+  --table-button-filter: rgb(0, 75, 195);
+  --table-button-filter-hover: rgb(0, 162, 255);
   --table-button-add: rgb(0, 91, 12);
   --table-button-add-hover: rgb(0, 187, 25);
   --table-lesson-header-height: calc(
@@ -167,14 +169,14 @@ table.lessons thead tr th:last-child {
 table.lessons tbody tr {
   cursor: pointer;
 }
+table.lessons tbody tr form {
+  border-left: var(--table-border);
+}
 table.lessons tbody tr:not(.highlightedRow) td {
   background-color: var(--table-lesson-content);
 }
 table.lessons tbody tr.highlightedRow td {
   background-color: var(--table-lesson-content-highlighted);
-}
-table.lessons tbody tr form {
-  border-left: var(--table-border);
 }
 table.lessons tbody tr td {
   height: var(--table-lesson-content-td-height);
@@ -184,6 +186,14 @@ table.lessons tbody tr td {
   border-right: var(--table-border);
   border-bottom: var(--table-border);
   font-size: small;
+}
+table.lessons tbody tr:first-child td:nth-last-child(2) {
+  border-right: none;
+}
+table.lessons tbody tr:first-child td:nth-last-child(2),
+table.lessons tbody tr:first-child td:last-child {
+  width: calc(var(--table-lesson-content-td-width) / 2);
+  min-width: calc(var(--table-lesson-content-td-width) / 2);
 }
 table.lessons tbody tr td:first-child {
   border-left: var(--table-border);
@@ -223,11 +233,17 @@ table.lessons input[type="submit"] {
 table.lessons input[type="submit"]:hover {
   background-color: var(--table-button-add-hover);
 }
-table.lessons div.button {
+table.lessons div.button:not(.filter) {
   background-color: var(--table-button-remove);
 }
-table.lessons div.button:hover {
+table.lessons div.button:not(.filter):hover {
   background-color: var(--table-button-remove-hover);
+}
+table.lessons div.button.filter {
+  background-color: var(--table-button-filter);
+}
+table.lessons div.button.filter:hover {
+  background-color: var(--table-button-filter-hover);
 }
 
 .two-col-layout {

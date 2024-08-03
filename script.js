@@ -1,20 +1,20 @@
 const lang = "fr";
 
 // TODO: form dans le tableau des lessons (ajouter une action)
-const filters = [
-  {
-    field: "roomName",
-    value: "Room 3",
-  },
-  // {
-  //   field: "levelName",
-  //   value: "B2.4",
-  // },
-  // {
-  //   field: "teacherName",
-  //   value: "Pauline",
-  // }
-];
+let filters = [];
+
+function filterLessons() {
+  const form = document.forms["addLessonForm"];
+  filters = [];
+  ["roomName", "teacherName", "levelName"].forEach((field) => {
+    const value = form[field].value;
+    if (!!value) {
+      filters.push({ field, value });
+    }
+  });
+  buildLessonList();
+  buildCalendar(filterAndSort(lessons));
+}
 
 // les quarts d'heures de la journée
 const allQuarterTimes = [];
@@ -71,6 +71,7 @@ document.forms["addLessonForm"].onsubmit = function (e) {
   );
 
   lessons.push(lesson);
+  filters = [];
   buildLessonList();
   buildCalendar(filterAndSort(lessons));
   this.reset();
@@ -217,6 +218,7 @@ function buildLessonList() {
     levelTd.innerHTML = lesson.levelName;
 
     const removeButtonTd = putElementIn("td", tr);
+    removeButtonTd.setAttribute("colspan", 2);
     if (lesson.highlight) {
       const removeButton = putElementIn("div", removeButtonTd);
       removeButton.className = "button";
