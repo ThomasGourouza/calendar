@@ -168,7 +168,7 @@ function getTimeTextFromInput(value) {
 }
 
 function getTime(start, end) {
-  return `${start}-${end}`;
+  return `${getTimeTextFromInput(start)}-${getTimeTextFromInput(end)}`;
 }
 
 function getTimeFromQuarterId(quarterTimeId) {

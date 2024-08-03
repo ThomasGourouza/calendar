@@ -12,8 +12,7 @@ function filterLessons() {
       filters.push({ field, value });
     }
   });
-  buildLessonList();
-  buildCalendar(filterAndSort(lessons));
+  buildLessonListAndCalendar(lessons);
 }
 
 // les quarts d'heures de la journée
@@ -36,8 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "teacherNames",
     teachers.map((teacher) => teacher.name)
   );
-
-  buildLessonList();
+  buildLessonListAndCalendar(lessons);
 });
 
 document.forms["calendarForm"].onsubmit = function (e) {
@@ -49,13 +47,35 @@ document.forms["calendarForm"].onsubmit = function (e) {
     alert(`End date must be after the start date.`);
   } else {
     fillSelectedDates(startDate, endDate);
-    buildCalendar(filterAndSort(lessons));
+    buildLessonListAndCalendar(lessons);
   }
 };
 
+// console.log(document.forms["addLessonForm"].date.value);
+// console.log(document.forms["calendarForm"].startDate.value);
+
 document.forms["addLessonForm"].onsubmit = function (e) {
   e.preventDefault();
-  const lessonDate = new Date(this.date.value);
+  const minDate = new Date (document.forms["calendarForm"].startDate.value);
+  const maxDate = new Date (document.forms["calendarForm"].endDate.value);
+  maxDate.setDate(maxDate.getDate() + 1);
+
+  const lessonDate = new Date(`${this.date.value}T${this.startTime.value}:00`);
+  const lessonDateEnd = new Date(`${this.date.value}T${this.endTime.value}:00`);
+
+  if(lessonDate < minDate || lessonDate > maxDate) {
+    alert("invalid date");
+    return;
+  }
+  if(lessonDateEnd < lessonDate) {
+    alert("impossible");
+    return;
+  }
+  const minLessonTime = 15;
+  if(Math.abs(lessonDate - lessonDateEnd) < minLessonTime * 60000) {
+    alert(`lesson should be longer than ${minLessonTime}min.`);
+    return;
+  }
   const calendarDate = new CalendarDate(
     lessonDate.getDate(),
     lessonDate.getMonth(),
@@ -72,8 +92,7 @@ document.forms["addLessonForm"].onsubmit = function (e) {
 
   lessons.push(lesson);
   filters = [];
-  buildLessonList();
-  buildCalendar(filterAndSort(lessons));
+  buildLessonListAndCalendar(lessons);
   this.reset();
 };
 
@@ -81,8 +100,7 @@ function removeLesson(date, time, roomName) {
   lessons = lessons.filter(
     (lesson) => !matchLessonCondition(lesson, date, time, roomName)
   );
-  buildLessonList();
-  buildCalendar(filterAndSort(lessons));
+  buildLessonListAndCalendar(lessons);
 }
 
 function highlightLesson(date, time, roomName) {
@@ -95,8 +113,7 @@ function highlightLesson(date, time, roomName) {
     lessons.forEach((lesson) => (lesson.highlight = false));
     // set new
     lesson.highlight = !previousHighlight;
-    buildLessonList();
-    buildCalendar(filterAndSort(lessons));
+    buildLessonListAndCalendar(lessons);
   }
 }
 
@@ -184,13 +201,13 @@ function buildCalendar(lessonList) {
   styleColorCells();
 }
 
-function buildLessonList() {
+function buildLessonList(lessonList) {
   const lessonsTbody = document.getElementById("lessons");
   const trs = lessonsTbody.querySelectorAll("tr");
   for (let i = trs.length - 1; i > 0; i--) {
     lessonsTbody.removeChild(trs[i]);
   }
-  filterAndSort(lessons).forEach((lesson) => {
+  filterAndSort(lessonList).forEach((lesson) => {
     const tr = putElementIn("tr", lessonsTbody);
     if (lesson.highlight) {
       tr.className = "highlightedRow";
@@ -228,4 +245,9 @@ function buildLessonList() {
       removeButton.innerHTML = "-";
     }
   });
+}
+
+function buildLessonListAndCalendar(lessonList) {
+  buildLessonList(lessonList);
+  buildCalendar(filterAndSort(lessonList));
 }
