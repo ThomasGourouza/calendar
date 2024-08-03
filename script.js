@@ -1,5 +1,10 @@
 const lang = "fr";
 
+const filterBy = {
+  field: "teacher",
+  value: "Pauline",
+};
+
 // les quarts d'heures de la journée
 const allQuarterTimes = [];
 for (let i = 1; i <= (parameter.maxTime - parameter.minTime) * 4; i++) {
@@ -33,7 +38,7 @@ document.forms["calendarForm"].onsubmit = function (e) {
     alert(`End date must be after the start date.`);
   } else {
     fillSelectedDates(startDate, endDate);
-    buildCalendar();
+    buildCalendar(filterAndSort(lessons));
   }
 };
 
@@ -56,7 +61,7 @@ document.forms["addLessonForm"].onsubmit = function (e) {
 
   lessons.push(lesson);
   buildLessonList();
-  buildCalendar();
+  buildCalendar(filterAndSort(lessons));
   this.reset();
 };
 
@@ -65,7 +70,7 @@ function removeLesson(date, time, roomName) {
     (lesson) => !matchLessonCondition(lesson, date, time, roomName)
   );
   buildLessonList();
-  buildCalendar();
+  buildCalendar(filterAndSort(lessons));
 }
 
 function highlightLesson(date, time, roomName) {
@@ -78,7 +83,7 @@ function highlightLesson(date, time, roomName) {
   // set new
   lesson.highlight = !previousHighlight;
   buildLessonList();
-  buildCalendar();
+  buildCalendar(filterAndSort(lessons));
 }
 
 function matchLessonCondition(lesson, date, time, roomName) {
@@ -96,7 +101,7 @@ function fillSelectedDates(startDate, endDate) {
   }
 }
 
-function buildCalendar() {
+function buildCalendar(lessonList) {
   if (selectedDates.length === 0) {
     return;
   }
@@ -139,6 +144,7 @@ function buildCalendar() {
         const td = putElementIn("td", tr);
         checkLunchTime(td, quarterTime);
         const lesson = checkLesson(
+          lessonList,
           selectedDate.getDate(),
           quarterTime,
           room.name
@@ -168,7 +174,7 @@ function buildLessonList() {
   for (let i = trs.length - 1; i > 0; i--) {
     lessonsTbody.removeChild(trs[i]);
   }
-  sort(lessons).forEach((lesson) => {
+  filterAndSort(lessons).forEach((lesson) => {
     const tr = putElementIn("tr", lessonsTbody);
     if (lesson.highlight) {
       tr.className = "highlightedRow";
@@ -207,16 +213,26 @@ function buildLessonList() {
   });
 }
 
-function sort(lessons) {
+function filterAndSort(lessonList) {
+  return sort(filter(lessonList));
+}
+
+function sort(lessonList) {
   function getComparableDateTime(dateStr, timeStr) {
     const [day, month, year] = dateStr.split("/");
     const [startTime] = timeStr.split("-");
     return new Date(`${year}-${month}-${day}T${startTime}:00`);
   }
-  lessons.sort((a, b) => {
+  lessonList.sort((a, b) => {
     const dateTimeA = getComparableDateTime(a.date, a.time);
     const dateTimeB = getComparableDateTime(b.date, b.time);
     return dateTimeA - dateTimeB;
   });
-  return lessons;
+  return lessonList;
+}
+
+function filter(lessonList) {
+  if (filterBy.field === "teacher") {
+    return lessonList.filter((lesson) => lesson.teacherName === filterBy.value);
+  }
 }

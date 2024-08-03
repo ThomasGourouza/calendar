@@ -127,8 +127,8 @@ function putElementIn(element, node) {
   return elmt;
 }
 
-function checkLesson(date, quarterTime, roomName) {
-  return lessons.find(
+function checkLesson(lessonList, date, quarterTime, roomName) {
+  return lessonList.find(
     (l) =>
       l.date === date && l.quarterIds.includes(quarterTime) && l.roomName === roomName
   );
