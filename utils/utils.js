@@ -34,8 +34,8 @@ function getTimeTextFromTo(quarterTimeStart, quarterTimeEnd) {
 }
 
 // TODO: duplicate ?
-function printTime(date, timeTextFrom, timeTextTo, room) {
-  return `${date} ${timeTextFrom}-${timeTextTo}: ${room}`;
+function printTime(date, timeTextFrom, timeTextTo, roomName) {
+  return `${date} ${timeTextFrom}-${timeTextTo}: ${roomName}`;
 }
 
 function fillSelectOptions(selectId, optionList) {
@@ -127,10 +127,10 @@ function putElementIn(element, node) {
   return elmt;
 }
 
-function checkLesson(date, quarterTime, room) {
+function checkLesson(date, quarterTime, roomName) {
   return lessons.find(
     (l) =>
-      l.date === date && l.quarterIds.includes(quarterTime) && l.room === room
+      l.date === date && l.quarterIds.includes(quarterTime) && l.roomName === roomName
   );
 }
 

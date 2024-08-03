@@ -8,9 +8,9 @@ for (let i = 1; i <= (parameter.maxTime - parameter.minTime) * 4; i++) {
 
 document.addEventListener("DOMContentLoaded", function () {
   // fill options in html template
-  fillSelectOptions("rooms", rooms);
-  fillSelectOptions("levels", levels.map(level => level.name));
-  fillSelectOptions("teachers", teachers.map(teacher => teacher.name));
+  fillSelectOptions("roomNames", rooms.map(room => room.name));
+  fillSelectOptions("levelNames", levels.map(level => level.name));
+  fillSelectOptions("teacherNames", teachers.map(teacher => teacher.name));
 
   buildLessonList();
 });
@@ -47,9 +47,9 @@ document.forms["addLessonForm"].onsubmit = function (e) {
   const lesson = new Lesson(
     calendarDate.getDate(),
     getTime(this.startTime.value, this.endTime.value),
-    this.room.value,
-    this.teacher.value,
-    this.level.value
+    this.roomName.value,
+    this.teacherName.value,
+    this.levelName.value
   );
 
   lessons.push(lesson);
@@ -58,10 +58,10 @@ document.forms["addLessonForm"].onsubmit = function (e) {
   this.reset();
 };
 
-function removeLesson(date, time, room) {
+function removeLesson(date, time, roomName) {
   lessons = lessons.filter(
     (lesson) =>
-      lesson.date !== date || lesson.time !== time || lesson.room !== room
+      lesson.date !== date || lesson.time !== time || lesson.roomName !== roomName
   );
   buildLessonList();
   buildCalendar();
@@ -100,9 +100,9 @@ function buildCalendar() {
     thDay.setAttribute("colspan", rooms.length);
     thDay.innerHTML = selectedDate.printDate();
 
-    rooms.forEach((name) => {
+    rooms.forEach((room) => {
       const thRoom = putElementIn("th", tr2);
-      thRoom.innerHTML = name;
+      thRoom.innerHTML = room.name;
     });
   });
 
@@ -117,7 +117,7 @@ function buildCalendar() {
       rooms.forEach((room) => {
         const td = putElementIn("td", tr);
         checkLunchTime(td, quarterTime);
-        const lesson = checkLesson(selectedDate.getDate(), quarterTime, room);
+        const lesson = checkLesson(selectedDate.getDate(), quarterTime, room.name);
         if (!!lesson) {
           td.className = "booked";
           td.innerHTML = lesson.innerHtml(quarterTime);
@@ -148,19 +148,19 @@ function buildLessonList() {
     timeToTd.innerHTML = lesson.printTimeTo();
 
     const roomTd = putElementIn("td", tr);
-    roomTd.innerHTML = lesson.room;
+    roomTd.innerHTML = lesson.roomName;
 
     const teacherTd = putElementIn("td", tr);
-    teacherTd.innerHTML = lesson.teacher;
+    teacherTd.innerHTML = lesson.teacherName;
 
     const levelTd = putElementIn("td", tr);
-    levelTd.innerHTML = lesson.level;
+    levelTd.innerHTML = lesson.levelName;
 
     const removeButtonTd = putElementIn("td", tr);
     const removeButtonDiv = putElementIn("div", removeButtonTd);
     removeButtonDiv.className = "button";
     removeButtonDiv.onclick = () => {
-      removeLesson(lesson.date, lesson.time, lesson.room);
+      removeLesson(lesson.date, lesson.time, lesson.roomName);
     };
     removeButtonDiv.innerHTML = "-";
   });

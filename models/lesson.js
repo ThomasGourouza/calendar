@@ -1,10 +1,10 @@
 class Lesson {
-  constructor(date, time, room, teacher, level) {
+  constructor(date, time, roomName, teacherName, levelName) {
     this.date = date;
     this.time = time;
-    this.room = room;
-    this.teacher = teacher;
-    this.level = level;
+    this.roomName = roomName;
+    this.teacherName = teacherName;
+    this.levelName = levelName;
   }
 
   printDate() {
@@ -34,18 +34,18 @@ class Lesson {
 
   innerHtml(quarterId) {
     if (this.quarterIds[0] === quarterId) {
-      return `${this.level} - ${this.teacher}`;
+      return `${this.levelName} - ${this.teacherName}`;
     }
     return "";
   }
 
   get title() {
-    return `${this.date} ${this.time} ${this.room}`;
+    return `${this.date} ${this.time} ${this.roomName}`;
   }
 
   get backgroundColor() {
-    if (parameter.colorLessonBy === "level") {
-      
+    if (parameter.colorLessonBy === "levelName") {
+
     }
   }
 }
