@@ -5,14 +5,14 @@ function getDaysNumberBetween(startDate, endDate) {
   return (endDate - startDate) / (1000 * 3600 * 24) + 1;
 }
 
-function getIdFromStartTime(timeString) {
-  return getIdFromEndTime(timeString) + 1;
+function getQuarterIdFromStartTime(timeString) {
+  return getQuarterIdFromEndTime(timeString) + 1;
 }
 
-function getIdFromEndTime(timeString) {
+function getQuarterIdFromEndTime(timeString) {
   const timeArray = timeString.split(":");
   const time = roundQuarter(+timeArray[0], +timeArray[1]);
-  return (time.hour + time.roundedMinute / 60 - minTime) * 4;
+  return (time.hour + time.roundedMinute / 60 - parameter.minTime) * 4;
 }
 
 function roundQuarter(hour, minute) {
@@ -28,7 +28,9 @@ function roundQuarter(hour, minute) {
 }
 
 function getTimeTextFromTo(quarterTimeStart, quarterTimeEnd) {
-  return `${getTimeTextFrom(quarterTimeStart)} - ${getTimeTextTo(quarterTimeEnd)}`;
+  return `${getTimeTextFrom(quarterTimeStart)} - ${getTimeTextTo(
+    quarterTimeEnd
+  )}`;
 }
 
 // TODO: duplicate ?
@@ -125,39 +127,23 @@ function putElementIn(element, node) {
   return elmt;
 }
 
-function checkLesson(td, timeTextFrom, timeTextTo, date, room) {
-  const lessonText = getLessonToPrint(date, timeTextFrom, timeTextTo, room);
-  if (!!lessonText) {
-    td.className = "booked";
-    td.innerHTML = lessonText;
-    td.setAttribute("title", printTime(date, timeTextFrom, timeTextTo, room));
-  }
-}
-
-function getLessonToPrint(date, timeTextFrom, timeTextTo, room) {
-  const lesson = lessons.find(
+function checkLesson(date, quarterTime, room) {
+  return lessons.find(
     (l) =>
-      l.date === date &&
-      (l.time.split("-")[0] === timeTextFrom ||
-        l.time.split("-")[1] === timeTextTo) &&
-      l.room === room
+      l.date === date && l.quarterIds.includes(quarterTime) && l.room === room
   );
-  if (!!lesson) {
-    return lesson.teacher + " - " + lesson.level;
-  }
-  return null;
 }
 
 function checkLunchTime(td, quarterTimeId) {
-  const minLunchTimeText = `${Math.floor(minLunchTime)}:${
-    (minLunchTime - Math.floor(minLunchTime)) * 60
+  const minLunchTimeText = `${Math.floor(parameter.minLunchTime)}:${
+    (parameter.minLunchTime - Math.floor(parameter.minLunchTime)) * 60
   }`;
-  const maxLunchTimeText = `${Math.floor(maxLunchTime)}:${
-    (maxLunchTime - Math.floor(maxLunchTime)) * 60
+  const maxLunchTimeText = `${Math.floor(parameter.maxLunchTime)}:${
+    (parameter.maxLunchTime - Math.floor(parameter.maxLunchTime)) * 60
   }`;
   if (
-    quarterTimeId >= getIdFromStartTime(minLunchTimeText) &&
-    quarterTimeId <= getIdFromEndTime(maxLunchTimeText)
+    quarterTimeId >= getQuarterIdFromStartTime(minLunchTimeText) &&
+    quarterTimeId <= getQuarterIdFromEndTime(maxLunchTimeText)
   ) {
     td.className = "lunch";
   }
@@ -185,8 +171,8 @@ function getTime(start, end) {
   return `${start}-${end}`;
 }
 
-function getTimeQuarterId(quarterTimeId) {
-  const timeNumber = minTime + (quarterTimeId - 1) / 4;
+function getTimeFromQuarterId(quarterTimeId) {
+  const timeNumber = parameter.minTime + (quarterTimeId - 1) / 4;
   const hourFrom = Math.floor(timeNumber);
   const minuteFrom = (timeNumber - hourFrom) * 60;
   const timeNumberTo = timeNumber + 0.25;
@@ -205,11 +191,11 @@ function getTimeQuarterId(quarterTimeId) {
 }
 
 function getTimeTextFrom(quarterTimeId) {
-  const time = getTimeQuarterId(quarterTimeId);
+  const time = getTimeFromQuarterId(quarterTimeId);
   return getTimeText(time.from.hour, time.from.minute);
 }
 
 function getTimeTextTo(quarterTimeId) {
-  const time = getTimeQuarterId(quarterTimeId);
+  const time = getTimeFromQuarterId(quarterTimeId);
   return getTimeText(time.to.hour, time.to.minute);
 }

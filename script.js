@@ -2,15 +2,15 @@ const lang = "fr";
 
 // les quarts d'heures de la journée
 const allQuarterTimes = [];
-for (let i = 1; i <= (maxTime - minTime) * 4; i++) {
+for (let i = 1; i <= (parameter.maxTime - parameter.minTime) * 4; i++) {
   allQuarterTimes.push(i);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
   // fill options in html template
   fillSelectOptions("rooms", rooms);
-  fillSelectOptions("levels", levels);
-  fillSelectOptions("teachers", teachers);
+  fillSelectOptions("levels", levels.map(level => level.name));
+  fillSelectOptions("teachers", teachers.map(teacher => teacher.name));
 
   buildLessonList();
 });
@@ -37,8 +37,8 @@ document.forms["addLessonForm"].onsubmit = function (e) {
     lessonDate.getFullYear()
   );
 
-  // const startTimeId = getIdFromStartTime(this.startTime.value);
-  // const endTimeId = getIdFromEndTime(this.endTime.value);
+  // const startTimeId = getQuarterIdFromStartTime(this.startTime.value);
+  // const endTimeId = getQuarterIdFromEndTime(this.endTime.value);
   // const quarterTimes = [];
   // for (let i = startTimeId; i <= endTimeId; i++) {
   //   quarterTimes.push(i);
@@ -51,6 +51,7 @@ document.forms["addLessonForm"].onsubmit = function (e) {
     this.teacher.value,
     this.level.value
   );
+
   lessons.push(lesson);
   buildLessonList();
   buildCalendar();
@@ -116,13 +117,12 @@ function buildCalendar() {
       rooms.forEach((room) => {
         const td = putElementIn("td", tr);
         checkLunchTime(td, quarterTime);
-        checkLesson(
-          td,
-          getTimeTextFrom(quarterTime),
-          getTimeTextTo(quarterTime),
-          selectedDate.getDate(),
-          room
-        );
+        const lesson = checkLesson(selectedDate.getDate(), quarterTime, room);
+        if (!!lesson) {
+          td.className = "booked";
+          td.innerHTML = lesson.innerHtml(quarterTime);
+          td.setAttribute("title", lesson.title);
+        }
       });
     });
   });
