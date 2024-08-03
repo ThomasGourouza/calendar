@@ -44,8 +44,8 @@ class Lesson {
   }
 
   get backgroundColor() {
-    if (parameter.colorLessonBy === "levelName") {
-
-    }
+    return parameter.colorLessonBy === "level"
+      ? levels.find((level) => level.name === this.levelName)?.color
+      : teachers.find((teacher) => teacher.name === this.teacherName)?.color;
   }
 }

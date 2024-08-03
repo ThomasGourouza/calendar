@@ -13,7 +13,6 @@
   --table-header-day: chartreuse;
   /* hauteur des headers des jours */
   --table-header-day-height: calc(var(--table-header-room-height) + 10px);
-  --table-header-room: aqua;
   /* hauteur des headers des salles */
   --table-header-room-height: calc(var(--table-content-td-height) + 15px);
   --table-time: red;
@@ -85,7 +84,6 @@ table.calendar {
       /* Les salles */
       height: var(--table-header-room-height);
       border-left: none;
-      background-color: var(--table-header-room);
     }
     th {
       border: var(--table-border);
@@ -128,7 +126,6 @@ table.calendar {
         border-right: var(--table-border);
         font-size: small;
         &.booked {
-          background-color: blueviolet;
           cursor: pointer;
         }
       }

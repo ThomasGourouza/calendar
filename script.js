@@ -103,6 +103,7 @@ function buildCalendar() {
     rooms.forEach((room) => {
       const thRoom = putElementIn("th", tr2);
       thRoom.innerHTML = room.name;
+      thRoom.style.backgroundColor = room.color;
     });
   });
 
@@ -121,6 +122,7 @@ function buildCalendar() {
         if (!!lesson) {
           td.className = "booked";
           td.innerHTML = lesson.innerHtml(quarterTime);
+          td.style.backgroundColor = lesson.backgroundColor;
           td.setAttribute("title", lesson.title);
         }
       });
