@@ -10,12 +10,13 @@
   --table-border-thick: 1px solid var(--table-border-thick-color);
   --table-border-dashed: 1px dashed var(--table-border-dashed-color);
   --table-header-title: beige;
-  --table-header-day: chartreuse;
+  --table-header-day-odd: rgb(105, 208, 2);
+  --table-header-day-even: chartreuse;
   /* hauteur des headers des jours */
   --table-header-day-height: calc(var(--table-header-room-height) + 10px);
   /* hauteur des headers des salles */
   --table-header-room-height: calc(var(--table-content-td-height) + 15px);
-  --table-time: red;
+  --table-time: rgb(242, 196, 60);
   --table-content-odd: burlywood;
   --table-content-even: rgb(245, 202, 147);
   --table-lunch-odd: rgb(171, 181, 193);
@@ -77,7 +78,12 @@ table.calendar {
         /* Les jours */
         border-left: none;
         border-bottom: none;
-        background-color: var(--table-header-day);
+        &:nth-child(2n) {
+          background-color: var(--table-header-day-odd);
+        }
+        &:nth-child(2n + 1) {
+          background-color: var(--table-header-day-even);
+        }
       }
     }
     &:not(:first-child) th {
