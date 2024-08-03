@@ -168,7 +168,7 @@ function buildLessonList() {
   for (let i = trs.length - 1; i > 0; i--) {
     lessonsTbody.removeChild(trs[i]);
   }
-  lessons.forEach((lesson) => {
+  sort(lessons).forEach((lesson) => {
     const tr = putElementIn("tr", lessonsTbody);
     if (lesson.highlight) {
       tr.className = "highlightedRow";
@@ -205,4 +205,20 @@ function buildLessonList() {
       removeButton.innerHTML = "-";
     }
   });
+}
+
+function sort(lessons) {
+  function getComparableDateTime(dateStr, timeStr) {
+    const [day, month, year] = dateStr.split("/");
+    const [startTime] = timeStr.split("-");
+    return new Date(`${year}-${month}-${day}T${startTime}:00`);
+  }
+
+  lessons.sort((a, b) => {
+    const dateTimeA = getComparableDateTime(a.date, a.time);
+    const dateTimeB = getComparableDateTime(b.date, b.time);
+    return dateTimeA - dateTimeB;
+  });
+
+  return lessons;
 }
