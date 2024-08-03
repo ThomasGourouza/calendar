@@ -1,11 +1,16 @@
 const lang = "fr";
 
 // TODO: form
-const filterBy = {
-  active: true,
-  field: "roomName",
-  value: "Room 3",
-};
+const filters = [
+  // {
+  //   field: "roomName",
+  //   value: "Room 3",
+  // },
+  // {
+  //   field: "levelName",
+  //   value: "B2.4",
+  // }
+];
 
 // les quarts d'heures de la journée
 const allQuarterTimes = [];

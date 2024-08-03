@@ -199,6 +199,7 @@ function getTimeTextTo(quarterTimeId) {
   const time = getTimeFromQuarterId(quarterTimeId);
   return getTimeText(time.to.hour, time.to.minute);
 }
+
 function filterAndSort(lessonList) {
   return sort(filter(lessonList));
 }
@@ -218,7 +219,13 @@ function sort(lessonList) {
 }
 
 function filter(lessonList) {
-  return filterBy.active
-    ? lessonList.filter((lesson) => lesson[filterBy.field] === filterBy.value)
-    : lessonList;
+  let newLessonList = [...lessonList];
+  if (filters.length > 0) {
+    filters.forEach((filter) => {
+      newLessonList = newLessonList.filter(
+        (lesson) => lesson[filter.field] === filter.value
+      );
+    });
+  }
+  return newLessonList;
 }
