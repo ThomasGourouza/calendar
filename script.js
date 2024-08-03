@@ -1,44 +1,32 @@
 const lang = "fr";
 
-// TODO: form dans le tableau des lessons (ajouter une action)
 let filters = [];
 
-function filterLessons() {
-  const form = document.forms["addLessonForm"];
-  filters = [];
-  ["roomName", "teacherName", "levelName"].forEach((field) => {
-    const value = form[field].value;
-    if (!!value) {
-      filters.push({ field, value });
-    }
-  });
+const parameterForm = document.forms["parameterForm"];
+parameterForm.minTime.value = 8;
+parameterForm.maxTime.value = 20;
+parameterForm.minLunchTime.value = 12;
+parameterForm.maxLunchTime.value = 14;
+parameterForm.colorLessonBy.value = "level";
+let parameter = getParameter(parameterForm);
+parameterForm.onsubmit = function (e) {
+  e.preventDefault();
+  parameter = getParameter(this);
+  setQuarterTimes();
   buildLessonListAndCalendar(lessons);
+};
+function getParameter(form) {
+  return {
+    minTime: +form.minTime.value,
+    maxTime: +form.maxTime.value,
+    minLunchTime: +form.minLunchTime.value,
+    maxLunchTime: +form.maxLunchTime.value,
+    colorLessonBy: form.colorLessonBy.value,
+  };
 }
 
-// les quarts d'heures de la journée
-const allQuarterTimes = [];
-for (let i = 1; i <= (parameter.maxTime - parameter.minTime) * 4; i++) {
-  allQuarterTimes.push(i);
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  // fill options in html template
-  fillSelectOptions(
-    "roomNames",
-    rooms.map((room) => room.name)
-  );
-  fillSelectOptions(
-    "levelNames",
-    levels.map((level) => level.name)
-  );
-  fillSelectOptions(
-    "teacherNames",
-    teachers.map((teacher) => teacher.name)
-  );
-  buildLessonListAndCalendar(lessons);
-});
-
-document.forms["calendarForm"].onsubmit = function (e) {
+const calendarForm = document.forms["calendarForm"];
+calendarForm.onsubmit = function (e) {
   e.preventDefault();
   const startDate = new Date(this.startDate.value);
   const endDate = new Date(this.endDate.value);
@@ -51,28 +39,29 @@ document.forms["calendarForm"].onsubmit = function (e) {
   }
 };
 
-// console.log(document.forms["addLessonForm"].date.value);
-// console.log(document.forms["calendarForm"].startDate.value);
-
-document.forms["addLessonForm"].onsubmit = function (e) {
+const addLessonForm = document.forms["addLessonForm"];
+addLessonForm.onsubmit = function (e) {
   e.preventDefault();
-  const minDate = new Date (document.forms["calendarForm"].startDate.value);
-  const maxDate = new Date (document.forms["calendarForm"].endDate.value);
+  const minDate = new Date(calendarForm.startDate.value);
+  const maxDate = new Date(calendarForm.endDate.value);
   maxDate.setDate(maxDate.getDate() + 1);
 
   const lessonDate = new Date(`${this.date.value}T${this.startTime.value}:00`);
   const lessonDateEnd = new Date(`${this.date.value}T${this.endTime.value}:00`);
 
-  if(lessonDate < minDate || lessonDate > maxDate) {
+  if (lessonDate < minDate || lessonDate > maxDate) {
+    // TODO: useless ?
     alert("invalid date");
     return;
   }
-  if(lessonDateEnd < lessonDate) {
+  if (lessonDateEnd < lessonDate) {
+    // TODO
     alert("impossible");
     return;
   }
   const minLessonTime = 15;
-  if(Math.abs(lessonDate - lessonDateEnd) < minLessonTime * 60000) {
+  if (Math.abs(lessonDate - lessonDateEnd) < minLessonTime * 60000) {
+    // TODO
     alert(`lesson should be longer than ${minLessonTime}min.`);
     return;
   }
@@ -95,6 +84,45 @@ document.forms["addLessonForm"].onsubmit = function (e) {
   buildLessonListAndCalendar(lessons);
   this.reset();
 };
+
+document.addEventListener("DOMContentLoaded", function () {
+  // fill options in html template
+  fillSelectOptions(
+    "roomNames",
+    rooms.map((room) => room.name)
+  );
+  fillSelectOptions(
+    "levelNames",
+    levels.map((level) => level.name)
+  );
+  fillSelectOptions(
+    "teacherNames",
+    teachers.map((teacher) => teacher.name)
+  );
+  buildLessonListAndCalendar(lessons);
+});
+
+// les quarts d'heures de la journée
+let allQuarterTimes = [];
+setQuarterTimes();
+
+function setQuarterTimes() {
+  allQuarterTimes = [];
+  for (let i = 1; i <= (parameter.maxTime - parameter.minTime) * 4; i++) {
+    allQuarterTimes.push(i);
+  }
+}
+
+function filterLessons() {
+  filters = [];
+  ["roomName", "teacherName", "levelName"].forEach((field) => {
+    const value = addLessonForm[field].value;
+    if (!!value) {
+      filters.push({ field, value });
+    }
+  });
+  buildLessonListAndCalendar(lessons);
+}
 
 function removeLesson(date, time, roomName) {
   lessons = lessons.filter(
@@ -207,6 +235,10 @@ function buildLessonList(lessonList) {
   for (let i = trs.length - 1; i > 0; i--) {
     lessonsTbody.removeChild(trs[i]);
   }
+  const minDate = calendarForm.startDate.value;
+  const maxDate = calendarForm.endDate.value;
+  addLessonForm.date.setAttribute("min", minDate);
+  addLessonForm.date.setAttribute("max", maxDate);
   filterAndSort(lessonList).forEach((lesson) => {
     const tr = putElementIn("tr", lessonsTbody);
     if (lesson.highlight) {

@@ -248,7 +248,7 @@ table.lessons div.button.filter:hover {
 
 .two-col-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
   gap: 10px;
 }
 .two-col-layout div {

@@ -7,16 +7,44 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <form name="calendarForm">
-      <h2>Calendrier</h2>
-      <label>Start Date:</label>
-      <input type="date" name="startDate" min="2024-07-08" required />
-      <br /><br />
-      <label>End Date:</label>
-      <input type="date" name="endDate" required />
-      <br /><br />
-      <input type="submit" value="Submit" />
-    </form>
+    <div class="two-col-layout">
+      <div>
+        <form name="parameterForm">
+          <h2>Paramètres</h2>
+          <label>Heure du début des cours: (6 - 10)</label>
+          <input type="number" name="minTime" min="6" max="10" required />
+          <br /><br />
+          <label>Heure de fin des cours: (16 - 20)</label>
+          <input type="number" name="maxTime" min="16" max="20" required />
+          <br /><br />
+          <label>Heure du début de la pause midi: (11 - 13)</label>
+          <input type="number" name="minLunchTime" min="11" max="13" required />
+          <br /><br />
+          <label>Heure de fin de la pause midi: (13 - 15)</label>
+          <input type="number" name="maxLunchTime" min="13" max="15" required />
+          <br /><br />
+          <label>Colorer les leçons par:</label>
+          <select name="colorLessonBy">
+            <option value="teacher">Professeur</option>
+            <option value="level">Niveau</option>
+          </select>
+          <br /><br />
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
+      <form name="calendarForm">
+        <h2>Calendrier</h2>
+        <label>Start Date:</label>
+        <input type="date" name="startDate" required />
+        <br /><br />
+        <label>End Date:</label>
+        <input type="date" name="endDate" required />
+        <br /><br />
+        <input type="submit" value="Submit" />
+      </form>
+      <div>
+      </div>
+    </div>
 
     <form name="addLessonForm">
       <h2>Leçons</h2>
@@ -82,14 +110,13 @@
     <div id="calendar-wrapper"></div>
 
     <!-- Load util files -->
-    <script src="utils/utils.js"></script>
-    <!-- Load system constants -->
-    <script src="constants-sys/translation.js"></script>
-    <script src="constants-sys/parameter.js"></script>
+    <script src="utils/util.js"></script>
+    <!-- Load translations -->
+    <script src="translations/translation.js"></script>
     <!-- Load application constants -->
-    <script src="constants-app/levels.js"></script>
-    <script src="constants-app/rooms.js"></script>
-    <script src="constants-app/teachers.js"></script>
+    <script src="constants/levels.js"></script>
+    <script src="constants/rooms.js"></script>
+    <script src="constants/teachers.js"></script>
     <!-- Load models -->
     <script src="models/selected-date.js"></script>
     <script src="models/lesson.js"></script>
