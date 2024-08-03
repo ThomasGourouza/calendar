@@ -48,7 +48,7 @@ function fillSelectOptions(selectId, optionList) {
 }
 
 function styleBorderThick() {
-  const roomLength = rooms.length;
+  const roomLength = filterRooms(rooms).length;
   const borderThick = getComputedStyle(
     document.documentElement
   ).getPropertyValue("--table-border-thick");
@@ -89,7 +89,7 @@ function styleColorEvenCells(
   allCellsSelector
 ) {
   colorCells(allCellsSelector, getStyle(colorOddCssVariable));
-  const roomLength = rooms.length;
+  const roomLength = filterRooms(rooms).length;
   let evenCellsSelector = "";
   for (let i = 0; i < roomLength; i++) {
     const a = 2 * roomLength;
@@ -228,4 +228,13 @@ function filter(lessonList) {
     });
   }
   return newLessonList;
+}
+
+function filterRooms(rooms) {
+  let newRoomList = [...rooms];
+  const filterRoom = filters.find((filter) => filter.field === "roomName");
+  if (!!filterRoom) {
+    newRoomList = newRoomList.filter((room) => room.name === filterRoom.value);
+  }
+  return newRoomList;
 }

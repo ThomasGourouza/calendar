@@ -94,6 +94,7 @@ table.calendar thead tr:not(:first-child) th {
   /* Les salles */
   height: var(--table-header-room-height);
   border-left: none;
+  border-bottom: var(--table-border-thick);
 }
 table.calendar thead tr th {
   border: var(--table-border);
@@ -151,6 +152,7 @@ table.lessons {
 table.lessons thead tr th {
   height: var(--table-lesson-header-height);
   border: var(--table-border);
+  border-bottom: var(--table-border-thick);
   background-color: var(--table-lesson-header);
 }
 table.lessons thead tr th:first-child {

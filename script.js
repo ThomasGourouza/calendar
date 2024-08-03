@@ -1,14 +1,18 @@
 const lang = "fr";
 
-// TODO: form
+// TODO: form dans le tableau des lessons (ajouter une action)
 const filters = [
-  // {
-  //   field: "roomName",
-  //   value: "Room 3",
-  // },
+  {
+    field: "roomName",
+    value: "Room 3",
+  },
   // {
   //   field: "levelName",
   //   value: "B2.4",
+  // },
+  // {
+  //   field: "teacherName",
+  //   value: "Pauline",
   // }
 ];
 
@@ -131,10 +135,10 @@ function buildCalendar(lessonList) {
   // Headers jours et salles
   selectedDates.forEach((selectedDate) => {
     const thDay = putElementIn("th", tr1);
-    thDay.setAttribute("colspan", rooms.length);
+    thDay.setAttribute("colspan", filterRooms(rooms).length);
     thDay.innerHTML = selectedDate.printDate();
 
-    rooms.forEach((room) => {
+    filterRooms(rooms).forEach((room) => {
       const thRoom = putElementIn("th", tr2);
       thRoom.innerHTML = room.name;
       thRoom.style.backgroundColor = room.color;
@@ -149,7 +153,7 @@ function buildCalendar(lessonList) {
       td.innerHTML = getTimeTextFrom(quarterTime);
     }
     selectedDates.forEach((selectedDate) => {
-      rooms.forEach((room) => {
+      filterRooms(rooms).forEach((room) => {
         const td = putElementIn("td", tr);
         if (isLunchTime(quarterTime)) {
           td.className = "lunch";
