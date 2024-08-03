@@ -177,6 +177,7 @@ table.lessons {
     }
   }
   tbody tr {
+    cursor: pointer;
     &:not(.highlightedRow) td {
       background-color: var(--table-lesson-content);
     }

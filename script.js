@@ -173,6 +173,9 @@ function buildLessonList() {
     if (lesson.highlight) {
       tr.className = "highlightedRow";
     }
+    tr.onclick = () => {
+      highlightLesson(lesson.date, lesson.time, lesson.roomName);
+    };
 
     const dateTd = putElementIn("td", tr);
     dateTd.innerHTML = lesson.printDate();
