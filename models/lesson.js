@@ -5,6 +5,7 @@ class Lesson {
     this.roomName = roomName;
     this.teacherName = teacherName;
     this.levelName = levelName;
+    this.highlight = false;
   }
 
   printDate() {

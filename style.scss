@@ -29,11 +29,14 @@
   --table-content-td-width: 100px;
   /* Largeur de la page */
   --page-width: calc(300px + 7 * 3 * var(--table-content-td-width));
+  /* lorsqu'on selectionne une leçon dans le calendrier */
+  --highlighted-lesson-opacity: 0.5;
 
   /* Lessons */
   --table-lesson-margin-top: 10px;
   --table-lesson-header: rgb(214, 255, 173);
   --table-lesson-content: rgb(252, 232, 207);
+  --table-lesson-content-highlighted: rgb(255, 201, 135);
   --table-button-remove: rgb(160, 7, 7);
   --table-button-remove-hover: rgb(247, 5, 5);
   --table-button-add: rgb(0, 91, 12);
@@ -133,6 +136,9 @@ table.calendar {
         font-size: small;
         &.booked {
           cursor: pointer;
+          &.highlighted-lesson {
+            opacity: var(--highlighted-lesson-opacity);
+          }
         }
       }
     }
@@ -171,6 +177,12 @@ table.lessons {
     }
   }
   tbody tr {
+    &:not(.highlightedRow) td {
+      background-color: var(--table-lesson-content);
+    }
+    &.highlightedRow td {
+      background-color: var(--table-lesson-content-highlighted);
+    }
     form {
       border-left: var(--table-border);
     }
@@ -179,7 +191,6 @@ table.lessons {
       text-align: center;
       width: var(--table-lesson-content-td-width);
       min-width: var(--table-lesson-content-td-width);
-      background-color: var(--table-lesson-content);
       border-right: var(--table-border);
       border-bottom: var(--table-border);
       font-size: small;

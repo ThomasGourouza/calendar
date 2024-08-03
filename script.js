@@ -8,9 +8,18 @@ for (let i = 1; i <= (parameter.maxTime - parameter.minTime) * 4; i++) {
 
 document.addEventListener("DOMContentLoaded", function () {
   // fill options in html template
-  fillSelectOptions("roomNames", rooms.map(room => room.name));
-  fillSelectOptions("levelNames", levels.map(level => level.name));
-  fillSelectOptions("teacherNames", teachers.map(teacher => teacher.name));
+  fillSelectOptions(
+    "roomNames",
+    rooms.map((room) => room.name)
+  );
+  fillSelectOptions(
+    "levelNames",
+    levels.map((level) => level.name)
+  );
+  fillSelectOptions(
+    "teacherNames",
+    teachers.map((teacher) => teacher.name)
+  );
 
   buildLessonList();
 });
@@ -37,13 +46,6 @@ document.forms["addLessonForm"].onsubmit = function (e) {
     lessonDate.getFullYear()
   );
 
-  // const startTimeId = getQuarterIdFromStartTime(this.startTime.value);
-  // const endTimeId = getQuarterIdFromEndTime(this.endTime.value);
-  // const quarterTimes = [];
-  // for (let i = startTimeId; i <= endTimeId; i++) {
-  //   quarterTimes.push(i);
-  // }
-
   const lesson = new Lesson(
     calendarDate.getDate(),
     getTime(this.startTime.value, this.endTime.value),
@@ -60,11 +62,29 @@ document.forms["addLessonForm"].onsubmit = function (e) {
 
 function removeLesson(date, time, roomName) {
   lessons = lessons.filter(
-    (lesson) =>
-      lesson.date !== date || lesson.time !== time || lesson.roomName !== roomName
+    (lesson) => !matchLessonCondition(lesson, date, time, roomName)
   );
   buildLessonList();
   buildCalendar();
+}
+
+function highlightLesson(date, time, roomName) {
+  const lesson = lessons.find((l) =>
+    matchLessonCondition(l, date, time, roomName)
+  );
+  const previousHighlight = lesson.highlight;
+  // reset all
+  lessons.forEach((lesson) => (lesson.highlight = false));
+  // set new
+  lesson.highlight = !previousHighlight;
+  buildLessonList();
+  buildCalendar();
+}
+
+function matchLessonCondition(lesson, date, time, roomName) {
+  return (
+    lesson.date === date && lesson.time === time && lesson.roomName === roomName
+  );
 }
 
 function fillSelectedDates(startDate, endDate) {
@@ -118,12 +138,22 @@ function buildCalendar() {
       rooms.forEach((room) => {
         const td = putElementIn("td", tr);
         checkLunchTime(td, quarterTime);
-        const lesson = checkLesson(selectedDate.getDate(), quarterTime, room.name);
+        const lesson = checkLesson(
+          selectedDate.getDate(),
+          quarterTime,
+          room.name
+        );
         if (!!lesson) {
           td.className = "booked";
           td.innerHTML = lesson.innerHtml(quarterTime);
           td.style.backgroundColor = lesson.backgroundColor;
+          if (lesson.highlight) {
+            td.classList.add("highlighted-lesson");
+          }
           td.setAttribute("title", lesson.title);
+          td.onclick = () => {
+            highlightLesson(lesson.date, lesson.time, lesson.roomName);
+          };
         }
       });
     });
@@ -140,6 +170,10 @@ function buildLessonList() {
   }
   lessons.forEach((lesson) => {
     const tr = putElementIn("tr", lessonsTbody);
+    if (lesson.highlight) {
+      tr.className = "highlightedRow";
+    }
+
     const dateTd = putElementIn("td", tr);
     dateTd.innerHTML = lesson.printDate();
 
@@ -159,11 +193,13 @@ function buildLessonList() {
     levelTd.innerHTML = lesson.levelName;
 
     const removeButtonTd = putElementIn("td", tr);
-    const removeButtonDiv = putElementIn("div", removeButtonTd);
-    removeButtonDiv.className = "button";
-    removeButtonDiv.onclick = () => {
-      removeLesson(lesson.date, lesson.time, lesson.roomName);
-    };
-    removeButtonDiv.innerHTML = "-";
+    if (lesson.highlight) {
+      const removeButton = putElementIn("div", removeButtonTd);
+      removeButton.className = "button";
+      removeButton.onclick = () => {
+        removeLesson(lesson.date, lesson.time, lesson.roomName);
+      };
+      removeButton.innerHTML = "-";
+    }
   });
 }
