@@ -213,12 +213,10 @@ function sort(lessons) {
     const [startTime] = timeStr.split("-");
     return new Date(`${year}-${month}-${day}T${startTime}:00`);
   }
-
   lessons.sort((a, b) => {
     const dateTimeA = getComparableDateTime(a.date, a.time);
     const dateTimeB = getComparableDateTime(b.date, b.time);
     return dateTimeA - dateTimeB;
   });
-
   return lessons;
 }
