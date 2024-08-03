@@ -36,6 +36,8 @@ class Lesson {
   innerHtml(quarterId) {
     if (this.quarterIds[0] === quarterId) {
       return `${this.levelName} - ${this.teacherName}`;
+    } else if (this.quarterIds[1] === quarterId) {
+      return `${this.time}`;
     }
     return "";
   }
