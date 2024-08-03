@@ -28,7 +28,7 @@ function roundQuarter(hour, minute) {
 }
 
 function getTimeTextFromTo(quarterTimeStart, quarterTimeEnd) {
-  return `${quarterTimeStart.getTimeTextFrom()} - ${quarterTimeEnd.getTimeTextTo()}`;
+  return `${getTimeTextFrom(quarterTimeStart)} - ${getTimeTextTo(quarterTimeEnd)}`;
 }
 
 // TODO: duplicate ?
@@ -185,14 +185,31 @@ function getTime(start, end) {
   return `${start}-${end}`;
 }
 
-function printDate(date) {
-  return date + " en lettres";
+function getTimeQuarterId(quarterTimeId) {
+  const timeNumber = minTime + (quarterTimeId - 1) / 4;
+  const hourFrom = Math.floor(timeNumber);
+  const minuteFrom = (timeNumber - hourFrom) * 60;
+  const timeNumberTo = timeNumber + 0.25;
+  const hourTo = Math.floor(timeNumberTo);
+  const minuteTo = (timeNumberTo - hourTo) * 60;
+  return {
+    from: {
+      hour: hourFrom,
+      minute: minuteFrom,
+    },
+    to: {
+      hour: hourTo,
+      minute: minuteTo,
+    },
+  };
 }
 
-function printTimeFrom(time) {
-  return time + " From";
+function getTimeTextFrom(quarterTimeId) {
+  const time = getTimeQuarterId(quarterTimeId);
+  return getTimeText(time.from.hour, time.from.minute);
 }
 
-function printTimeTo(time) {
-  return time + " To";
+function getTimeTextTo(quarterTimeId) {
+  const time = getTimeQuarterId(quarterTimeId);
+  return getTimeText(time.to.hour, time.to.minute);
 }

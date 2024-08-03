@@ -6,4 +6,17 @@ class Lesson {
     this.teacher = teacher;
     this.level = level;
   }
+
+  printDate() {
+    return this.date + " en lettres";
+  }
+  
+  printTimeFrom() {
+    return this.time + " From";
+  }
+  
+  printTimeTo() {
+    return this.time + " To";
+  }
+  
 }

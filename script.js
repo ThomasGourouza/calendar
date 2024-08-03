@@ -1,11 +1,9 @@
 const lang = "fr";
 
-let selectedDates = [];
-
 // les quarts d'heures de la journée
 const allQuarterTimes = [];
 for (let i = 1; i <= (maxTime - minTime) * 4; i++) {
-  allQuarterTimes.push(new QuarterTime(i));
+  allQuarterTimes.push(i);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -111,17 +109,17 @@ function buildCalendar() {
   allQuarterTimes.forEach((quarterTime) => {
     const tr = putElementIn("tr", tbody);
     const td = putElementIn("td", tr);
-    if ([1, 3].includes(quarterTime.id % 4)) {
-      td.innerHTML = quarterTime.getTimeTextFrom();
+    if ([1, 3].includes(quarterTime % 4)) {
+      td.innerHTML = getTimeTextFrom(quarterTime);
     }
     selectedDates.forEach((selectedDate) => {
       rooms.forEach((room) => {
         const td = putElementIn("td", tr);
-        checkLunchTime(td, quarterTime.id);
+        checkLunchTime(td, quarterTime);
         checkLesson(
           td,
-          quarterTime.getTimeTextFrom(),
-          quarterTime.getTimeTextTo(),
+          getTimeTextFrom(quarterTime),
+          getTimeTextTo(quarterTime),
           selectedDate.getDate(),
           room
         );
@@ -141,13 +139,13 @@ function buildLessonList() {
   lessons.forEach((lesson) => {
     const tr = putElementIn("tr", lessonsTbody);
     const dateTd = putElementIn("td", tr);
-    dateTd.innerHTML = printDate(lesson.date);
+    dateTd.innerHTML = lesson.printDate();
 
     const timeFromTd = putElementIn("td", tr);
-    timeFromTd.innerHTML = printTimeFrom(lesson.time);
+    timeFromTd.innerHTML = lesson.printTimeFrom();
 
     const timeToTd = putElementIn("td", tr);
-    timeToTd.innerHTML = printTimeTo(lesson.time);
+    timeToTd.innerHTML = lesson.printTimeTo();
 
     const roomTd = putElementIn("td", tr);
     roomTd.innerHTML = lesson.room;

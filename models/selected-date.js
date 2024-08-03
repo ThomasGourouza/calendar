@@ -3,7 +3,7 @@ class CalendarDate {
     this.date = date;
     this.month = month + 1;
     this.year = year;
-    this.day = this.getDay();
+    // this.isHoliday = isHoliday;
   }
 
   getDate() {
@@ -12,7 +12,7 @@ class CalendarDate {
     return `${d}/${m}/${this.year}`;
   }
 
-  getDay() {
+  get day() {
     const day = new Date(this.year, this.month - 1, this.date).getDay();
     return day === 0 ? 7 : day;
   }
