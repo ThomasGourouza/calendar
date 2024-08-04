@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
     selectedDates.forEach((selectedDate) => {
       const thDay = putElementIn("th", tr1);
       thDay.setAttribute("colspan", filterRooms(rooms, filters).length);
-      thDay.innerHTML = selectedDate.printDate(param);
+      thDay.innerHTML = selectedDate.printDate(param.lang);
 
       filterRooms(rooms, filters).forEach((room) => {
         const thRoom = putElementIn("th", tr2);

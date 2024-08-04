@@ -17,65 +17,65 @@ class CalendarDate {
     return day === 0 ? 7 : day;
   }
 
-  printDate(param) {
+  printDate(lang) {
     return (
-      this.getDayText(this.day, param) +
+      this.getDayText(this.day, lang) +
       " " +
       this.date +
       " " +
-      this.toMonthText(this.month, param) +
+      this.toMonthText(this.month, lang) +
       " " +
       this.year
     );
   }
 
-  getDayText(param) {
-    switch (this.day) {
+  getDayText(day, lang) {
+    switch (day) {
       case 1:
-        return param.lang === "en" ? "Monday" : "Lundi";
+        return lang === "en" ? "Monday" : "Lundi";
       case 2:
-        return param.lang === "en" ? "Tuesday" : "Mardi";
+        return lang === "en" ? "Tuesday" : "Mardi";
       case 3:
-        return param.lang === "en" ? "Wednesday" : "Mercredi";
+        return lang === "en" ? "Wednesday" : "Mercredi";
       case 4:
-        return param.lang === "en" ? "Thursday" : "Jeudi";
+        return lang === "en" ? "Thursday" : "Jeudi";
       case 5:
-        return param.lang === "en" ? "Friday" : "Vendredi";
+        return lang === "en" ? "Friday" : "Vendredi";
       case 6:
-        return param.lang === "en" ? "Saturday" : "Samedi";
+        return lang === "en" ? "Saturday" : "Samedi";
       case 7:
-        return param.lang === "en" ? "Sunday" : "Dimanche";
+        return lang === "en" ? "Sunday" : "Dimanche";
       default:
         return "";
     }
   }
 
-  toMonthText(param) {
-    switch (this.month) {
+  toMonthText(month, lang) {
+    switch (month) {
       case 1:
-        return param.lang === "en" ? "January" : "Janvier";
+        return lang === "en" ? "January" : "Janvier";
       case 2:
-        return param.lang === "en" ? "February" : "Février";
+        return lang === "en" ? "February" : "Février";
       case 3:
-        return param.lang === "en" ? "March" : "Mars";
+        return lang === "en" ? "March" : "Mars";
       case 4:
-        return param.lang === "en" ? "April" : "Avril";
+        return lang === "en" ? "April" : "Avril";
       case 5:
-        return param.lang === "en" ? "May" : "Mai";
+        return lang === "en" ? "May" : "Mai";
       case 6:
-        return param.lang === "en" ? "June" : "Juin";
+        return lang === "en" ? "June" : "Juin";
       case 7:
-        return param.lang === "en" ? "July" : "Juillet";
+        return lang === "en" ? "July" : "Juillet";
       case 8:
-        return param.lang === "en" ? "August" : "Août";
+        return lang === "en" ? "August" : "Août";
       case 9:
-        return param.lang === "en" ? "September" : "Septembre";
+        return lang === "en" ? "September" : "Septembre";
       case 10:
-        return param.lang === "en" ? "October" : "Octobre";
+        return lang === "en" ? "October" : "Octobre";
       case 11:
-        return param.lang === "en" ? "November" : "Novembre";
+        return lang === "en" ? "November" : "Novembre";
       case 12:
-        return param.lang === "en" ? "December" : "Décembre";
+        return lang === "en" ? "December" : "Décembre";
       default:
         return "";
     }
