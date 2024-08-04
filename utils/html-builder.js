@@ -20,6 +20,7 @@ function buildHtmlLessonListAndCalendar(
     lessonList,
     startDate,
     endDate,
+    lang,
     visibility,
     colorLessonBy,
     filters,
@@ -48,6 +49,7 @@ function buildHtmlLessonList(
   lessonList,
   startDate,
   endDate,
+  lang,
   visibility,
   colorLessonBy,
   filters,
@@ -72,7 +74,7 @@ function buildHtmlLessonList(
       };
 
       const dateTd = putElementIn("td", tr);
-      dateTd.innerHTML = lesson.printDate();
+      dateTd.innerHTML = printDateText(lesson.localDate, lang);
 
       const timeFromTd = putElementIn("td", tr);
       timeFromTd.innerHTML = lesson.printTimeFrom();
