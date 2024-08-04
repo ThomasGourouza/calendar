@@ -8,6 +8,11 @@ class Lesson {
     this.highlight = false;
   }
 
+  get localDate() {
+    const [day, month, year] = this.date.split("/");
+    return new Date(+year, +month - 1, +day);
+  }
+
   printDate() {
     return this.date + " en lettres";
   }

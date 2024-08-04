@@ -220,6 +220,14 @@ function sort(lessonList) {
 
 function filter(lessonList) {
   let newLessonList = [...lessonList];
+  if (parameter.visibility === "selected") {
+    const minDate = new Date(calendarForm.startDate.value);
+    const maxDate = new Date(calendarForm.endDate.value);
+    minDate.setDate(minDate.getDate() - 1);
+    newLessonList = newLessonList.filter(
+      (lesson) => lesson.localDate >= minDate && lesson.localDate <= maxDate
+    );
+  }
   if (filters.length > 0) {
     filters.forEach((filter) => {
       newLessonList = newLessonList.filter(

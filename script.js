@@ -10,7 +10,9 @@ parameterForm.minLunchTime.value = 12;
 parameterForm.maxLunchTime.value = 14;
 parameterForm.minLessonTime.value = 30;
 parameterForm.maxLessonTime.value = 120;
-parameterForm.colorLessonBy.value = "levelName";
+parameterForm.maxDays.value = 20;
+parameterForm.colorLessonBy.value = "teacherName";
+parameterForm.visibility.value = "selected";
 let parameter = getParameter(parameterForm);
 parameterForm.onsubmit = function (e) {
   e.preventDefault();
@@ -26,7 +28,9 @@ function getParameter(form) {
     maxLunchTime: +form.maxLunchTime.value,
     minLessonTime: +form.minLessonTime.value,
     maxLessonTime: +form.maxLessonTime.value,
+    maxDays: form.maxDays.value,
     colorLessonBy: form.colorLessonBy.value,
+    visibility: form.visibility.value,
   };
 }
 
@@ -38,10 +42,17 @@ calendarForm.onsubmit = function (e) {
 
   if (getDaysNumberBetween(startDate, endDate) <= 0) {
     alert(`End date must be after the start date.`);
-  } else {
-    fillSelectedDates(startDate, endDate);
-    buildLessonListAndCalendar(lessons);
+    return;
   }
+  if (
+    Math.abs(startDate - endDate) / (1000 * 60 * 60 * 24) >
+    parameter.maxDays - 1
+  ) {
+    alert(`Not more than ${parameter.maxDays} days.`);
+    return;
+  }
+  fillSelectedDates(startDate, endDate);
+  buildLessonListAndCalendar(lessons);
 };
 
 const addLessonForm = document.forms["addLessonForm"];

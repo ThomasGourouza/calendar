@@ -65,10 +65,27 @@
             <option value="240">4h</option>
           </select>
           <br /><br />
+          <label>Nombres de jours maximum:</label>
+          <input
+            type="number"
+            name="maxDays"
+            min="1"
+            style="width: 50px"
+            required
+          />
+          <br /><br />
           <label>Colorer les leçons par:</label>
           <select name="colorLessonBy" required>
             <option value="teacherName">Professeur</option>
             <option value="levelName">Niveau</option>
+          </select>
+          <br /><br />
+          <label>Visibilité des leçons:</label>
+          <select name="visibility" required>
+            <option value="all">Toutes les leçons</option>
+            <option value="selected">
+              Leçons entre les dates sélectionnées
+            </option>
           </select>
           <br /><br />
           <input type="submit" value="Submit" />
