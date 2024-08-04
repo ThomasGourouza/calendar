@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <form name="calendarForm">
-      <div class="two-col-layout">
-        <div>
-            <h2>Paramètres</h2>
+    <div id="settings-wrapper">
+      <form name="calendar-form">
+        <h2>Paramètres</h2>
+        <div class="two-col-layout">
+          <div>
             <label>Heure du début des cours:</label>
             <select name="minTime" required>
               <option value="6">06:00</option>
@@ -87,81 +88,81 @@
                 Leçons entre les dates sélectionnées
               </option>
             </select>
+          </div>
+          <div>
+            <label>Start Date:</label>
+            <input type="date" name="startDate" required />
+            <br /><br />
+            <label>End Date:</label>
+            <input type="date" name="endDate" required />
+            <br /><br />
+            <input type="submit" value="Submit" />
+          </div>
         </div>
-        <div>
-          <h2>Calendrier</h2>
-          <label>Start Date:</label>
-          <input type="date" name="startDate" required />
-          <br /><br />
-          <label>End Date:</label>
-          <input type="date" name="endDate" required />
-          <br /><br />
-          <input type="submit" value="Submit" />
-        </div>
-      </div>
-    </form>
-
-    <form name="addLessonForm">
-      <h2>Leçons</h2>
-      <table class="lessons">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Heure de début</th>
-            <th>Heure de fin</th>
-            <th>Salle</th>
-            <th>Enseignant</th>
-            <th>Niveau</th>
-            <th colspan="2">Action</th>
-          </tr>
-        </thead>
-        <tbody id="lessons">
-          <tr>
-            <td>
-              <input type="date" name="date" required />
-            </td>
-            <td>
-              <input
-                type="time"
-                name="startTime"
-                min="08:00"
-                max="19:45"
-                required
-              />
-            </td>
-            <td>
-              <input
-                type="time"
-                name="endTime"
-                min="08:15"
-                max="20:00"
-                required
-              />
-            </td>
-            <td>
-              <select id="roomNames" name="roomName" required>
-                <option value=""></option>
-              </select>
-            </td>
-            <td>
-              <select id="teacherNames" name="teacherName" required>
-                <option value=""></option>
-              </select>
-            </td>
-            <td>
-              <select id="levelNames" name="levelName" required>
-                <option value=""></option>
-              </select>
-            </td>
-            <td><input type="submit" value="+" /></td>
-            <td>
-              <div class="button filter" onclick="filterLessons()">Filtrer</div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </form>
-
+      </form>
+    </div>
+    <div id="lessons-wrapper">
+      <form name="addLessonForm">
+        <h2>Leçons</h2>
+        <table class="lessons">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Heure de début</th>
+              <th>Heure de fin</th>
+              <th>Salle</th>
+              <th>Enseignant</th>
+              <th>Niveau</th>
+              <th colspan="2">Action</th>
+            </tr>
+          </thead>
+          <tbody id="lessons">
+            <tr>
+              <td>
+                <input type="date" name="date" required />
+              </td>
+              <td>
+                <input
+                  type="time"
+                  name="startTime"
+                  min="08:00"
+                  max="19:45"
+                  required
+                />
+              </td>
+              <td>
+                <input
+                  type="time"
+                  name="endTime"
+                  min="08:15"
+                  max="20:00"
+                  required
+                />
+              </td>
+              <td>
+                <select id="roomNames" name="roomName" required>
+                  <option value=""></option>
+                </select>
+              </td>
+              <td>
+                <select id="teacherNames" name="teacherName" required>
+                  <option value=""></option>
+                </select>
+              </td>
+              <td>
+                <select id="levelNames" name="levelName" required>
+                  <option value=""></option>
+                </select>
+              </td>
+              <td><input type="submit" value="+" /></td>
+              <td>
+                <div class="button filter" onclick="filterLessons()">Filtrer</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
     <div id="calendar-wrapper"></div>
 
     <!-- Load util files -->

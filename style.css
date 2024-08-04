@@ -63,6 +63,10 @@ body {
 }
 
 /* Calendar */
+div#calendar-wrapper,
+div#lessons-wrapper {
+  margin-top: 50px;
+}
 table.calendar {
   margin-top: var(--table-margin-top);
   border-collapse: separate;

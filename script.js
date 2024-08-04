@@ -5,7 +5,7 @@ let filters = [];
 // les quarts d'heures de la journée
 let allQuarterTimes = [];
 
-const calendarForm = document.forms["calendarForm"];
+const calendarForm = document.forms["calendar-form"];
 // paramètres par défault
 calendarForm.minTime.value = 8;
 calendarForm.maxTime.value = 20;
@@ -187,6 +187,8 @@ function buildCalendar(lessonList) {
   while (wrapper.firstChild) {
     wrapper.removeChild(wrapper.firstChild);
   }
+  const h2 = putElementIn("h2", wrapper);
+  h2.innerHTML = "Calendrier";
   const table = putElementIn("table", wrapper);
   table.className = "calendar";
   const thead = putElementIn("thead", table);
