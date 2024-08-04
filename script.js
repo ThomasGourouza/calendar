@@ -44,7 +44,18 @@ document.addEventListener("DOMContentLoaded", function () {
     setParameters(this, parameter);
     allQuarterTimes = getQuarterTimes(parameter.minTime, parameter.maxTime);
     selectedDates = getSelectedDates(parameter.startDate, parameter.endDate);
-    buildLessonListAndCalendar(lessons, parameter, filters);
+    buildLessonListAndCalendar(
+      lessons,
+      parameter.startDate,
+      parameter.endDate,
+      parameter.visibility,
+      parameter.colorLessonBy,
+      parameter.lang,
+      parameter.minTime,
+      parameter.minLunchTime,
+      parameter.maxLunchTime,
+      filters
+    );
   };
 
   // ajouter une leçon
@@ -69,90 +80,141 @@ document.addEventListener("DOMContentLoaded", function () {
 
     lessons.push(lesson);
     filters = [];
-    buildLessonListAndCalendar(lessons, parameter, filters);
+    buildLessonListAndCalendar(
+      lessons,
+      parameter.startDate,
+      parameter.endDate,
+      parameter.visibility,
+      parameter.colorLessonBy,
+      parameter.lang,
+      parameter.minTime,
+      parameter.minLunchTime,
+      parameter.maxLunchTime,
+      filters
+    );
     this.reset();
   };
 
-  function buildLessonListAndCalendar(lessonList, param, filters) {
-    if (!parameter.startDate || !parameter.endDate) {
-      return;
-    }
-    buildHtmlLessonList(lessonList, param, filters);
-    buildHtmlCalendar(lessonList, param, filters);
+  function buildLessonListAndCalendar(
+    lessonList,
+    startDate,
+    endDate,
+    visibility,
+    colorLessonBy,
+    lang,
+    minTime,
+    minLunchTime,
+    maxLunchTime,
+    filters
+  ) {
+    buildHtmlLessonList(
+      lessonList,
+      startDate,
+      endDate,
+      visibility,
+      colorLessonBy,
+      filters
+    );
+    buildHtmlCalendar(
+      lessonList,
+      visibility,
+      startDate,
+      endDate,
+      lang,
+      minTime,
+      minLunchTime,
+      maxLunchTime,
+      colorLessonBy,
+      filters
+    );
   }
 
-  function buildHtmlLessonList(lessonList, param, filters) {
+  function buildHtmlLessonList(
+    lessonList,
+    startDate,
+    endDate,
+    visibility,
+    colorLessonBy,
+    filters
+  ) {
     const lessonsTbody = document.getElementById("lessons");
     const trs = lessonsTbody.querySelectorAll("tr");
     for (let i = trs.length - 1; i > 0; i--) {
       lessonsTbody.removeChild(trs[i]);
     }
-    addLessonForm.date.setAttribute("min", param.startDate);
-    addLessonForm.date.setAttribute("max", param.endDate);
-    filterAndSort(
-      lessonList,
-      param.visibility,
-      param.startDate,
-      param.endDate,
-      filters
-    ).forEach((lesson) => {
-      const tr = putElementIn("tr", lessonsTbody);
-      if (lesson.highlight) {
-        tr.className = "highlightedRow";
-      }
-      tr.onclick = () => {
-        highlightLesson(lesson.date, lesson.time, lesson.roomName);
-      };
-
-      const dateTd = putElementIn("td", tr);
-      dateTd.innerHTML = lesson.printDate();
-
-      const timeFromTd = putElementIn("td", tr);
-      timeFromTd.innerHTML = lesson.printTimeFrom();
-
-      const timeToTd = putElementIn("td", tr);
-      timeToTd.innerHTML = lesson.printTimeTo();
-
-      const roomTd = putElementIn("td", tr);
-      roomTd.innerHTML = lesson.roomName;
-
-      const teacherTd = putElementIn("td", tr);
-      fillTdWithNameAndDisk(
-        teacherTd,
-        "teacherName",
-        lesson,
-        teachers,
-        param.colorLessonBy
-      );
-
-      const levelTd = putElementIn("td", tr);
-      fillTdWithNameAndDisk(
-        levelTd,
-        "levelName",
-        lesson,
-        levels,
-        param.colorLessonBy
-      );
-
-      const removeButtonTd = putElementIn("td", tr);
-      removeButtonTd.setAttribute("colspan", 2);
-      if (lesson.highlight) {
-        const removeButton = putElementIn("div", removeButtonTd);
-        removeButton.className = "button";
-        removeButton.onclick = () => {
-          removeLesson(lesson.date, lesson.time, lesson.roomName);
+    addLessonForm.date.setAttribute("min", startDate);
+    addLessonForm.date.setAttribute("max", endDate);
+    filterAndSort(lessonList, visibility, startDate, endDate, filters).forEach(
+      (lesson) => {
+        const tr = putElementIn("tr", lessonsTbody);
+        if (lesson.highlight) {
+          tr.className = "highlightedRow";
+        }
+        tr.onclick = () => {
+          highlightLesson(lesson.date, lesson.time, lesson.roomName);
         };
-        removeButton.innerHTML = "-";
+
+        const dateTd = putElementIn("td", tr);
+        dateTd.innerHTML = lesson.printDate();
+
+        const timeFromTd = putElementIn("td", tr);
+        timeFromTd.innerHTML = lesson.printTimeFrom();
+
+        const timeToTd = putElementIn("td", tr);
+        timeToTd.innerHTML = lesson.printTimeTo();
+
+        const roomTd = putElementIn("td", tr);
+        roomTd.innerHTML = lesson.roomName;
+
+        const teacherTd = putElementIn("td", tr);
+        fillTdWithNameAndDisk(
+          teacherTd,
+          "teacherName",
+          lesson,
+          teachers,
+          colorLessonBy
+        );
+
+        const levelTd = putElementIn("td", tr);
+        fillTdWithNameAndDisk(
+          levelTd,
+          "levelName",
+          lesson,
+          levels,
+          colorLessonBy
+        );
+
+        const removeButtonTd = putElementIn("td", tr);
+        removeButtonTd.setAttribute("colspan", 2);
+        if (lesson.highlight) {
+          const removeButton = putElementIn("div", removeButtonTd);
+          removeButton.className = "button";
+          removeButton.onclick = () => {
+            removeLesson(lesson.date, lesson.time, lesson.roomName);
+          };
+          removeButton.innerHTML = "-";
+        }
       }
-    });
+    );
   }
 
-  function buildHtmlCalendar(lessonList, param, filters) {
+  function buildHtmlCalendar(
+    lessonList,
+    visibility,
+    startDate,
+    endDate,
+    lang,
+    minTime,
+    minLunchTime,
+    maxLunchTime,
+    colorLessonBy,
+    filters
+  ) {
     const filteredSortedList = filterAndSort(
       lessonList,
-      param.visibility,
-      param.startDate,
-      param.endDate,
+      visibility,
+      startDate,
+      endDate,
       filters
     );
     if (selectedDates.length === 0) {
@@ -178,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
     selectedDates.forEach((selectedDate) => {
       const thDay = putElementIn("th", tr1);
       thDay.setAttribute("colspan", filterRooms(rooms, filters).length);
-      thDay.innerHTML = selectedDate.printDate(param.lang);
+      thDay.innerHTML = selectedDate.printDate(lang);
 
       filterRooms(rooms, filters).forEach((room) => {
         const thRoom = putElementIn("th", tr2);
@@ -192,19 +254,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const tr = putElementIn("tr", tbody);
       const td = putElementIn("td", tr);
       if ([1, 3].includes(quarterTime % 4)) {
-        td.innerHTML = getTimeTextFrom(quarterTime, param.minTime);
+        td.innerHTML = getTimeTextFrom(quarterTime, minTime);
       }
       selectedDates.forEach((selectedDate) => {
         filterRooms(rooms, filters).forEach((room) => {
           const td = putElementIn("td", tr);
-          if (
-            isLunchTime(
-              quarterTime,
-              param.minTime,
-              param.minLunchTime,
-              param.maxLunchTime
-            )
-          ) {
+          if (isLunchTime(quarterTime, minTime, minLunchTime, maxLunchTime)) {
             td.className = "lunch";
           }
           const lesson = existingLesson(
@@ -212,14 +267,12 @@ document.addEventListener("DOMContentLoaded", function () {
             selectedDate.getDate(),
             quarterTime,
             room.name,
-            param.minTime
+            minTime
           );
           if (!!lesson) {
             td.className = "booked";
-            td.innerHTML = lesson.getInnerHtml(quarterTime, param.minTime);
-            td.style.backgroundColor = lesson.getBackgroundColor(
-              param.colorLessonBy
-            );
+            td.innerHTML = lesson.getInnerHtml(quarterTime, minTime);
+            td.style.backgroundColor = lesson.getBackgroundColor(colorLessonBy);
             if (lesson.highlight) {
               td.classList.add("highlighted-lesson");
             }
@@ -249,6 +302,17 @@ document.addEventListener("DOMContentLoaded", function () {
         filters.push({ field, value });
       }
     });
-    buildLessonListAndCalendar(lessons, parameter, filters);
+    buildLessonListAndCalendar(
+      lessons,
+      parameter.startDate,
+      parameter.endDate,
+      parameter.visibility,
+      parameter.colorLessonBy,
+      parameter.lang,
+      parameter.minTime,
+      parameter.minLunchTime,
+      parameter.maxLunchTime,
+      filters
+    );
   }
 });
