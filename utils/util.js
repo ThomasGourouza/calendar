@@ -260,27 +260,6 @@ function getQuarterTimes(minTime, maxTime) {
   return quarterTimes;
 }
 
-function removeLesson(date, time, roomName) {
-  lessons = lessons.filter(
-    (lesson) => !matchLessonCondition(lesson, date, time, roomName)
-  );
-  buildLessonListAndCalendar(lessons);
-}
-
-function highlightLesson(date, time, roomName) {
-  const lesson = lessons.find((l) =>
-    matchLessonCondition(l, date, time, roomName)
-  );
-  if (!!lesson) {
-    const previousHighlight = lesson.highlight;
-    // reset all
-    lessons.forEach((lesson) => (lesson.highlight = false));
-    // set new
-    lesson.highlight = !previousHighlight;
-    buildLessonListAndCalendar(lessons);
-  }
-}
-
 function matchLessonCondition(lesson, date, time, roomName) {
   return (
     lesson.date === date && lesson.time === time && lesson.roomName === roomName
