@@ -5,14 +5,14 @@ function getDaysNumberBetween(startDate, endDate) {
   return (endDate - startDate) / (1000 * 3600 * 24) + 1;
 }
 
-function getQuarterIdFromStartTime(timeString, param) {
-  return getQuarterIdFromEndTime(timeString, param) + 1;
+function getQuarterIdFromStartTime(timeString, minTime) {
+  return getQuarterIdFromEndTime(timeString, minTime) + 1;
 }
 
-function getQuarterIdFromEndTime(timeString, param) {
+function getQuarterIdFromEndTime(timeString, minTime) {
   const timeArray = timeString.split(":");
   const time = roundQuarter(+timeArray[0], +timeArray[1]);
-  return (time.hour + time.roundedMinute / 60 - param.minTime) * 4;
+  return (time.hour + time.roundedMinute / 60 - minTime) * 4;
 }
 
 function roundQuarter(hour, minute) {
@@ -25,14 +25,6 @@ function roundQuarter(hour, minute) {
     hour -= 24;
   }
   return { hour, roundedMinute };
-}
-
-// TODO: remove
-function getTimeTextFromTo(quarterTimeStart, quarterTimeEnd, param) {
-  return `${getTimeTextFrom(quarterTimeStart, param)} - ${getTimeTextTo(
-    quarterTimeEnd,
-    param
-  )}`;
 }
 
 // TODO: duplicate ?
@@ -132,25 +124,25 @@ function putElementIn(element, node) {
   return elmt;
 }
 
-function existingLesson(lessonList, date, quarterTime, roomName, param) {
+function existingLesson(lessonList, date, quarterTime, roomName, minTime) {
   return lessonList.find(
     (l) =>
       l.date === date &&
-      l.getQuarterIds(param).includes(quarterTime) &&
+      l.getQuarterIds(minTime).includes(quarterTime) &&
       l.roomName === roomName
   );
 }
 
-function isLunchTime(quarterTimeId, param) {
-  const minLunchTimeText = `${Math.floor(param.minLunchTime)}:${
-    (param.minLunchTime - Math.floor(param.minLunchTime)) * 60
+function isLunchTime(quarterTimeId, minTime, minLunchTime, maxLunchTime) {
+  const minLunchTimeText = `${Math.floor(minLunchTime)}:${
+    (minLunchTime - Math.floor(minLunchTime)) * 60
   }`;
-  const maxLunchTimeText = `${Math.floor(param.maxLunchTime)}:${
-    (param.maxLunchTime - Math.floor(param.maxLunchTime)) * 60
+  const maxLunchTimeText = `${Math.floor(maxLunchTime)}:${
+    (maxLunchTime - Math.floor(maxLunchTime)) * 60
   }`;
   return (
-    quarterTimeId >= getQuarterIdFromStartTime(minLunchTimeText, param) &&
-    quarterTimeId <= getQuarterIdFromEndTime(maxLunchTimeText, param)
+    quarterTimeId >= getQuarterIdFromStartTime(minLunchTimeText, minTime) &&
+    quarterTimeId <= getQuarterIdFromEndTime(maxLunchTimeText, minTime)
   );
 }
 
@@ -176,8 +168,8 @@ function getTime(start, end) {
   return `${getTimeTextFromInput(start)}-${getTimeTextFromInput(end)}`;
 }
 
-function getTimeFromQuarterId(quarterTimeId, param) {
-  const timeNumber = param.minTime + (quarterTimeId - 1) / 4;
+function getTimeFromQuarterId(quarterTimeId, minTime) {
+  const timeNumber = minTime + (quarterTimeId - 1) / 4;
   const hourFrom = Math.floor(timeNumber);
   const minuteFrom = (timeNumber - hourFrom) * 60;
   const timeNumberTo = timeNumber + 0.25;
@@ -195,18 +187,13 @@ function getTimeFromQuarterId(quarterTimeId, param) {
   };
 }
 
-function getTimeTextFrom(quarterTimeId, param) {
-  const time = getTimeFromQuarterId(quarterTimeId, param);
+function getTimeTextFrom(quarterTimeId, minTime) {
+  const time = getTimeFromQuarterId(quarterTimeId, minTime);
   return getTimeText(time.from.hour, time.from.minute);
 }
 
-function getTimeTextTo(quarterTimeId, param) {
-  const time = getTimeFromQuarterId(quarterTimeId, param);
-  return getTimeText(time.to.hour, time.to.minute);
-}
-
-function filterAndSort(lessonList, param, filters) {
-  return sort(filter(lessonList, param, filters));
+function filterAndSort(lessonList, visibility, startDate, endDate, filters) {
+  return sort(filter(lessonList, visibility, startDate, endDate, filters));
 }
 
 function sort(lessonList) {
@@ -223,11 +210,11 @@ function sort(lessonList) {
   return lessonList;
 }
 
-function filter(lessonList, param, filters) {
+function filter(lessonList, visibility, startDate, endDate, filters) {
   let newLessonList = [...lessonList];
-  if (param.visibility === "selected") {
-    const minDate = new Date(param.startDate);
-    const maxDate = new Date(param.endDate);
+  if (visibility === "selected") {
+    const minDate = new Date(startDate);
+    const maxDate = new Date(endDate);
     minDate.setDate(minDate.getDate() - 1);
     newLessonList = newLessonList.filter(
       (lesson) => lesson.localDate >= minDate && lesson.localDate <= maxDate
@@ -252,37 +239,25 @@ function filterRooms(rooms, filters) {
   return newRoomList;
 }
 
-function fillTdWithNameAndDisk(td, name, lesson, list, param) {
+function fillTdWithNameAndDisk(td, name, lesson, list, colorLessonBy) {
   const wrapper = putElementIn("div", td);
   wrapper.className = "two-col-td";
   const divName = putElementIn("div", wrapper);
   divName.innerHTML = lesson[name];
   const divDisk = putElementIn("div", wrapper);
-  if (param.colorLessonBy === name) {
+  if (colorLessonBy === name) {
     divDisk.style.backgroundColor = list.find(
       (item) => item.name === lesson[name]
     )?.color;
   }
 }
 
-function getQuarterTimes(param) {
+function getQuarterTimes(minTime, maxTime) {
   const quarterTimes = [];
-  for (let i = 1; i <= (param.maxTime - param.minTime) * 4; i++) {
+  for (let i = 1; i <= (maxTime - minTime) * 4; i++) {
     quarterTimes.push(i);
   }
   return quarterTimes;
-}
-
-function setForm(form, param) {
-  form.minTime.value = param.minTime;
-  form.maxTime.value = param.maxTime;
-  form.minLunchTime.value = param.minLunchTime;
-  form.maxLunchTime.value = param.maxLunchTime;
-  form.minLessonTime.value = param.minLessonTime;
-  form.maxLessonTime.value = param.maxLessonTime;
-  form.maxDays.value = param.maxDays;
-  form.colorLessonBy.value = param.colorLessonBy;
-  form.visibility.value = param.visibility;
 }
 
 function removeLesson(date, time, roomName) {
@@ -313,9 +288,101 @@ function matchLessonCondition(lesson, date, time, roomName) {
 }
 
 function getSelectedDates(startDate, endDate) {
+  const dateFrom = new Date(startDate);
+  const dateTo = new Date(endDate);
   let dates = [];
-  for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+  for (let d = dateFrom; d <= dateTo; d.setDate(d.getDate() + 1)) {
     dates.push(new CalendarDate(d.getDate(), d.getMonth(), d.getFullYear()));
   }
   return dates;
+}
+
+function validateCalendarForm(form) {
+  const dateFrom = new Date(form.startDate.value);
+  const dateTo = new Date(form.endDate.value);
+  const maxDays = +form.maxDays.value;
+  if (getDaysNumberBetween(dateFrom, dateTo) <= 0) {
+    alert(`End date must be after the start date.`);
+    return;
+  }
+  if (Math.abs(dateFrom - dateTo) / (1000 * 60 * 60 * 24) > maxDays - 1) {
+    alert(`Not more than ${maxDays} days.`);
+    return;
+  }
+}
+
+function setParameters(form, param) {
+  param.lang = form.lang.value;
+  param.minTime = +form.minTime.value;
+  param.maxTime = +form.maxTime.value;
+  param.minLunchTime = +form.minLunchTime.value;
+  param.maxLunchTime = +form.maxLunchTime.value;
+  param.minLessonTime = +form.minLessonTime.value;
+  param.maxLessonTime = +form.maxLessonTime.value;
+  param.maxDays = +form.maxDays.value;
+  param.colorLessonBy = form.colorLessonBy.value;
+  param.visibility = form.visibility.value;
+  param.startDate = form.startDate.value;
+  param.endDate = form.endDate.value;
+}
+
+function setForm(form, param) {
+  form.minTime.value = param.minTime;
+  form.maxTime.value = param.maxTime;
+  form.minLunchTime.value = param.minLunchTime;
+  form.maxLunchTime.value = param.maxLunchTime;
+  form.minLessonTime.value = param.minLessonTime;
+  form.maxLessonTime.value = param.maxLessonTime;
+  form.maxDays.value = param.maxDays;
+  form.colorLessonBy.value = param.colorLessonBy;
+  form.visibility.value = param.visibility;
+}
+
+function validateLessonForm(
+  form,
+  startDate,
+  endDate,
+  minLessonTime,
+  maxLessonTime
+) {
+  if (!startDate || !endDate) {
+    alert("Renseignez les dates du calendrier!");
+    return;
+  }
+  const dateFrom = new Date(startDate);
+  const dateTo = new Date(endDate);
+  dateTo.setDate(dateTo.getDate() + 1);
+
+  const lessonDate = new Date(`${form.date.value}T${form.startTime.value}:00`);
+  const lessonDateEnd = new Date(`${form.date.value}T${form.endTime.value}:00`);
+
+  if (lessonDate < dateFrom || lessonDate > dateTo) {
+    // TODO: useless ?
+    alert("invalid date");
+    return;
+  }
+  if (lessonDateEnd < lessonDate) {
+    // TODO
+    alert("impossible");
+    return;
+  }
+  if (
+    Math.abs(lessonDate - lessonDateEnd) < minLessonTime * 60000 ||
+    Math.abs(lessonDate - lessonDateEnd) > maxLessonTime * 60000
+  ) {
+    // TODO
+    alert(
+      `lesson should last between ${minLessonTime}min and ${maxLessonTime}min.`
+    );
+    return;
+  }
+}
+
+function getDate(date) {
+  const lessonDate = new Date(date);
+  return new CalendarDate(
+    lessonDate.getDate(),
+    lessonDate.getMonth(),
+    lessonDate.getFullYear()
+  ).getDate();
 }

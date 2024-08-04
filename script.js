@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let selectedDates = [];
 
+  // paramètres par défault
   const parameter = {
     lang: "fr",
     minTime: 8,
@@ -16,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     maxLessonTime: 120,
     maxDays: 20,
     colorLessonBy: "teacherName",
-    visibility: "selected",
+    visibility: "all",
     startDate: "",
     endDate: "",
   };
@@ -34,91 +35,32 @@ document.addEventListener("DOMContentLoaded", function () {
     teachers.map((teacher) => teacher.name)
   );
 
+  // formulaire des paramètres et des dates du calendrier
   const calendarForm = document.forms["calendar-form"];
-  // paramètres par défault
   setForm(calendarForm, parameter);
-
   calendarForm.onsubmit = function (e) {
     e.preventDefault();
-    const startDate = new Date(this.startDate.value);
-    const endDate = new Date(this.endDate.value);
-    if (getDaysNumberBetween(startDate, endDate) <= 0) {
-      alert(`End date must be after the start date.`);
-      return;
-    }
-    if (
-      Math.abs(startDate - endDate) / (1000 * 60 * 60 * 24) >
-      parameter.maxDays - 1
-    ) {
-      alert(`Not more than ${parameter.maxDays} days.`);
-      return;
-    }
-    parameter.lang = this.lang.value;
-    parameter.minTime = +this.minTime.value;
-    parameter.maxTime = +this.maxTime.value;
-    parameter.minLunchTime = +this.minLunchTime.value;
-    parameter.maxLunchTime = +this.maxLunchTime.value;
-    parameter.minLessonTime = +this.minLessonTime.value;
-    parameter.maxLessonTime = +this.maxLessonTime.value;
-    parameter.maxDays = +this.maxDays.value;
-    parameter.colorLessonBy = this.colorLessonBy.value;
-    parameter.visibility = this.visibility.value;
-    parameter.startDate = this.startDate.value;
-    parameter.endDate = this.endDate.value;
-
-    allQuarterTimes = getQuarterTimes(parameter);
-    selectedDates = getSelectedDates(startDate, endDate);
+    validateCalendarForm(this);
+    setParameters(this, parameter);
+    allQuarterTimes = getQuarterTimes(parameter.minTime, parameter.maxTime);
+    selectedDates = getSelectedDates(parameter.startDate, parameter.endDate);
     buildLessonListAndCalendar(lessons, parameter, filters);
   };
 
+  // ajouter une leçon
   const addLessonForm = document.forms["addLesson-form"];
   addLessonForm.onsubmit = function (e) {
     e.preventDefault();
-    const startDateValue = parameter.startDate;
-    const endDateValue = parameter.endDate;
-    if (!startDateValue || !endDateValue) {
-      alert("Renseignez les dates du calendrier!");
-      return;
-    }
-    const minDate = new Date(startDateValue);
-    const maxDate = new Date(endDateValue);
-    maxDate.setDate(maxDate.getDate() + 1);
-
-    const lessonDate = new Date(
-      `${this.date.value}T${this.startTime.value}:00`
-    );
-    const lessonDateEnd = new Date(
-      `${this.date.value}T${this.endTime.value}:00`
-    );
-
-    if (lessonDate < minDate || lessonDate > maxDate) {
-      // TODO: useless ?
-      alert("invalid date");
-      return;
-    }
-    if (lessonDateEnd < lessonDate) {
-      // TODO
-      alert("impossible");
-      return;
-    }
-    if (
-      Math.abs(lessonDate - lessonDateEnd) < parameter.minLessonTime * 60000 ||
-      Math.abs(lessonDate - lessonDateEnd) > parameter.maxLessonTime * 60000
-    ) {
-      // TODO
-      alert(
-        `lesson should last between ${parameter.minLessonTime}min and ${parameter.maxLessonTime}min.`
-      );
-      return;
-    }
-    const calendarDate = new CalendarDate(
-      lessonDate.getDate(),
-      lessonDate.getMonth(),
-      lessonDate.getFullYear()
+    validateLessonForm(
+      this,
+      parameter.startDate,
+      parameter.endDate,
+      parameter.minLessonTime,
+      parameter.maxLessonTime
     );
 
     const lesson = new Lesson(
-      calendarDate.getDate(),
+      getDate(this.date.value),
       getTime(this.startTime.value, this.endTime.value),
       this.roomName.value,
       this.teacherName.value,
@@ -147,7 +89,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     addLessonForm.date.setAttribute("min", param.startDate);
     addLessonForm.date.setAttribute("max", param.endDate);
-    filterAndSort(lessonList, param, filters).forEach((lesson) => {
+    filterAndSort(
+      lessonList,
+      param.visibility,
+      param.startDate,
+      param.endDate,
+      filters
+    ).forEach((lesson) => {
       const tr = putElementIn("tr", lessonsTbody);
       if (lesson.highlight) {
         tr.className = "highlightedRow";
@@ -169,10 +117,22 @@ document.addEventListener("DOMContentLoaded", function () {
       roomTd.innerHTML = lesson.roomName;
 
       const teacherTd = putElementIn("td", tr);
-      fillTdWithNameAndDisk(teacherTd, "teacherName", lesson, teachers, param);
+      fillTdWithNameAndDisk(
+        teacherTd,
+        "teacherName",
+        lesson,
+        teachers,
+        param.colorLessonBy
+      );
 
       const levelTd = putElementIn("td", tr);
-      fillTdWithNameAndDisk(levelTd, "levelName", lesson, levels, param);
+      fillTdWithNameAndDisk(
+        levelTd,
+        "levelName",
+        lesson,
+        levels,
+        param.colorLessonBy
+      );
 
       const removeButtonTd = putElementIn("td", tr);
       removeButtonTd.setAttribute("colspan", 2);
@@ -188,7 +148,13 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function buildHtmlCalendar(lessonList, param, filters) {
-    const filteredSortedList = filterAndSort(lessonList, param, filters);
+    const filteredSortedList = filterAndSort(
+      lessonList,
+      param.visibility,
+      param.startDate,
+      param.endDate,
+      filters
+    );
     if (selectedDates.length === 0) {
       return;
     }
@@ -226,12 +192,19 @@ document.addEventListener("DOMContentLoaded", function () {
       const tr = putElementIn("tr", tbody);
       const td = putElementIn("td", tr);
       if ([1, 3].includes(quarterTime % 4)) {
-        td.innerHTML = getTimeTextFrom(quarterTime, param);
+        td.innerHTML = getTimeTextFrom(quarterTime, param.minTime);
       }
       selectedDates.forEach((selectedDate) => {
         filterRooms(rooms, filters).forEach((room) => {
           const td = putElementIn("td", tr);
-          if (isLunchTime(quarterTime, param)) {
+          if (
+            isLunchTime(
+              quarterTime,
+              param.minTime,
+              param.minLunchTime,
+              param.maxLunchTime
+            )
+          ) {
             td.className = "lunch";
           }
           const lesson = existingLesson(
@@ -239,12 +212,14 @@ document.addEventListener("DOMContentLoaded", function () {
             selectedDate.getDate(),
             quarterTime,
             room.name,
-            param
+            param.minTime
           );
           if (!!lesson) {
             td.className = "booked";
-            td.innerHTML = lesson.getInnerHtml(quarterTime, param);
-            td.style.backgroundColor = lesson.getBackgroundColor(param);
+            td.innerHTML = lesson.getInnerHtml(quarterTime, param.minTime);
+            td.style.backgroundColor = lesson.getBackgroundColor(
+              param.colorLessonBy
+            );
             if (lesson.highlight) {
               td.classList.add("highlighted-lesson");
             }

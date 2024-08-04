@@ -25,15 +25,15 @@ class Lesson {
     return this.time + " To";
   }
 
-  getQuarterIds(param) {
+  getQuarterIds(minTime) {
     const timeStartEndArray = this.time.split("-");
     const quarterIdFromStartTime = getQuarterIdFromStartTime(
       timeStartEndArray[0],
-      param
+      minTime
     );
     const quarterIdFromEndTime = getQuarterIdFromEndTime(
       timeStartEndArray[1],
-      param
+      minTime
     );
     const quarterIds = [];
     for (let i = quarterIdFromStartTime; i <= quarterIdFromEndTime; i++) {
@@ -42,10 +42,10 @@ class Lesson {
     return quarterIds;
   }
 
-  getInnerHtml(quarterId, param) {
-    if (this.getQuarterIds(param)[0] === quarterId) {
+  getInnerHtml(quarterId, minTime) {
+    if (this.getQuarterIds(minTime)[0] === quarterId) {
       return `${this.levelName} - ${this.teacherName}`;
-    } else if (this.getQuarterIds(param)[1] === quarterId) {
+    } else if (this.getQuarterIds(minTime)[1] === quarterId) {
       return `${this.time}`;
     }
     return "";
@@ -55,8 +55,8 @@ class Lesson {
     return `${this.date} ${this.time} ${this.roomName}`;
   }
 
-  getBackgroundColor(param) {
-    return param?.colorLessonBy === "levelName"
+  getBackgroundColor(colorLessonBy) {
+    return colorLessonBy === "levelName"
       ? levels.find((level) => level.name === this.levelName)?.color
       : teachers.find((teacher) => teacher.name === this.teacherName)?.color;
   }
