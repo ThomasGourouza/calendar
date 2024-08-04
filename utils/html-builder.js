@@ -160,7 +160,7 @@ function buildHtmlCalendar(
   dates.forEach((date) => {
     const thDay = putElementIn("th", tr1);
     thDay.setAttribute("colspan", filterRooms(rooms, filters).length);
-    thDay.innerHTML = date.printDate(lang);
+    thDay.innerHTML = printDateText(date, lang);
 
     filterRooms(rooms, filters).forEach((room) => {
       const thRoom = putElementIn("th", tr2);
@@ -184,7 +184,7 @@ function buildHtmlCalendar(
         }
         const lesson = existingLesson(
           filteredSortedList,
-          date.getDate(),
+          getDateFromLocalDate(date),
           quarterTime,
           room.name,
           minTime

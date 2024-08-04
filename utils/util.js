@@ -146,16 +146,15 @@ function isLunchTime(quarterTimeId, minTime, minLunchTime, maxLunchTime) {
   );
 }
 
-function formatMinute(minute) {
-  return minute === 0 ? "00" : minute;
-}
-
-function formatHour(hour) {
-  return hour < 10 ? `0${hour}` : hour;
+function formatNumberToText(number) {
+  if (number === 0) {
+    return "00";
+  }
+  return number < 10 ? `0${number}` : number;
 }
 
 function getTimeText(hour, minute) {
-  return `${formatHour(hour)}:${formatMinute(minute)}`;
+  return `${formatNumberToText(hour)}:${formatNumberToText(minute)}`;
 }
 
 function getTimeTextFromInput(value) {
@@ -270,8 +269,8 @@ function getSelectedDates(startDate, endDate) {
   const dateFrom = new Date(startDate);
   const dateTo = new Date(endDate);
   let dates = [];
-  for (let d = dateFrom; d <= dateTo; d.setDate(d.getDate() + 1)) {
-    dates.push(new CalendarDate(d.getDate(), d.getMonth(), d.getFullYear()));
+  for (let date = dateFrom; date <= dateTo; date.setDate(date.getDate() + 1)) {
+    dates.push(new Date(date));
   }
   return dates;
 }
@@ -357,11 +356,72 @@ function validateLessonForm(
   }
 }
 
-function getDate(date) {
-  const lessonDate = new Date(date);
-  return new CalendarDate(
-    lessonDate.getDate(),
-    lessonDate.getMonth(),
-    lessonDate.getFullYear()
-  ).getDate();
+function getDate(dateValue) {
+  const [year, month, day] = dateValue.split("-");
+  return `${day}/${month}/${year}`;
+}
+
+function getDateFromLocalDate(d) {
+  return `${formatNumberToText(d.getDate())}/${formatNumberToText(
+    d.getMonth() + 1
+  )}/${d.getFullYear()}`;
+}
+
+function printDateText(d, lang) {
+  return `${getDayText(d.getDay(), lang)} ${d.getDate()} ${toMonthText(
+    d.getMonth() + 1,
+    lang
+  )} ${d.getFullYear()}`;
+}
+
+function getDayText(day, lang) {
+  switch (day) {
+    case 1:
+      return lang === "en" ? "Monday" : "Lundi";
+    case 2:
+      return lang === "en" ? "Tuesday" : "Mardi";
+    case 3:
+      return lang === "en" ? "Wednesday" : "Mercredi";
+    case 4:
+      return lang === "en" ? "Thursday" : "Jeudi";
+    case 5:
+      return lang === "en" ? "Friday" : "Vendredi";
+    case 6:
+      return lang === "en" ? "Saturday" : "Samedi";
+    case 7:
+      return lang === "en" ? "Sunday" : "Dimanche";
+    default:
+      return "";
+  }
+}
+
+function toMonthText(month, lang) {
+  switch (month) {
+    case 1:
+      return lang === "en" ? "January" : "Janvier";
+    case 2:
+      return lang === "en" ? "February" : "Février";
+    case 3:
+      return lang === "en" ? "March" : "Mars";
+    case 4:
+      return lang === "en" ? "April" : "Avril";
+    case 5:
+      return lang === "en" ? "May" : "Mai";
+    case 6:
+      return lang === "en" ? "June" : "Juin";
+    case 7:
+      return lang === "en" ? "July" : "Juillet";
+    case 8:
+      return lang === "en" ? "August" : "Août";
+    case 9:
+      return lang === "en" ? "September" : "Septembre";
+    case 10:
+      return lang === "en" ? "October" : "Octobre";
+    case 11:
+      return lang === "en" ? "November" : "Novembre";
+    case 12:
+      return lang === "en" ? "December" : "Décembre";
+    default:
+      return "";
+  }
 }

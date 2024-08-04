@@ -14,15 +14,15 @@ class Lesson {
   }
 
   printDate() {
-    return this.date + " en lettres";
+    return this.date;
   }
 
   printTimeFrom() {
-    return this.time + " From";
+    return this.time.split("-")[0];
   }
 
   printTimeTo() {
-    return this.time + " To";
+    return this.time.split("-")[1];
   }
 
   getQuarterIds(minTime) {
