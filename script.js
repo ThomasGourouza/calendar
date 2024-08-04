@@ -3,10 +3,13 @@ const lang = "fr";
 let filters = [];
 
 const parameterForm = document.forms["parameterForm"];
+// paramètres par défault
 parameterForm.minTime.value = 8;
 parameterForm.maxTime.value = 20;
 parameterForm.minLunchTime.value = 12;
 parameterForm.maxLunchTime.value = 14;
+parameterForm.minLessonTime.value = 30;
+parameterForm.maxLessonTime.value = 120;
 parameterForm.colorLessonBy.value = "level";
 let parameter = getParameter(parameterForm);
 parameterForm.onsubmit = function (e) {
@@ -21,6 +24,8 @@ function getParameter(form) {
     maxTime: +form.maxTime.value,
     minLunchTime: +form.minLunchTime.value,
     maxLunchTime: +form.maxLunchTime.value,
+    minLessonTime: +form.minLessonTime.value,
+    maxLessonTime: +form.maxLessonTime.value,
     colorLessonBy: form.colorLessonBy.value,
   };
 }
@@ -59,10 +64,14 @@ addLessonForm.onsubmit = function (e) {
     alert("impossible");
     return;
   }
-  const minLessonTime = 15;
-  if (Math.abs(lessonDate - lessonDateEnd) < minLessonTime * 60000) {
+  if (
+    Math.abs(lessonDate - lessonDateEnd) < parameter.minLessonTime * 60000 ||
+    Math.abs(lessonDate - lessonDateEnd) > parameter.maxLessonTime * 60000
+  ) {
     // TODO
-    alert(`lesson should be longer than ${minLessonTime}min.`);
+    alert(
+      `lesson should last between ${parameter.minLessonTime}min and ${parameter.maxLessonTime}min.`
+    );
     return;
   }
   const calendarDate = new CalendarDate(
