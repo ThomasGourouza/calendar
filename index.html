@@ -9,9 +9,10 @@
   <body>
     <div id="settings-wrapper">
       <form name="calendar-form">
-        <h2>Paramètres</h2>
+        <h1>Paramètres</h1>
         <div class="two-col-layout">
           <div>
+            <h2>Calendrier (Avancé)</h2>
             <label>Langue:</label>
             <select name="lang" required>
               <option value="en">English</option>
@@ -87,6 +88,7 @@
               <option value="levelName">Niveau</option>
             </select>
             <br /><br />
+            <h2>Leçons</h2>
             <label>Visibilité des leçons:</label>
             <select name="visibility" required>
               <option value="all">Toutes les leçons</option>
@@ -96,6 +98,7 @@
             </select>
           </div>
           <div>
+            <h2>Calendrier (Basic)</h2>
             <label>Start Date:</label>
             <input type="date" name="startDate" required />
             <br /><br />
@@ -109,7 +112,7 @@
     </div>
     <div id="lessons-wrapper">
       <form name="addLesson-form">
-        <h2>Leçons</h2>
+        <h1>Leçons</h1>
         <table class="lessons">
           <thead>
             <tr>

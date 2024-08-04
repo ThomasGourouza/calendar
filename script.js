@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // supprimer une leçon
   function removeLesson(date, time, roomName) {
     lessons = lessons.filter(
-      (lesson) => !matchLessonCondition(lesson, date, time, roomName)
+      (lesson) => !isLessonToRemove(lesson, date, time, roomName)
     );
     buildHtml();
   }
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // selectionner une leçon
   function highlightLesson(date, time, roomName) {
     const lesson = lessons.find((l) =>
-      matchLessonCondition(l, date, time, roomName)
+      isLessonToRemove(l, date, time, roomName)
     );
     if (!!lesson) {
       const previousHighlight = lesson.highlight;

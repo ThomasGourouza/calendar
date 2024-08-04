@@ -146,8 +146,8 @@ function buildHtmlCalendar(
   while (wrapper.firstChild) {
     wrapper.removeChild(wrapper.firstChild);
   }
-  const h2 = putElementIn("h2", wrapper);
-  h2.innerHTML = "Calendrier";
+  const h1 = putElementIn("h1", wrapper);
+  h1.innerHTML = "Calendrier";
   const table = putElementIn("table", wrapper);
   table.className = "calendar";
   const thead = putElementIn("thead", table);
@@ -184,12 +184,14 @@ function buildHtmlCalendar(
         if (isLunchTime(quarterTime, minTime, minLunchTime, maxLunchTime)) {
           td.className = "lunch";
         }
-        const lesson = existingLesson(
-          filteredSortedList,
-          getDateFromLocalDate(date),
-          quarterTime,
-          room.name,
-          minTime
+        const lesson = filteredSortedList.find((l) =>
+          isLessonToShow(
+            l,
+            getDateFromLocalDate(date),
+            quarterTime,
+            room.name,
+            minTime
+          )
         );
         if (!!lesson) {
           td.className = "booked";
