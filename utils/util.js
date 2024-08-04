@@ -5,14 +5,14 @@ function getDaysNumberBetween(startDate, endDate) {
   return (endDate - startDate) / (1000 * 3600 * 24) + 1;
 }
 
-function getQuarterIdFromStartTime(timeString) {
-  return getQuarterIdFromEndTime(timeString) + 1;
+function getQuarterIdFromStartTime(timeString, param) {
+  return getQuarterIdFromEndTime(timeString, param) + 1;
 }
 
-function getQuarterIdFromEndTime(timeString) {
+function getQuarterIdFromEndTime(timeString, param) {
   const timeArray = timeString.split(":");
   const time = roundQuarter(+timeArray[0], +timeArray[1]);
-  return (time.hour + time.roundedMinute / 60 - parameter.minTime) * 4;
+  return (time.hour + time.roundedMinute / 60 - param.minTime) * 4;
 }
 
 function roundQuarter(hour, minute) {
@@ -27,9 +27,11 @@ function roundQuarter(hour, minute) {
   return { hour, roundedMinute };
 }
 
-function getTimeTextFromTo(quarterTimeStart, quarterTimeEnd) {
-  return `${getTimeTextFrom(quarterTimeStart)} - ${getTimeTextTo(
-    quarterTimeEnd
+// TODO: remove
+function getTimeTextFromTo(quarterTimeStart, quarterTimeEnd, param) {
+  return `${getTimeTextFrom(quarterTimeStart, param)} - ${getTimeTextTo(
+    quarterTimeEnd,
+    param
   )}`;
 }
 
@@ -47,8 +49,8 @@ function fillSelectOptions(selectId, optionList) {
   });
 }
 
-function styleBorderThick() {
-  const roomLength = filterRooms(rooms).length;
+function styleBorderThick(filters) {
+  const roomLength = filterRooms(rooms, filters).length;
   const borderThick = getComputedStyle(
     document.documentElement
   ).getPropertyValue("--table-border-thick");
@@ -66,30 +68,33 @@ function styleBorderThick() {
   });
 }
 
-function styleColorCells() {
+function styleColorCalendarCells(filters) {
   // normal cells
   const allCellsSelector = `table.calendar tbody tr td:not(:first-child):not(.booked)`;
   styleColorEvenCells(
     "--table-content-odd",
     "--table-content-even",
-    allCellsSelector
+    allCellsSelector,
+    filters
   );
   // lunch cells
   const allLunchCellsSelector = `table.calendar td.lunch:not(.booked)`;
   styleColorEvenCells(
     "--table-lunch-odd",
     "--table-lunch-even",
-    allLunchCellsSelector
+    allLunchCellsSelector,
+    filters
   );
 }
 
 function styleColorEvenCells(
   colorOddCssVariable,
   colorEvenCssVariable,
-  allCellsSelector
+  allCellsSelector,
+  filters
 ) {
   colorCells(allCellsSelector, getStyle(colorOddCssVariable));
-  const roomLength = filterRooms(rooms).length;
+  const roomLength = filterRooms(rooms, filters).length;
   let evenCellsSelector = "";
   for (let i = 0; i < roomLength; i++) {
     const a = 2 * roomLength;
@@ -127,25 +132,25 @@ function putElementIn(element, node) {
   return elmt;
 }
 
-function existingLesson(lessonList, date, quarterTime, roomName) {
+function existingLesson(lessonList, date, quarterTime, roomName, param) {
   return lessonList.find(
     (l) =>
       l.date === date &&
-      l.quarterIds.includes(quarterTime) &&
+      l.getQuarterIds(param).includes(quarterTime) &&
       l.roomName === roomName
   );
 }
 
-function isLunchTime(quarterTimeId) {
-  const minLunchTimeText = `${Math.floor(parameter.minLunchTime)}:${
-    (parameter.minLunchTime - Math.floor(parameter.minLunchTime)) * 60
+function isLunchTime(quarterTimeId, param) {
+  const minLunchTimeText = `${Math.floor(param.minLunchTime)}:${
+    (param.minLunchTime - Math.floor(param.minLunchTime)) * 60
   }`;
-  const maxLunchTimeText = `${Math.floor(parameter.maxLunchTime)}:${
-    (parameter.maxLunchTime - Math.floor(parameter.maxLunchTime)) * 60
+  const maxLunchTimeText = `${Math.floor(param.maxLunchTime)}:${
+    (param.maxLunchTime - Math.floor(param.maxLunchTime)) * 60
   }`;
   return (
-    quarterTimeId >= getQuarterIdFromStartTime(minLunchTimeText) &&
-    quarterTimeId <= getQuarterIdFromEndTime(maxLunchTimeText)
+    quarterTimeId >= getQuarterIdFromStartTime(minLunchTimeText, param) &&
+    quarterTimeId <= getQuarterIdFromEndTime(maxLunchTimeText, param)
   );
 }
 
@@ -171,8 +176,8 @@ function getTime(start, end) {
   return `${getTimeTextFromInput(start)}-${getTimeTextFromInput(end)}`;
 }
 
-function getTimeFromQuarterId(quarterTimeId) {
-  const timeNumber = parameter.minTime + (quarterTimeId - 1) / 4;
+function getTimeFromQuarterId(quarterTimeId, param) {
+  const timeNumber = param.minTime + (quarterTimeId - 1) / 4;
   const hourFrom = Math.floor(timeNumber);
   const minuteFrom = (timeNumber - hourFrom) * 60;
   const timeNumberTo = timeNumber + 0.25;
@@ -190,18 +195,18 @@ function getTimeFromQuarterId(quarterTimeId) {
   };
 }
 
-function getTimeTextFrom(quarterTimeId) {
-  const time = getTimeFromQuarterId(quarterTimeId);
+function getTimeTextFrom(quarterTimeId, param) {
+  const time = getTimeFromQuarterId(quarterTimeId, param);
   return getTimeText(time.from.hour, time.from.minute);
 }
 
-function getTimeTextTo(quarterTimeId) {
-  const time = getTimeFromQuarterId(quarterTimeId);
+function getTimeTextTo(quarterTimeId, param) {
+  const time = getTimeFromQuarterId(quarterTimeId, param);
   return getTimeText(time.to.hour, time.to.minute);
 }
 
-function filterAndSort(lessonList) {
-  return sort(filter(lessonList));
+function filterAndSort(lessonList, param, filters) {
+  return sort(filter(lessonList, param, filters));
 }
 
 function sort(lessonList) {
@@ -218,11 +223,11 @@ function sort(lessonList) {
   return lessonList;
 }
 
-function filter(lessonList) {
+function filter(lessonList, param, filters) {
   let newLessonList = [...lessonList];
-  if (parameter.visibility === "selected") {
-    const minDate = new Date(calendarForm.startDate.value);
-    const maxDate = new Date(calendarForm.endDate.value);
+  if (param.visibility === "selected") {
+    const minDate = new Date(param.startDate);
+    const maxDate = new Date(param.endDate);
     minDate.setDate(minDate.getDate() - 1);
     newLessonList = newLessonList.filter(
       (lesson) => lesson.localDate >= minDate && lesson.localDate <= maxDate
@@ -238,7 +243,7 @@ function filter(lessonList) {
   return newLessonList;
 }
 
-function filterRooms(rooms) {
+function filterRooms(rooms, filters) {
   let newRoomList = [...rooms];
   const filterRoom = filters.find((filter) => filter.field === "roomName");
   if (!!filterRoom) {
@@ -247,13 +252,13 @@ function filterRooms(rooms) {
   return newRoomList;
 }
 
-function fillTdWithNameAndDisk(td, name, lesson, list) {
+function fillTdWithNameAndDisk(td, name, lesson, list, param) {
   const wrapper = putElementIn("div", td);
   wrapper.className = "two-col-td";
   const divName = putElementIn("div", wrapper);
   divName.innerHTML = lesson[name];
   const divDisk = putElementIn("div", wrapper);
-  if (parameter.colorLessonBy === name) {
+  if (param.colorLessonBy === name) {
     divDisk.style.backgroundColor = list.find(
       (item) => item.name === lesson[name]
     )?.color;
@@ -278,23 +283,6 @@ function setForm(form, param) {
   form.maxDays.value = param.maxDays;
   form.colorLessonBy.value = param.colorLessonBy;
   form.visibility.value = param.visibility;
-}
-
-function filterLessons() {
-  const startDateValue = parameter.startDate;
-  const endDateValue = parameter.endDate;
-  if (!startDateValue || !endDateValue) {
-    alert("Renseignez les dates du calendrier!");
-    return;
-  }
-  filters = [];
-  ["roomName", "teacherName", "levelName"].forEach((field) => {
-    const value = addLessonForm[field].value;
-    if (!!value) {
-      filters.push({ field, value });
-    }
-  });
-  buildLessonListAndCalendar(lessons);
 }
 
 function removeLesson(date, time, roomName) {
@@ -324,11 +312,10 @@ function matchLessonCondition(lesson, date, time, roomName) {
   );
 }
 
-function fillSelectedDates(startDate, endDate) {
-  selectedDates = [];
+function getSelectedDates(startDate, endDate) {
+  let dates = [];
   for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-    selectedDates.push(
-      new CalendarDate(d.getDate(), d.getMonth(), d.getFullYear())
-    );
+    dates.push(new CalendarDate(d.getDate(), d.getMonth(), d.getFullYear()));
   }
+  return dates;
 }

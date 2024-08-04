@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,6 +12,12 @@
         <h2>Paramètres</h2>
         <div class="two-col-layout">
           <div>
+            <label>Langue:</label>
+            <select name="lang" required>
+              <option value="en">English</option>
+              <option value="fr">Français</option>
+            </select>
+            <br /><br />
             <label>Heure du début des cours:</label>
             <select name="minTime" required>
               <option value="6">06:00</option>
@@ -156,7 +162,9 @@
               </td>
               <td><input type="submit" value="+" /></td>
               <td>
-                <div class="button filter" onclick="filterLessons()">Filtrer</div>
+                <div class="button filter" onclick="filterLessons()">
+                  Filtrer
+                </div>
               </td>
             </tr>
           </tbody>
