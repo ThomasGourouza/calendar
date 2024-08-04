@@ -50,14 +50,16 @@ function getParameter(form) {
     maxDays: form.maxDays.value,
     colorLessonBy: form.colorLessonBy.value,
     visibility: form.visibility.value,
+    startDate: form.startDate.value,
+    endDate: form.endDate.value,
   };
 }
 
 const addLessonForm = document.forms["addLessonForm"];
 addLessonForm.onsubmit = function (e) {
   e.preventDefault();
-  const startDateValue = calendarForm.startDate.value;
-  const endDateValue = calendarForm.endDate.value;
+  const startDateValue = parameter.startDate;
+  const endDateValue = parameter.endDate;
   if (!startDateValue || !endDateValue) {
     alert("Renseignez les dates du calendrier!");
     return;
@@ -127,8 +129,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function filterLessons() {
-  const startDateValue = calendarForm.startDate.value;
-  const endDateValue = calendarForm.endDate.value;
+  const startDateValue = parameter.startDate;
+  const endDateValue = parameter.endDate;
   if (!startDateValue || !endDateValue) {
     alert("Renseignez les dates du calendrier!");
     return;
@@ -251,8 +253,8 @@ function buildCalendar(lessonList) {
 }
 
 function buildLessonList(lessonList) {
-  const minDate = calendarForm.startDate.value;
-  const maxDate = calendarForm.endDate.value;
+  const minDate = parameter.startDate;
+  const maxDate = parameter.endDate;
   if (!minDate || !maxDate) {
     return;
   }
