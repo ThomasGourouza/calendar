@@ -246,6 +246,8 @@ table.lessons div.button.filter:hover {
   background-color: var(--table-button-filter-hover);
 }
 
+/* pour les deux formulaires en haut de page */
+
 .two-col-layout {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -253,4 +255,21 @@ table.lessons div.button.filter:hover {
 }
 .two-col-layout div {
   padding: 10px;
+}
+
+/* Dans le tableau des leçons */
+
+td div.two-col-td {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+td div.two-col-td div:first-child {
+  margin-left: 25px;
+}
+td div.two-col-td div:last-child {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 25px;
 }

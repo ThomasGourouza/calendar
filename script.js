@@ -10,7 +10,7 @@ parameterForm.minLunchTime.value = 12;
 parameterForm.maxLunchTime.value = 14;
 parameterForm.minLessonTime.value = 30;
 parameterForm.maxLessonTime.value = 120;
-parameterForm.colorLessonBy.value = "level";
+parameterForm.colorLessonBy.value = "levelName";
 let parameter = getParameter(parameterForm);
 parameterForm.onsubmit = function (e) {
   e.preventDefault();
@@ -270,10 +270,10 @@ function buildLessonList(lessonList) {
     roomTd.innerHTML = lesson.roomName;
 
     const teacherTd = putElementIn("td", tr);
-    teacherTd.innerHTML = lesson.teacherName;
+    fillTdWithNameAndDisk(teacherTd, "teacherName", lesson, teachers);
 
     const levelTd = putElementIn("td", tr);
-    levelTd.innerHTML = lesson.levelName;
+    fillTdWithNameAndDisk(levelTd, "levelName", lesson, levels);
 
     const removeButtonTd = putElementIn("td", tr);
     removeButtonTd.setAttribute("colspan", 2);

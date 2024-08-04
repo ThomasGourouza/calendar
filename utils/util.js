@@ -238,3 +238,16 @@ function filterRooms(rooms) {
   }
   return newRoomList;
 }
+
+function fillTdWithNameAndDisk(td, name, lesson, list) {
+  const wrapper = putElementIn("div", td);
+  wrapper.className = "two-col-td";
+  const divName = putElementIn("div", wrapper);
+  divName.innerHTML = lesson[name];
+  const divDisk = putElementIn("div", wrapper);
+  if (parameter.colorLessonBy === name) {
+    divDisk.style.backgroundColor = list.find(
+      (item) => item.name === lesson[name]
+    )?.color;
+  }
+}
