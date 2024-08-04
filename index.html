@@ -7,102 +7,99 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="two-col-layout">
-      <div>
-        <form name="parameterForm">
-          <h2>Paramètres</h2>
-          <label>Heure du début des cours:</label>
-          <select name="minTime" required>
-            <option value="6">06:00</option>
-            <option value="7">07:00</option>
-            <option value="8">08:00</option>
-            <option value="9">09:00</option>
-            <option value="10">10:00</option>
-          </select>
+    <form name="calendarForm">
+      <div class="two-col-layout">
+        <div>
+            <h2>Paramètres</h2>
+            <label>Heure du début des cours:</label>
+            <select name="minTime" required>
+              <option value="6">06:00</option>
+              <option value="7">07:00</option>
+              <option value="8">08:00</option>
+              <option value="9">09:00</option>
+              <option value="10">10:00</option>
+            </select>
+            <br /><br />
+            <label>Heure de fin des cours:</label>
+            <select name="maxTime" required>
+              <option class="test" value="16">16:00</option>
+              <option value="17">17:00</option>
+              <option value="18">18:00</option>
+              <option value="19">19:00</option>
+              <option value="20">20:00</option>
+            </select>
+            <br /><br />
+            <label>Heure du début de la pause midi:</label>
+            <select name="minLunchTime" required>
+              <option value="11">11:00</option>
+              <option value="11.5">11:30</option>
+              <option value="12">12:00</option>
+              <option value="12.5">12:30</option>
+              <option value="13">13:00</option>
+            </select>
+            <br /><br />
+            <label>Heure de fin de la pause midi:</label>
+            <select name="maxLunchTime" required>
+              <option value="13">13:00</option>
+              <option value="13.5">13:30</option>
+              <option value="14">14:00</option>
+              <option value="14.5">14:30</option>
+              <option value="15">15:00</option>
+            </select>
+            <br /><br />
+            <label>Durée minimale d'une leçon:</label>
+            <select name="minLessonTime" required>
+              <option value="15">15 min</option>
+              <option value="30">30 min</option>
+              <option value="45">45 min</option>
+              <option value="60">1h</option>
+            </select>
+            <br /><br />
+            <label>Durée maximale d'une leçon:</label>
+            <select name="maxLessonTime" required>
+              <option value="60">1h</option>
+              <option value="90">1h30</option>
+              <option value="120">2h</option>
+              <option value="150">2h30</option>
+              <option value="180">3h</option>
+              <option value="240">4h</option>
+            </select>
+            <br /><br />
+            <label>Nombres de jours maximum:</label>
+            <input
+              type="number"
+              name="maxDays"
+              min="1"
+              style="width: 50px"
+              required
+            />
+            <br /><br />
+            <label>Colorer les leçons par:</label>
+            <select name="colorLessonBy" required>
+              <option value="teacherName">Professeur</option>
+              <option value="levelName">Niveau</option>
+            </select>
+            <br /><br />
+            <label>Visibilité des leçons:</label>
+            <select name="visibility" required>
+              <option value="all">Toutes les leçons</option>
+              <option value="selected">
+                Leçons entre les dates sélectionnées
+              </option>
+            </select>
+        </div>
+        <div>
+          <h2>Calendrier</h2>
+          <label>Start Date:</label>
+          <input type="date" name="startDate" required />
           <br /><br />
-          <label>Heure de fin des cours:</label>
-          <select name="maxTime" required>
-            <option class="test" value="16">16:00</option>
-            <option value="17">17:00</option>
-            <option value="18">18:00</option>
-            <option value="19">19:00</option>
-            <option value="20">20:00</option>
-          </select>
-          <br /><br />
-          <label>Heure du début de la pause midi:</label>
-          <select name="minLunchTime" required>
-            <option value="11">11:00</option>
-            <option value="11.5">11:30</option>
-            <option value="12">12:00</option>
-            <option value="12.5">12:30</option>
-            <option value="13">13:00</option>
-          </select>
-          <br /><br />
-          <label>Heure de fin de la pause midi:</label>
-          <select name="maxLunchTime" required>
-            <option value="13">13:00</option>
-            <option value="13.5">13:30</option>
-            <option value="14">14:00</option>
-            <option value="14.5">14:30</option>
-            <option value="15">15:00</option>
-          </select>
-          <br /><br />
-          <label>Durée minimale d'une leçon:</label>
-          <select name="minLessonTime" required>
-            <option value="15">15 min</option>
-            <option value="30">30 min</option>
-            <option value="45">45 min</option>
-            <option value="60">1h</option>
-          </select>
-          <br /><br />
-          <label>Durée maximale d'une leçon:</label>
-          <select name="maxLessonTime" required>
-            <option value="60">1h</option>
-            <option value="90">1h30</option>
-            <option value="120">2h</option>
-            <option value="150">2h30</option>
-            <option value="180">3h</option>
-            <option value="240">4h</option>
-          </select>
-          <br /><br />
-          <label>Nombres de jours maximum:</label>
-          <input
-            type="number"
-            name="maxDays"
-            min="1"
-            style="width: 50px"
-            required
-          />
-          <br /><br />
-          <label>Colorer les leçons par:</label>
-          <select name="colorLessonBy" required>
-            <option value="teacherName">Professeur</option>
-            <option value="levelName">Niveau</option>
-          </select>
-          <br /><br />
-          <label>Visibilité des leçons:</label>
-          <select name="visibility" required>
-            <option value="all">Toutes les leçons</option>
-            <option value="selected">
-              Leçons entre les dates sélectionnées
-            </option>
-          </select>
+          <label>End Date:</label>
+          <input type="date" name="endDate" required />
           <br /><br />
           <input type="submit" value="Submit" />
-        </form>
+        </div>
       </div>
-      <form name="calendarForm">
-        <h2>Calendrier</h2>
-        <label>Start Date:</label>
-        <input type="date" name="startDate" required />
-        <br /><br />
-        <label>End Date:</label>
-        <input type="date" name="endDate" required />
-        <br /><br />
-        <input type="submit" value="Submit" />
-      </form>
-      <div></div>
-    </div>
+    </form>
 
     <form name="addLessonForm">
       <h2>Leçons</h2>

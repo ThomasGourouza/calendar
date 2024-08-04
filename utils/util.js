@@ -259,3 +259,11 @@ function fillTdWithNameAndDisk(td, name, lesson, list) {
     )?.color;
   }
 }
+
+function getQuarterTimes(param) {
+  const quarterTimes = [];
+  for (let i = 1; i <= (param.maxTime - param.minTime) * 4; i++) {
+    quarterTimes.push(i);
+  }
+  return quarterTimes;
+}
