@@ -279,3 +279,56 @@ function setForm(form, param) {
   form.colorLessonBy.value = param.colorLessonBy;
   form.visibility.value = param.visibility;
 }
+
+function filterLessons() {
+  const startDateValue = parameter.startDate;
+  const endDateValue = parameter.endDate;
+  if (!startDateValue || !endDateValue) {
+    alert("Renseignez les dates du calendrier!");
+    return;
+  }
+  filters = [];
+  ["roomName", "teacherName", "levelName"].forEach((field) => {
+    const value = addLessonForm[field].value;
+    if (!!value) {
+      filters.push({ field, value });
+    }
+  });
+  buildLessonListAndCalendar(lessons);
+}
+
+function removeLesson(date, time, roomName) {
+  lessons = lessons.filter(
+    (lesson) => !matchLessonCondition(lesson, date, time, roomName)
+  );
+  buildLessonListAndCalendar(lessons);
+}
+
+function highlightLesson(date, time, roomName) {
+  const lesson = lessons.find((l) =>
+    matchLessonCondition(l, date, time, roomName)
+  );
+  if (!!lesson) {
+    const previousHighlight = lesson.highlight;
+    // reset all
+    lessons.forEach((lesson) => (lesson.highlight = false));
+    // set new
+    lesson.highlight = !previousHighlight;
+    buildLessonListAndCalendar(lessons);
+  }
+}
+
+function matchLessonCondition(lesson, date, time, roomName) {
+  return (
+    lesson.date === date && lesson.time === time && lesson.roomName === roomName
+  );
+}
+
+function fillSelectedDates(startDate, endDate) {
+  selectedDates = [];
+  for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+    selectedDates.push(
+      new CalendarDate(d.getDate(), d.getMonth(), d.getFullYear())
+    );
+  }
+}
