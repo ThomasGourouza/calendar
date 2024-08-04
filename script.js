@@ -17,6 +17,7 @@ calendarForm.maxDays.value = 20;
 calendarForm.colorLessonBy.value = "teacherName";
 calendarForm.visibility.value = "selected";
 let parameter = getParameter(calendarForm);
+
 calendarForm.onsubmit = function (e) {
   e.preventDefault();
   parameter = getParameter(this);
