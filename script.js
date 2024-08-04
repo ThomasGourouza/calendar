@@ -5,23 +5,27 @@ let filters = [];
 // les quarts d'heures de la journée
 let allQuarterTimes = [];
 
+const parameter = {
+  // lang: "fr",
+  minTime: 8,
+  maxTime: 20,
+  minLunchTime: 12,
+  maxLunchTime: 14,
+  minLessonTime: 30,
+  maxLessonTime: 120,
+  maxDays: 20,
+  colorLessonBy: "teacherName",
+  visibility: "selected",
+  startDate: "",
+  endDate: "",
+};
+
 const calendarForm = document.forms["calendar-form"];
 // paramètres par défault
-calendarForm.minTime.value = 8;
-calendarForm.maxTime.value = 20;
-calendarForm.minLunchTime.value = 12;
-calendarForm.maxLunchTime.value = 14;
-calendarForm.minLessonTime.value = 30;
-calendarForm.maxLessonTime.value = 120;
-calendarForm.maxDays.value = 20;
-calendarForm.colorLessonBy.value = "teacherName";
-calendarForm.visibility.value = "selected";
-let parameter = getParameter(calendarForm);
+setForm(calendarForm, parameter);
 
 calendarForm.onsubmit = function (e) {
   e.preventDefault();
-  parameter = getParameter(this);
-  allQuarterTimes = getQuarterTimes(parameter);
 
   const startDate = new Date(this.startDate.value);
   const endDate = new Date(this.endDate.value);
@@ -36,25 +40,22 @@ calendarForm.onsubmit = function (e) {
     alert(`Not more than ${parameter.maxDays} days.`);
     return;
   }
+  parameter.minTime = +this.minTime.value;
+  parameter.maxTime = +this.maxTime.value;
+  parameter.minLunchTime = +this.minLunchTime.value;
+  parameter.maxLunchTime = +this.maxLunchTime.value;
+  parameter.minLessonTime = +this.minLessonTime.value;
+  parameter.maxLessonTime = +this.maxLessonTime.value;
+  parameter.maxDays = +this.maxDays.value;
+  parameter.colorLessonBy = this.colorLessonBy.value;
+  parameter.visibility = this.visibility.value;
+  parameter.startDate = this.startDate.value;
+  parameter.endDate = this.endDate.value;
+
+  allQuarterTimes = getQuarterTimes(parameter);
   fillSelectedDates(startDate, endDate);
   buildLessonListAndCalendar(lessons);
 };
-
-function getParameter(form) {
-  return {
-    minTime: +form.minTime.value,
-    maxTime: +form.maxTime.value,
-    minLunchTime: +form.minLunchTime.value,
-    maxLunchTime: +form.maxLunchTime.value,
-    minLessonTime: +form.minLessonTime.value,
-    maxLessonTime: +form.maxLessonTime.value,
-    maxDays: form.maxDays.value,
-    colorLessonBy: form.colorLessonBy.value,
-    visibility: form.visibility.value,
-    startDate: form.startDate.value,
-    endDate: form.endDate.value,
-  };
-}
 
 const addLessonForm = document.forms["addLessonForm"];
 addLessonForm.onsubmit = function (e) {

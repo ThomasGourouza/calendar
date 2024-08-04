@@ -267,3 +267,15 @@ function getQuarterTimes(param) {
   }
   return quarterTimes;
 }
+
+function setForm(form, param) {
+  form.minTime.value = param.minTime;
+  form.maxTime.value = param.maxTime;
+  form.minLunchTime.value = param.minLunchTime;
+  form.maxLunchTime.value = param.maxLunchTime;
+  form.minLessonTime.value = param.minLessonTime;
+  form.maxLessonTime.value = param.maxLessonTime;
+  form.maxDays.value = param.maxDays;
+  form.colorLessonBy.value = param.colorLessonBy;
+  form.visibility.value = param.visibility;
+}
