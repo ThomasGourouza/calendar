@@ -3,9 +3,6 @@ const calendarForm = document.forms["calendar-form"];
 const addLessonForm = document.forms["addLesson-form"];
 
 let levels = [];
-fetch("data/levels.json")
-  .then((response) => response.json())
-  .then((data) => (levels = data));
 
 // filtre des leçons
 let lessonFilters = [];
@@ -38,10 +35,17 @@ document.addEventListener("DOMContentLoaded", function () {
     "roomNames",
     rooms.map((room) => room.name)
   );
-  fillSelectOptions(
-    "levelNames",
-    levels.map((level) => level.name)
-  );
+
+  fetch("data/levels.json")
+    .then((response) => response.json())
+    .then((data) => {
+      levels = data;
+      fillSelectOptions(
+        "levelNames",
+        levels.map((level) => level.name)
+      );
+    });
+
   fillSelectOptions(
     "teacherNames",
     teachers.map((teacher) => teacher.name)
