@@ -7,11 +7,16 @@ function fillSelectOptions(selectId, optionList) {
   });
 }
 
+function sizeCalendarPage(daysNumber, roomNumber) {
+  changeStyle(
+    "--page-width",
+    `calc(300px + ${daysNumber} * ${roomNumber} * var(--table-content-td-width)`
+  );
+}
+
 function styleBorderThick(filters) {
   const roomLength = filterRooms(rooms, filters).length;
-  const borderThick = getComputedStyle(
-    document.documentElement
-  ).getPropertyValue("--table-border-thick");
+  const borderThick = getStyle("--table-border-thick");
   const cellsRoomHeaders = document.querySelectorAll(
     `table.calendar thead tr:not(:first-child) th:nth-child(${roomLength}n):not(:last-child)`
   );
@@ -73,23 +78,6 @@ function colorCells(cellsSelector, color) {
   });
 }
 
-function getStyle(cssVariable) {
-  return getComputedStyle(document.documentElement).getPropertyValue(
-    cssVariable
-  );
-}
-
-function changeStyle(cssVariable, value) {
-  document.documentElement.style.setProperty(cssVariable, value);
-  // getComputedStyle(document.documentElement).setProperty(cssVariable, value);
-}
-
-function putElementIn(element, node) {
-  const elmt = document.createElement(element);
-  node.appendChild(elmt);
-  return elmt;
-}
-
 function fillTdWithNameAndDisk(td, name, lesson, list, colorLessonBy) {
   const wrapper = putElementIn("div", td);
   wrapper.className = "two-col-td";
@@ -101,4 +89,20 @@ function fillTdWithNameAndDisk(td, name, lesson, list, colorLessonBy) {
       (item) => item.name === lesson[name]
     )?.color;
   }
+}
+
+function getStyle(cssVariable) {
+  return getComputedStyle(document.documentElement).getPropertyValue(
+    cssVariable
+  );
+}
+
+function changeStyle(cssVariable, value) {
+  document.documentElement.style.setProperty(cssVariable, value);
+}
+
+function putElementIn(element, node) {
+  const elmt = document.createElement(element);
+  node.appendChild(elmt);
+  return elmt;
 }

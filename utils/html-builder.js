@@ -11,6 +11,7 @@ function buildHtmlLessonListAndCalendar(
   maxLunchTime,
   filters,
   dates,
+  rooms,
   quarterTimes,
   highlight,
   remove
@@ -39,6 +40,7 @@ function buildHtmlLessonListAndCalendar(
     colorLessonBy,
     filters,
     dates,
+    rooms,
     quarterTimes,
     highlight
   );
@@ -129,6 +131,7 @@ function buildHtmlCalendar(
   colorLessonBy,
   filters,
   dates,
+  rooms,
   quarterTimes,
   highlight
 ) {
@@ -210,4 +213,5 @@ function buildHtmlCalendar(
   });
   styleBorderThick(filters);
   styleColorCalendarCells(filters);
+  sizeCalendarPage(dates.length, rooms.length);
 }

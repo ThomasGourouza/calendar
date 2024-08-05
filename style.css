@@ -25,9 +25,9 @@
   --table-content-td-height: calc(var(--table-content-td-width) / 6);
   /* longueur des cellules des heures du calendrier */
   --table-time-td-width: 70px;
-  /* longueur des cellules du calendrier: modifier dynamiquement avec JS */
+  /* longueur des cellules du calendrier */
   --table-content-td-width: 100px;
-  /* Largeur de la page */
+  /* Largeur de la page -> TODO: modifier dynamiquement avec JS */
   --page-width: calc(300px + 7 * 3 * var(--table-content-td-width));
   /* lorsqu'on selectionne une leçon dans le calendrier */
   --highlighted-lesson-opacity: 0.5;
@@ -58,7 +58,6 @@ body {
   font-family: Arial, sans-serif;
   overflow: auto;
   margin: 50px;
-  width: var(--page-width);
   height: 100%;
 }
 
@@ -66,6 +65,7 @@ body {
 div#calendar-wrapper,
 div#lessons-wrapper {
   margin-top: 50px;
+  min-width: var(--page-width);
 }
 table.calendar {
   margin-top: var(--table-margin-top);

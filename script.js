@@ -143,6 +143,7 @@ function buildHtml() {
     parameter.maxLunchTime,
     lessonFilters,
     selectedDates,
+    rooms,
     allQuarterTimes,
     highlightLesson,
     removeLesson
