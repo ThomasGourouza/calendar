@@ -22,7 +22,9 @@ Calendar generator
   - Le professeur André a bien un volume horaire compris entre 30 et 50 heures.
   - Le professeur André est bien absent tous les vendredis et le 24 juillet.
   - En revanche, il a été impossible de l'assigner au niveau A2.1
-- generer lessons et calendrier à partir de ces infos en tenant compte des weekend, jours fériés généraux et par prof, pause midi, et autres contraintes.
+- générer lessons et calendrier à partir de ces infos en tenant compte des weekend, jours fériés généraux et par prof, pause midi, et autres contraintes:
+    - calendrier simplifié sans salles ni heures (Julien)
+    - calendrier complet
 - ajouter une bdd (sqllite + php)
 - checkbox parmi les listes des profs/levels/salles pour selectionner ceux disponibles + bdd -> crud pour chacun des trois listes.
 - plusieurs ecrans/pages differentes (php)
