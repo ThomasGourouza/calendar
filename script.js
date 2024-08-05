@@ -1,60 +1,57 @@
-// les formulaires
-const calendarForm = document.forms["calendar-form"];
-const addLessonForm = document.forms["addLesson-form"];
-
+// les données à charger
 let levels = [];
+let rooms = [];
+let teachers = [];
+let lessons = [];
+let translation = undefined;
+let parameter = undefined;
 
-// filtre des leçons
+// filtres des leçons
 let lessonFilters = [];
-
 // les quarts d'heures de la journée
 let allQuarterTimes = [];
-
 // dates sélectionnées
 let selectedDates = [];
 
-// paramètres par défault
-const parameter = {
-  lang: "fr",
-  minTime: 8,
-  maxTime: 20,
-  minLunchTime: 12,
-  maxLunchTime: 14,
-  minLessonTime: 30,
-  maxLessonTime: 120,
-  maxDays: 20,
-  colorLessonBy: "teacherName",
-  visibility: "all",
-  startDate: "",
-  endDate: "",
-};
+// les formulaires
+const parameterForm = document.forms["parameter-form"];
+const addLessonForm = document.forms["addLesson-form"];
 
 document.addEventListener("DOMContentLoaded", function () {
-  // fill options in html template
-  fillSelectOptions(
-    "roomNames",
-    rooms.map((room) => room.name)
-  );
+  // load data and fill options in html template
+  loadData("levels").then((data) => {
+    levels = data;
+    fillSelectOptions(
+      "levels",
+      levels.map((level) => level.name)
+    );
+  });
+  loadData("rooms").then((data) => {
+    rooms = data;
+    fillSelectOptions(
+      "rooms",
+      rooms.map((room) => room.name)
+    );
+  });
+  loadData("teachers").then((data) => {
+    teachers = data;
+    fillSelectOptions(
+      "teachers",
+      teachers.map((teacher) => teacher.name)
+    );
+  });
 
-  fetch("data/levels.json")
-    .then((response) => response.json())
-    .then((data) => {
-      levels = data;
-      fillSelectOptions(
-        "levelNames",
-        levels.map((level) => level.name)
-      );
-    });
+  // load parameter and init form with default parameters
+  loadData("parameter").then((data) => {
+    parameter = data;
+    setForm(parameterForm, parameter);
+  });
 
-  fillSelectOptions(
-    "teacherNames",
-    teachers.map((teacher) => teacher.name)
-  );
+  // load lessons
+  loadData("lessons").then((data) => (lessons = data));
 
-  // initialiser le formulaire avec les paramètres par défault
-  setForm(calendarForm, parameter);
   // créer la liste des leçons et le calendrier
-  calendarForm.onsubmit = function (e) {
+  parameterForm.onsubmit = function (e) {
     e.preventDefault();
     validateCalendarForm(this);
     setParameters(this, parameter);

@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="settings-wrapper" class="page">
-      <form name="calendar-form">
+      <form name="parameter-form">
         <h1>Paramètres</h1>
         <div class="two-col-layout">
           <div>
@@ -151,17 +151,17 @@
                   />
                 </td>
                 <td>
-                  <select id="roomNames" name="roomName" required>
+                  <select id="rooms" name="roomName" required>
                     <option value=""></option>
                   </select>
                 </td>
                 <td>
-                  <select id="teacherNames" name="teacherName" required>
+                  <select id="teachers" name="teacherName" required>
                     <option value=""></option>
                   </select>
                 </td>
                 <td>
-                  <select id="levelNames" name="levelName" required>
+                  <select id="levels" name="levelName" required>
                     <option value=""></option>
                   </select>
                 </td>
@@ -185,17 +185,12 @@
     <script src="utils/filter-sort-util.js"></script>
     <script src="utils/form-util.js"></script>
     <script src="utils/html-util.js"></script>
-    <script src="utils/html-builder.js"></script>
+    <script src="utils/html-builder-util.js"></script>
     <script src="utils/time-private-util.js"></script>
     <script src="utils/time-public-util.js"></script>
-    <!-- Load translations -->
-    <script src="translations/translation.js"></script>
+    <script src="utils/data-util.js"></script>
     <!-- Load models -->
     <script src="models/lesson.js"></script>
-    <!-- Load data -->
-    <script src="data/rooms.js"></script>
-    <script src="data/teachers.js"></script>
-    <script src="data/lessons.js"></script>
     <!-- Load script -->
     <script src="script.js"></script>
   </body>

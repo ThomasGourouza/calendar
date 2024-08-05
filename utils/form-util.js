@@ -23,6 +23,8 @@ function setForm(form, param) {
   form.maxDays.value = param.maxDays;
   form.colorLessonBy.value = param.colorLessonBy;
   form.visibility.value = param.visibility;
+  form.startDate.value = param.startDate;
+  form.endDate.value = param.endDate;
 }
 
 function validateCalendarForm(form) {
