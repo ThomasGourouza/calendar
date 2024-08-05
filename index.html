@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="settings-wrapper">
+    <div id="settings-wrapper" class="page">
       <form name="calendar-form">
         <h1>Paramètres</h1>
         <div class="two-col-layout">
@@ -110,71 +110,74 @@
         </div>
       </form>
     </div>
-    <div id="lessons-wrapper">
-      <form name="addLesson-form">
-        <h1>Leçons</h1>
-        <table class="lessons">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Heure de début</th>
-              <th>Heure de fin</th>
-              <th>Salle</th>
-              <th>Enseignant</th>
-              <th>Niveau</th>
-              <th colspan="2">Action</th>
-            </tr>
-          </thead>
-          <tbody id="lessons">
-            <tr>
-              <td>
-                <input type="date" name="date" required />
-              </td>
-              <td>
-                <input
-                  type="time"
-                  name="startTime"
-                  min="08:00"
-                  max="19:45"
-                  required
-                />
-              </td>
-              <td>
-                <input
-                  type="time"
-                  name="endTime"
-                  min="08:15"
-                  max="20:00"
-                  required
-                />
-              </td>
-              <td>
-                <select id="roomNames" name="roomName" required>
-                  <option value=""></option>
-                </select>
-              </td>
-              <td>
-                <select id="teacherNames" name="teacherName" required>
-                  <option value=""></option>
-                </select>
-              </td>
-              <td>
-                <select id="levelNames" name="levelName" required>
-                  <option value=""></option>
-                </select>
-              </td>
-              <td><input type="submit" value="+" /></td>
-              <td>
-                <div class="button filter" onclick="filterLessons()">
-                  Filtrer
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
+    <div id="lessons-calendar-wrapper" class="page" style="display: none">
+      <button onclick="navigate('settings-wrapper')">Show Settings</button>
+      <div id="lessons-wrapper">
+        <form name="addLesson-form">
+          <h1>Leçons</h1>
+          <table class="lessons">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Heure de début</th>
+                <th>Heure de fin</th>
+                <th>Salle</th>
+                <th>Enseignant</th>
+                <th>Niveau</th>
+                <th colspan="2">Action</th>
+              </tr>
+            </thead>
+            <tbody id="lessons">
+              <tr>
+                <td>
+                  <input type="date" name="date" required />
+                </td>
+                <td>
+                  <input
+                    type="time"
+                    name="startTime"
+                    min="08:00"
+                    max="19:45"
+                    required
+                  />
+                </td>
+                <td>
+                  <input
+                    type="time"
+                    name="endTime"
+                    min="08:15"
+                    max="20:00"
+                    required
+                  />
+                </td>
+                <td>
+                  <select id="roomNames" name="roomName" required>
+                    <option value=""></option>
+                  </select>
+                </td>
+                <td>
+                  <select id="teacherNames" name="teacherName" required>
+                    <option value=""></option>
+                  </select>
+                </td>
+                <td>
+                  <select id="levelNames" name="levelName" required>
+                    <option value=""></option>
+                  </select>
+                </td>
+                <td><input type="submit" value="+" /></td>
+                <td>
+                  <div class="button filter" onclick="filterLessons()">
+                    Filtrer
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+      <div id="calendar-wrapper"></div>
     </div>
-    <div id="calendar-wrapper"></div>
 
     <!-- Load util files -->
     <script src="utils/settings-util.js"></script>

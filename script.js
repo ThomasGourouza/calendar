@@ -1,33 +1,33 @@
+// les formulaires
+const calendarForm = document.forms["calendar-form"];
+const addLessonForm = document.forms["addLesson-form"];
+
+// filtre des leçons
+let lessonFilters = [];
+
+// les quarts d'heures de la journée
+let allQuarterTimes = [];
+
+// dates sélectionnées
+let selectedDates = [];
+
+// paramètres par défault
+const parameter = {
+  lang: "fr",
+  minTime: 8,
+  maxTime: 20,
+  minLunchTime: 12,
+  maxLunchTime: 14,
+  minLessonTime: 30,
+  maxLessonTime: 120,
+  maxDays: 20,
+  colorLessonBy: "teacherName",
+  visibility: "all",
+  startDate: "",
+  endDate: "",
+};
+
 document.addEventListener("DOMContentLoaded", function () {
-  // les formulaires
-  const calendarForm = document.forms["calendar-form"];
-  const addLessonForm = document.forms["addLesson-form"];
-
-  // filtre des leçons
-  let lessonFilters = [];
-
-  // les quarts d'heures de la journée
-  let allQuarterTimes = [];
-
-  // dates sélectionnées
-  let selectedDates = [];
-
-  // paramètres par défault
-  const parameter = {
-    lang: "fr",
-    minTime: 8,
-    maxTime: 20,
-    minLunchTime: 12,
-    maxLunchTime: 14,
-    minLessonTime: 30,
-    maxLessonTime: 120,
-    maxDays: 20,
-    colorLessonBy: "teacherName",
-    visibility: "all",
-    startDate: "",
-    endDate: "",
-  };
-
   // fill options in html template
   fillSelectOptions(
     "roomNames",
@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
     allQuarterTimes = getQuarterTimes(parameter.minTime, parameter.maxTime);
     selectedDates = getSelectedDates(parameter.startDate, parameter.endDate);
     buildHtml();
+    navigate('lessons-calendar-wrapper');
   };
 
   // ajouter une leçon
@@ -79,65 +80,71 @@ document.addEventListener("DOMContentLoaded", function () {
     this.reset();
     buildHtml();
   };
-
-  // supprimer une leçon
-  function removeLesson(date, time, roomName) {
-    lessons = lessons.filter(
-      (lesson) => !isLessonToRemove(lesson, date, time, roomName)
-    );
-    buildHtml();
-  }
-
-  // selectionner une leçon
-  function highlightLesson(date, time, roomName) {
-    const lesson = lessons.find((l) =>
-      isLessonToRemove(l, date, time, roomName)
-    );
-    if (!!lesson) {
-      const previousHighlight = lesson.highlight;
-      // reset all
-      lessons.forEach((lesson) => (lesson.highlight = false));
-      // set new
-      lesson.highlight = !previousHighlight;
-      buildHtml();
-    }
-  }
-
-  // filtrer les leçons
-  function filterLessons() {
-    const startDateValue = parameter.startDate;
-    const endDateValue = parameter.endDate;
-    if (!startDateValue || !endDateValue) {
-      alert("Renseignez les dates du calendrier!");
-      return;
-    }
-    lessonFilters = [];
-    ["roomName", "teacherName", "levelName"].forEach((field) => {
-      const value = addLessonForm[field].value;
-      if (!!value) {
-        lessonFilters.push({ field, value });
-      }
-    });
-    buildHtml();
-  }
-
-  function buildHtml() {
-    return buildHtmlLessonListAndCalendar(
-      addLessonForm,
-      lessons,
-      parameter.startDate,
-      parameter.endDate,
-      parameter.visibility,
-      parameter.colorLessonBy,
-      parameter.lang,
-      parameter.minTime,
-      parameter.minLunchTime,
-      parameter.maxLunchTime,
-      lessonFilters,
-      selectedDates,
-      allQuarterTimes,
-      highlightLesson,
-      removeLesson
-    );
-  }
 });
+
+// supprimer une leçon
+function removeLesson(date, time, roomName) {
+  lessons = lessons.filter(
+    (lesson) => !isLessonToRemove(lesson, date, time, roomName)
+  );
+  buildHtml();
+}
+
+// selectionner une leçon
+function highlightLesson(date, time, roomName) {
+  const lesson = lessons.find((l) => isLessonToRemove(l, date, time, roomName));
+  if (!!lesson) {
+    const previousHighlight = lesson.highlight;
+    // reset all
+    lessons.forEach((lesson) => (lesson.highlight = false));
+    // set new
+    lesson.highlight = !previousHighlight;
+    buildHtml();
+  }
+}
+
+// filtrer les leçons
+function filterLessons() {
+  const startDateValue = parameter.startDate;
+  const endDateValue = parameter.endDate;
+  if (!startDateValue || !endDateValue) {
+    alert("Renseignez les dates du calendrier!");
+    return;
+  }
+  lessonFilters = [];
+  ["roomName", "teacherName", "levelName"].forEach((field) => {
+    const value = addLessonForm[field].value;
+    if (!!value) {
+      lessonFilters.push({ field, value });
+    }
+  });
+  buildHtml();
+}
+
+// changer de section
+function navigate(page) {
+  document.querySelectorAll(".page").forEach((p) => {
+    p.style.display = "none";
+  });
+  document.getElementById(page).style.display = "block";
+}
+
+function buildHtml() {
+  return buildHtmlLessonListAndCalendar(
+    addLessonForm,
+    lessons,
+    parameter.startDate,
+    parameter.endDate,
+    parameter.visibility,
+    parameter.colorLessonBy,
+    parameter.lang,
+    parameter.minTime,
+    parameter.minLunchTime,
+    parameter.maxLunchTime,
+    lessonFilters,
+    selectedDates,
+    allQuarterTimes,
+    highlightLesson,
+    removeLesson
+  );
+}

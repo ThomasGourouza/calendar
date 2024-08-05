@@ -26,3 +26,4 @@ Calendar generator
 - ajouter une bdd (sqllite + php)
 - checkbox parmi les listes des profs/levels/salles pour selectionner ceux disponibles + bdd -> crud pour chacun des trois listes.
 - plusieurs ecrans/pages differentes (php)
+- gérer les traduction (multilingue)
