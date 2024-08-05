@@ -5,6 +5,7 @@ Calendar generator
 # TODO:
 
 - data -> JSON + add 3 new models
+- settings (parameter) + data -> default if not in localstorage
 - ajouter jours fériés (colonne grise sans les salles (fine))
 - enlever les colonnes du samedi + dimanche (2 parameters) -> jours fériés
 - nombres de jours maximum -> en tenant compte des jours fériés et weekend
@@ -29,4 +30,4 @@ Calendar generator
 - excel export
 - checkbox parmi les listes des profs/levels/salles pour selectionner ceux disponibles + sauvegarde -> crud pour chacun des trois listes.
 - plusieurs ecrans/pages differentes
-- gérer les traduction (multilingue)
+- gérer les traduction (multilingue -> JSON)
