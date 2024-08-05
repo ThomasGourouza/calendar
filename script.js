@@ -1,10 +1,10 @@
 // les données à charger
-let levels = [];
-let rooms = [];
-let teachers = [];
-let lessons = [];
-let translation = undefined;
-let parameter = undefined;
+// let levels = [];
+// let rooms = [];
+// let teachers = [];
+// let lessons = [];
+// let translation = undefined;
+// let parameter = undefined;
 
 // filtres des leçons
 let lessonFilters = [];
@@ -19,36 +19,36 @@ const addLessonForm = document.forms["addLesson-form"];
 
 document.addEventListener("DOMContentLoaded", function () {
   // load data and fill options in html template
-  loadData("levels").then((data) => {
-    levels = data;
+  // loadData("levels").then((data) => {
+  //   levels = data;
     fillSelectOptions(
       "levels",
       levels.map((level) => level.name)
     );
-  });
-  loadData("rooms").then((data) => {
-    rooms = data;
+  // });
+  // loadData("rooms").then((data) => {
+  //   rooms = data;
     fillSelectOptions(
       "rooms",
       rooms.map((room) => room.name)
     );
-  });
-  loadData("teachers").then((data) => {
-    teachers = data;
+  // });
+  // loadData("teachers").then((data) => {
+  //   teachers = data;
     fillSelectOptions(
       "teachers",
       teachers.map((teacher) => teacher.name)
     );
-  });
+  // });
 
   // load parameter and init form with default parameters
-  loadData("parameter").then((data) => {
-    parameter = data;
+  // loadData("parameter").then((data) => {
+  //   parameter = data;
     setForm(parameterForm, parameter);
-  });
+  // });
 
   // load lessons
-  loadData("lessons").then((data) => (lessons = data));
+  // loadData("lessons").then((data) => (lessons = data));
 
   // créer la liste des leçons et le calendrier
   parameterForm.onsubmit = function (e) {
