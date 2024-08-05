@@ -13,11 +13,11 @@ class Lesson {
     return new Date(+year, +month - 1, +day);
   }
 
-  printTimeFrom() {
+  get timeFrom() {
     return this.time.split("-")[0];
   }
 
-  printTimeTo() {
+  get timeTo() {
     return this.time.split("-")[1];
   }
 

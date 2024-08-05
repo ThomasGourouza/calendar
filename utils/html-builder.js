@@ -77,10 +77,10 @@ function buildHtmlLessonList(
       dateTd.innerHTML = printDateText(lesson.localDate, lang);
 
       const timeFromTd = putElementIn("td", tr);
-      timeFromTd.innerHTML = lesson.printTimeFrom();
+      timeFromTd.innerHTML = lesson.timeFrom;
 
       const timeToTd = putElementIn("td", tr);
-      timeToTd.innerHTML = lesson.printTimeTo();
+      timeToTd.innerHTML = lesson.timeTo;
 
       const roomTd = putElementIn("td", tr);
       roomTd.innerHTML = lesson.roomName;
@@ -187,7 +187,7 @@ function buildHtmlCalendar(
         const lesson = filteredSortedList.find((l) =>
           isLessonToShow(
             l,
-            getDateFromLocalDate(date),
+            getDateTextFromLocalDate(date),
             quarterTime,
             room.name,
             minTime

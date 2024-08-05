@@ -67,8 +67,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // create lesson
     lessons.push(
       new Lesson(
-        getDate(this.date.value),
-        getTime(this.startTime.value, this.endTime.value),
+        getLessonDate(this.date.value),
+        getLessonTime(this.startTime.value, this.endTime.value),
         this.roomName.value,
         this.teacherName.value,
         this.levelName.value
