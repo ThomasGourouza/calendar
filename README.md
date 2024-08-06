@@ -31,3 +31,5 @@ Calendar generator
 - checkbox parmi les listes des profs/levels/salles pour selectionner ceux disponibles + sauvegarde -> crud pour chacun des trois listes.
 - plusieurs ecrans/pages differentes
 - gérer les traduction (multilingue -> JSON)
+- calendar fixed size + scroll inside
+- afficher les dashed line par 30min
