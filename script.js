@@ -13,7 +13,11 @@ let allQuarterTimes = [];
 // dates sélectionnées
 let selectedDates = [];
 
-// load lessons and mat to model
+// les formulaires
+const parameterForm = document.forms["parameter-form"];
+const addLessonForm = document.forms["addLesson-form"];
+
+// load lessons and map to model
 loadData("lessons").then(
   (data) =>
     (lessons = data.map(
@@ -23,80 +27,69 @@ loadData("lessons").then(
 // load translations
 loadData("translation", "translations").then((data) => (translation = data));
 
-document.addEventListener("DOMContentLoaded", function () {
-  // les formulaires
-  const parameterForm = document.forms["parameter-form"];
-  const addLessonForm = document.forms["addLesson-form"];
-  // créer la liste des leçons et le calendrier
-  parameterForm.onsubmit = function (e) {
-    console.log(parameter);
-    console.log(levels);
-    console.log(rooms);
-    console.log(teachers);
-    console.log(lessons);
-    console.log(translation);
-    e.preventDefault();
-    validateCalendarForm(this);
-    setParameters(this, parameter);
-    allQuarterTimes = getQuarterTimes(parameter.minTime, parameter.maxTime);
-    selectedDates = getSelectedDates(parameter.startDate, parameter.endDate);
-    buildHtml();
-    navigate("lessons-calendar-wrapper");
-  };
-  // ajouter une leçon
-  addLessonForm.onsubmit = function (e) {
-    e.preventDefault();
-    validateLessonForm(
-      this,
-      parameter.startDate,
-      parameter.endDate,
-      parameter.minLessonTime,
-      parameter.maxLessonTime
-    );
-    // create lesson
-    lessons.push(
-      new Lesson(
-        getLessonDate(this.date.value),
-        getLessonTime(this.startTime.value, this.endTime.value),
-        this.roomName.value,
-        this.teacherName.value,
-        this.levelName.value
-      )
-    );
-    // reset filters
-    lessonFilters = [];
-    this.reset();
-    buildHtml();
-  };
-
-  // load data and fill options in html template
-  loadData("levels").then((data) => {
-    levels = data;
-    fillSelectOptions(
-      "levels",
-      levels.map((level) => level.name)
-    );
-  });
-  loadData("rooms").then((data) => {
-    rooms = data;
-    fillSelectOptions(
-      "rooms",
-      rooms.map((room) => room.name)
-    );
-  });
-  loadData("teachers").then((data) => {
-    teachers = data;
-    fillSelectOptions(
-      "teachers",
-      teachers.map((teacher) => teacher.name)
-    );
-  });
-  // load parameter and init form with default parameters
-  loadData("parameter").then((data) => {
-    parameter = data;
-    setForm(parameterForm, parameter);
-  });
+// load data and fill options in html template
+loadData("levels").then((data) => {
+  levels = data;
+  fillSelectOptions(
+    "levels",
+    levels.map((level) => level.name)
+  );
 });
+loadData("rooms").then((data) => {
+  rooms = data;
+  fillSelectOptions(
+    "rooms",
+    rooms.map((room) => room.name)
+  );
+});
+loadData("teachers").then((data) => {
+  teachers = data;
+  fillSelectOptions(
+    "teachers",
+    teachers.map((teacher) => teacher.name)
+  );
+});
+// load parameter and init form with default parameters
+loadData("parameter").then((data) => {
+  parameter = data;
+  setForm(parameterForm, parameter);
+});
+
+// créer la liste des leçons et le calendrier
+parameterForm.onsubmit = function (e) {
+  e.preventDefault();
+  validateCalendarForm(this);
+  setParameters(this, parameter);
+  allQuarterTimes = getQuarterTimes(parameter.minTime, parameter.maxTime);
+  selectedDates = getSelectedDates(parameter.startDate, parameter.endDate);
+  buildHtml();
+  navigate("lessons-calendar-wrapper");
+};
+// ajouter une leçon
+addLessonForm.onsubmit = function (e) {
+  e.preventDefault();
+  validateLessonForm(
+    this,
+    parameter.startDate,
+    parameter.endDate,
+    parameter.minLessonTime,
+    parameter.maxLessonTime
+  );
+  // create lesson
+  lessons.push(
+    new Lesson(
+      getLessonDate(this.date.value),
+      getLessonTime(this.startTime.value, this.endTime.value),
+      this.roomName.value,
+      this.teacherName.value,
+      this.levelName.value
+    )
+  );
+  // reset filters
+  lessonFilters = [];
+  this.reset();
+  buildHtml();
+};
 
 // supprimer une leçon
 function removeLesson(date, time, roomName) {
