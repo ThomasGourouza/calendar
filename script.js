@@ -1,10 +1,10 @@
 // les données à charger
-// let levels = [];
-// let rooms = [];
-// let teachers = [];
-// let lessons = [];
-// let translation = undefined;
-// let parameter = undefined;
+let levels = [];
+let rooms = [];
+let teachers = [];
+let lessons = [];
+let translation = undefined;
+let parameter = undefined;
 
 // filtres des leçons
 let lessonFilters = [];
@@ -13,45 +13,28 @@ let allQuarterTimes = [];
 // dates sélectionnées
 let selectedDates = [];
 
-// les formulaires
-const parameterForm = document.forms["parameter-form"];
-const addLessonForm = document.forms["addLesson-form"];
+// load lessons and mat to model
+loadData("lessons").then(
+  (data) =>
+    (lessons = data.map(
+      (l) => new Lesson(l.date, l.time, l.roomName, l.teacherName, l.levelName)
+    ))
+);
+// load translations
+loadData("translation", "translations").then((data) => (translation = data));
 
 document.addEventListener("DOMContentLoaded", function () {
-  // load data and fill options in html template
-  // loadData("levels").then((data) => {
-  //   levels = data;
-    fillSelectOptions(
-      "levels",
-      levels.map((level) => level.name)
-    );
-  // });
-  // loadData("rooms").then((data) => {
-  //   rooms = data;
-    fillSelectOptions(
-      "rooms",
-      rooms.map((room) => room.name)
-    );
-  // });
-  // loadData("teachers").then((data) => {
-  //   teachers = data;
-    fillSelectOptions(
-      "teachers",
-      teachers.map((teacher) => teacher.name)
-    );
-  // });
-
-  // load parameter and init form with default parameters
-  // loadData("parameter").then((data) => {
-  //   parameter = data;
-    setForm(parameterForm, parameter);
-  // });
-
-  // load lessons
-  // loadData("lessons").then((data) => (lessons = data));
-
+  // les formulaires
+  const parameterForm = document.forms["parameter-form"];
+  const addLessonForm = document.forms["addLesson-form"];
   // créer la liste des leçons et le calendrier
   parameterForm.onsubmit = function (e) {
+    console.log(parameter);
+    console.log(levels);
+    console.log(rooms);
+    console.log(teachers);
+    console.log(lessons);
+    console.log(translation);
     e.preventDefault();
     validateCalendarForm(this);
     setParameters(this, parameter);
@@ -60,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
     buildHtml();
     navigate("lessons-calendar-wrapper");
   };
-
   // ajouter une leçon
   addLessonForm.onsubmit = function (e) {
     e.preventDefault();
@@ -86,6 +68,34 @@ document.addEventListener("DOMContentLoaded", function () {
     this.reset();
     buildHtml();
   };
+
+  // load data and fill options in html template
+  loadData("levels").then((data) => {
+    levels = data;
+    fillSelectOptions(
+      "levels",
+      levels.map((level) => level.name)
+    );
+  });
+  loadData("rooms").then((data) => {
+    rooms = data;
+    fillSelectOptions(
+      "rooms",
+      rooms.map((room) => room.name)
+    );
+  });
+  loadData("teachers").then((data) => {
+    teachers = data;
+    fillSelectOptions(
+      "teachers",
+      teachers.map((teacher) => teacher.name)
+    );
+  });
+  // load parameter and init form with default parameters
+  loadData("parameter").then((data) => {
+    parameter = data;
+    setForm(parameterForm, parameter);
+  });
 });
 
 // supprimer une leçon
