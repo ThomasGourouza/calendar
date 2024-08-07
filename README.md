@@ -9,7 +9,7 @@ Calendar generator
 - ajouter jours fériés (colonne grise sans les salles (fine))
 - enlever les colonnes du samedi + dimanche (2 parameters) -> jours fériés
 - nombres de jours maximum -> en tenant compte des jours fériés et weekend
-- possibilité de rentrer la durée exacte d'une leçon
+- possibilité de rentrer la durée exacte d'une leçon (toutes les leçons ont la même durée?)
 - ajouter days-off récurrents par prof: checkbox lundi à vendredi (sauvegarde -> crud prof)
 - ajouter days-off par prof parmi les jours selectionnés au départ: checkbox des jours précis dans la liste des jours selectionnés
 - ajouter volume horaire pour la selection de dates par prof: (sauvegarde -> crud prof)
