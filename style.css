@@ -13,9 +13,7 @@
   --table-header-day-odd: rgb(105, 208, 2);
   --table-header-day-even: chartreuse;
   /* hauteur des headers des jours */
-  --table-header-day-height: calc(var(--table-header-room-height) + 10px);
-  /* hauteur des headers des salles */
-  --table-header-room-height: calc(var(--table-content-td-height) + 15px);
+  --table-header-day-height: calc(var(--table-content-td-height) + 25px);
   --table-time: rgb(242, 196, 60);
   --table-content-odd: burlywood;
   --table-content-even: rgb(245, 202, 147);
@@ -89,18 +87,13 @@ table.calendar thead tr:first-child th:not(:first-child) {
   /* Les jours */
   border-left: none;
   border-bottom: none;
+  border-bottom: var(--table-border-thick);
 }
 table.calendar thead tr:first-child th:not(:first-child):nth-child(2n) {
   background-color: var(--table-header-day-odd);
 }
 table.calendar thead tr:first-child th:not(:first-child):nth-child(2n + 1) {
   background-color: var(--table-header-day-even);
-}
-table.calendar thead tr:not(:first-child) th {
-  /* Les salles */
-  height: var(--table-header-room-height);
-  border-left: none;
-  border-bottom: var(--table-border-thick);
 }
 table.calendar thead tr th {
   border: var(--table-border);

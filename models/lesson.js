@@ -1,8 +1,7 @@
 class Lesson {
-  constructor(date, time, roomName, teacherName, levelName) {
+  constructor(date, time, teacherName, levelName) {
     this.date = date;
     this.time = time;
-    this.roomName = roomName;
     this.teacherName = teacherName;
     this.levelName = levelName;
     this.highlight = false;
@@ -48,7 +47,7 @@ class Lesson {
   }
 
   get title() {
-    return `${this.date} ${this.time} ${this.roomName}`;
+    return `${this.date} ${this.time}`;
   }
 
   getBackgroundColor(colorLessonBy) {

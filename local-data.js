@@ -22,21 +22,11 @@ const levels = [
 ];
 
 let lessons = [
-  new Lesson("09/08/2024", "09:00-10:00", "Room 2", "Pauline", "A2.3"),
-  new Lesson("10/08/2024", "08:00-09:00", "Room 1", "Magda", "B2.4"),
-  new Lesson("11/08/2024", "09:30-11:00", "Room 3", "Pauline", "B2.4"),
-  new Lesson("09/08/2024", "09:15-10:30", "Room 3", "Hervé", "C1.2"),
-  new Lesson("08/08/2024", "09:00-10:00", "Room 2", "Pauline", "A2.3"),
-];
-
-const rooms = [
-  { name: "Room 1", color: "blue" },
-  { name: "Room 2", color: "green" },
-  { name: "Room 3", color: "yellow" },
-  // { name: "Room 4", color: "blue"},
-  // { name: "Room 5", color: "green"},
-  // { name: "Room 6", color: "yellow"},
-  // { name: "Room 7", color: "red"},
+  new Lesson("09/08/2024", "09:00-10:00", "Pauline", "A2.3"),
+  new Lesson("10/08/2024", "08:00-09:00", "Magda", "B2.4"),
+  new Lesson("11/08/2024", "09:30-11:00", "Pauline", "B2.4"),
+  new Lesson("09/08/2024", "09:15-10:30", "Hervé", "C1.2"),
+  new Lesson("08/08/2024", "09:00-10:00", "Pauline", "A2.3"),
 ];
 
 const teachers = [

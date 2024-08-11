@@ -7,23 +7,22 @@ function fillSelectOptions(selectId, optionList) {
   });
 }
 
-function sizeCalendarPage(daysNumber, roomNumber) {
+function sizeCalendarPage(daysNumber) {
   changeStyle(
     "--page-width",
-    `calc(300px + ${daysNumber} * ${roomNumber} * var(--table-content-td-width)`
+    `calc(300px + ${daysNumber} * var(--table-content-td-width)`
   );
 }
 
-function styleBorderThick(filters) {
-  const roomLength = filterRooms(rooms, filters).length;
+function styleBorderThick() {
   const borderThick = getStyle("--table-border-thick");
-  const cellsRoomHeaders = document.querySelectorAll(
-    `table.calendar thead tr:not(:first-child) th:nth-child(${roomLength}n):not(:last-child)`
+  const cellsHeaders = document.querySelectorAll(
+    `table.calendar thead tr:not(:first-child) th:nth-child(n):not(:last-child)`
   );
   const cellContentCells = document.querySelectorAll(
-    `table.calendar tbody tr td:nth-child(${roomLength}n + 1):not(:last-child)`
+    `table.calendar tbody tr td:nth-child(n + 1):not(:last-child)`
   );
-  cellsRoomHeaders.forEach((cell) => {
+  cellsHeaders.forEach((cell) => {
     cell.style.borderRight = borderThick;
   });
   cellContentCells.forEach((cell) => {
@@ -31,44 +30,30 @@ function styleBorderThick(filters) {
   });
 }
 
-function styleColorCalendarCells(filters) {
+function styleColorCalendarCells() {
   // normal cells
   const allCellsSelector = `table.calendar tbody tr td:not(:first-child):not(.booked)`;
   styleColorEvenCells(
     "--table-content-odd",
     "--table-content-even",
-    allCellsSelector,
-    filters
+    allCellsSelector
   );
   // lunch cells
   const allLunchCellsSelector = `table.calendar td.lunch:not(.booked)`;
   styleColorEvenCells(
     "--table-lunch-odd",
     "--table-lunch-even",
-    allLunchCellsSelector,
-    filters
+    allLunchCellsSelector
   );
 }
 
 function styleColorEvenCells(
   colorOddCssVariable,
   colorEvenCssVariable,
-  allCellsSelector,
-  filters
+  allCellsSelector
 ) {
   colorCells(allCellsSelector, getStyle(colorOddCssVariable));
-  const roomLength = filterRooms(rooms, filters).length;
-  let evenCellsSelector = "";
-  for (let i = 0; i < roomLength; i++) {
-    const a = 2 * roomLength;
-    const b = i + 2 - roomLength;
-    const signB = b < 0 ? "-" : "+";
-    const absB = Math.abs(b);
-    evenCellsSelector += `${allCellsSelector}:nth-child(${a}n ${signB} ${absB})`;
-    if (i < roomLength - 1) {
-      evenCellsSelector += ", ";
-    }
-  }
+  const evenCellsSelector = `${allCellsSelector}:nth-child(2n - 1)`;
   colorCells(evenCellsSelector, getStyle(colorEvenCssVariable));
 }
 

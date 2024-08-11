@@ -11,16 +11,15 @@ function isLunchTime(quarterTimeId, minTime, minLunchTime, maxLunchTime) {
   );
 }
 
-function isLessonToShow(lesson, date, quarterTime, roomName, minTime) {
+function isLessonToShow(lesson, date, quarterTime, minTime) {
   return (
     lesson.date === date &&
-    lesson.getQuarterIds(minTime).includes(quarterTime) &&
-    lesson.roomName === roomName
+    lesson.getQuarterIds(minTime).includes(quarterTime)
   );
 }
 
-function isLessonToRemove(lesson, date, time, roomName) {
+function isLessonToRemove(lesson, date, time) {
   return (
-    lesson.date === date && lesson.time === time && lesson.roomName === roomName
+    lesson.date === date && lesson.time === time
   );
 }

@@ -2,35 +2,30 @@
   {
     "date": "09/08/2024",
     "time": "09:00-10:00",
-    "roomName": "Room 2",
     "teacherName": "Pauline",
     "levelName": "A2.3"
   },
   {
     "date": "10/08/2024",
     "time": "08:00-09:00",
-    "roomName": "Room 1",
     "teacherName": "Magda",
     "levelName": "B2.4"
   },
   {
     "date": "11/08/2024",
     "time": "09:30-11:00",
-    "roomName": "Room 3",
     "teacherName": "Pauline",
     "levelName": "B2.4"
   },
   {
     "date": "09/08/2024",
     "time": "09:15-10:30",
-    "roomName": "Room 3",
     "teacherName": "Hervé",
     "levelName": "C1.2"
   },
   {
     "date": "08/08/2024",
     "time": "09:00-10:00",
-    "roomName": "Room 2",
     "teacherName": "Pauline",
     "levelName": "A2.3"
   }

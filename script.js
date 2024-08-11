@@ -1,6 +1,5 @@
 // les données à charger
 // if JSON: let levels = [];
-// if JSON: let rooms = [];
 // if JSON: let teachers = [];
 // if JSON: let lessons = [];
 // if JSON: let translation = undefined;
@@ -21,7 +20,7 @@ const addLessonForm = document.forms["addLesson-form"];
 // if JSON: loadData("lessons").then(
 // if JSON:   (data) =>
 // if JSON:     (lessons = data.map(
-// if JSON:       (l) => new Lesson(l.date, l.time, l.roomName, l.teacherName, l.levelName)
+// if JSON:       (l) => new Lesson(l.date, l.time, l.teacherName, l.levelName)
 // if JSON:     ))
 // if JSON: );
 // load translations
@@ -33,13 +32,6 @@ const addLessonForm = document.forms["addLesson-form"];
 fillSelectOptions(
   "levels",
   levels.map((level) => level.name)
-);
-// if JSON: });
-// if JSON: loadData("rooms").then((data) => {
-// if JSON: rooms = data;
-fillSelectOptions(
-  "rooms",
-  rooms.map((room) => room.name)
 );
 // if JSON: });
 // if JSON: loadData("teachers").then((data) => {
@@ -56,15 +48,15 @@ setForm(parameterForm, parameter);
 // if JSON: });
 
 // créer la liste des leçons et le calendrier
-// if JSON: parameterForm.onsubmit = function (e) {
-// if JSON:   e.preventDefault();
-// if JSON:   validateCalendarForm(this);
-// if JSON:   setParameters(this, parameter);
+// see calendar: parameterForm.onsubmit = function (e) {
+// see calendar:   e.preventDefault();
+// see calendar:   validateCalendarForm(this);
+// see calendar:   setParameters(this, parameter);
   allQuarterTimes = getQuarterTimes(parameter.minTime, parameter.maxTime);
   selectedDates = getSelectedDates(parameter.startDate, parameter.endDate);
   buildHtml();
   navigate("lessons-calendar-wrapper");
-// if JSON: };
+// see calendar: };
 // ajouter une leçon
 addLessonForm.onsubmit = function (e) {
   e.preventDefault();
@@ -80,7 +72,6 @@ addLessonForm.onsubmit = function (e) {
     new Lesson(
       getLessonDate(this.date.value),
       getLessonTime(this.startTime.value, this.endTime.value),
-      this.roomName.value,
       this.teacherName.value,
       this.levelName.value
     )
@@ -92,16 +83,16 @@ addLessonForm.onsubmit = function (e) {
 };
 
 // supprimer une leçon
-function removeLesson(date, time, roomName) {
+function removeLesson(date, time) {
   lessons = lessons.filter(
-    (lesson) => !isLessonToRemove(lesson, date, time, roomName)
+    (lesson) => !isLessonToRemove(lesson, date, time)
   );
   buildHtml();
 }
 
 // selectionner une leçon
-function highlightLesson(date, time, roomName) {
-  const lesson = lessons.find((l) => isLessonToRemove(l, date, time, roomName));
+function highlightLesson(date, time) {
+  const lesson = lessons.find((l) => isLessonToRemove(l, date, time));
   if (!!lesson) {
     const previousHighlight = lesson.highlight;
     // reset all
@@ -121,7 +112,7 @@ function filterLessons() {
     return;
   }
   lessonFilters = [];
-  ["roomName", "teacherName", "levelName"].forEach((field) => {
+  ["teacherName", "levelName"].forEach((field) => {
     const value = addLessonForm[field].value;
     if (!!value) {
       lessonFilters.push({ field, value });
@@ -152,7 +143,6 @@ function buildHtml() {
     parameter.maxLunchTime,
     lessonFilters,
     selectedDates,
-    rooms,
     allQuarterTimes,
     highlightLesson,
     removeLesson

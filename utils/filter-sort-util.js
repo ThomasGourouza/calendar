@@ -35,12 +35,3 @@ function filter(lessonList, visibility, startDate, endDate, filters) {
   }
   return newLessonList;
 }
-
-function filterRooms(rooms, filters) {
-  let newRoomList = [...rooms];
-  const filterRoom = filters.find((filter) => filter.field === "roomName");
-  if (!!filterRoom) {
-    newRoomList = newRoomList.filter((room) => room.name === filterRoom.value);
-  }
-  return newRoomList;
-}
