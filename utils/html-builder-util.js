@@ -59,12 +59,21 @@ function buildHtmlCalendar(lessonList, dates, levels, highlight) {
   table.className = "calendar";
   const thead = putElementIn("thead", table);
   const tbody = putElementIn("tbody", table);
-  const tr = putElementIn("tr", thead);
-  putElementIn("th", tr);
+  const tr1 = putElementIn("tr", thead);
+  const tr2 = putElementIn("tr", thead);
+  const th = putElementIn("th", tr1);
+  th.setAttribute("rowspan", 2);
 
   // Headers jours
   dates.forEach((date) => {
-    const thDay = putElementIn("th", tr);
+    const thDay = putElementIn("th", tr1);
+    thDay.innerHTML = printDateText(date);
+    if(thDay.innerHTML === "") {
+      thDay.className = "weekend";
+    }
+  });
+  dates.forEach((date) => {
+    const thDay = putElementIn("th", tr2);
     thDay.innerHTML = printDateText(date);
     if(thDay.innerHTML === "") {
       thDay.className = "weekend";
@@ -100,7 +109,5 @@ function buildHtmlCalendar(lessonList, dates, levels, highlight) {
       }
     });
   });
-  styleBorderThick();
-  styleColorCalendarCells();
   sizeCalendarPage(dates.length);
 }

@@ -29,6 +29,7 @@
   --highlighted-lesson-opacity: 0.5;
   /* colonne weekend */
   --table-weekend-width: 50px;
+  --table-weekend-color: gray;
 
   /* Lessons */
   --table-lesson-margin-top: 10px;
@@ -81,19 +82,40 @@ table.calendar thead tr:first-child th:first-child {
 table.calendar thead tr:first-child th:last-child {
   border-radius: 0 var(--table-border-radius) 0 0;
 }
-table.calendar thead tr:first-child th:not(:first-child) {
+table.calendar thead tr:first-child th:not(:first-child):not(.weekend) {
   /* Les jours */
   border-left: none;
-  border-bottom: none;
+  border-bottom: var(--table-border);
+}
+table.calendar thead tr:last-child th:nth-child(n):not(.weekend) {
+  border-right: var(--table-border);
   border-bottom: var(--table-border-thick);
 }
-table.calendar thead tr:first-child th:not(:first-child):nth-child(2n):not(.weekend) {
+table.calendar tbody tr td:first-child {
+  border-right: var(--table-border-thick);
+}
+table.calendar
+  thead
+  tr:first-child
+  th:not(:first-child):nth-child(2n):not(.weekend) {
   background-color: var(--table-header-day-odd);
 }
-table.calendar thead tr:first-child th:not(:first-child):nth-child(2n + 1):not(.weekend) {
+table.calendar
+  thead
+  tr:first-child
+  th:not(:first-child):nth-child(2n + 1):not(.weekend) {
   background-color: var(--table-header-day-even);
 }
-table.calendar thead tr th {
+table.calendar thead tr:last-child th:nth-child(2n):not(.weekend) {
+  background-color: var(--table-header-day-even);
+}
+table.calendar thead tr:last-child th:nth-child(2n + 1):not(.weekend) {
+  background-color: var(--table-header-day-odd);
+}
+table.calendar thead tr:first-child th {
+  border-top: var(--table-border);
+}
+table.calendar thead tr:first-child th:not(.weekend) {
   border: var(--table-border);
 }
 table.calendar tbody tr td {
@@ -134,9 +156,20 @@ table.calendar tbody tr td:not(:first-child).booked.highlighted-lesson {
 
 table.calendar th.weekend,
 table.calendar td.weekend {
-  background-color: gray;
+  background-color: var(--table-weekend-color);
+  border-bottom: none;
   width: var(--table-weekend-width);
   min-width: var(--table-weekend-width);
+}
+
+table.calendar tbody tr td:not(:first-child):not(.booked):not(.weekend) {
+  background-color: var(--table-content-odd);
+}
+table.calendar
+  tbody
+  tr
+  td:not(:first-child):not(.booked):nth-child(2n - 1):not(.weekend) {
+  background-color: var(--table-content-even);
 }
 
 /* Lessons */
