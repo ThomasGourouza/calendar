@@ -21,7 +21,7 @@ function buildHtmlLessonList(lessonList, highlight, remove) {
       tr.className = "highlightedRow";
     }
     tr.onclick = () => {
-      highlight(lesson.date);
+      highlight(lesson.date, lesson.level);
     };
 
     const dateTd = putElementIn("td", tr);
@@ -34,12 +34,11 @@ function buildHtmlLessonList(lessonList, highlight, remove) {
     levelTd.innerHTML = lesson.level;
 
     const removeButtonTd = putElementIn("td", tr);
-    removeButtonTd.setAttribute("colspan", 2);
     if (lesson.highlight) {
       const removeButton = putElementIn("div", removeButtonTd);
       removeButton.className = "button";
       removeButton.onclick = () => {
-        remove(lesson.date);
+        remove(lesson.date, lesson.level);
       };
       removeButton.innerHTML = "-";
     }
@@ -82,7 +81,7 @@ function buildHtmlCalendar(lessonList, dates, levels, highlight) {
       const td = putElementIn("td", tr);
       if (date !== "") {
         const lesson = sort(lessonList).find((l) =>
-          isLessonToShow(l, getDateTextFromLocalDate(date), level)
+          isLesson(l, getDateTextFromLocalDate(date), level)
         );
         if (!!lesson) {
           td.className = "booked";
@@ -93,7 +92,7 @@ function buildHtmlCalendar(lessonList, dates, levels, highlight) {
           }
           td.setAttribute("title", lesson.title);
           td.onclick = () => {
-            highlight(lesson.date);
+            highlight(lesson.date, lesson.level);
           };
         }
       } else {

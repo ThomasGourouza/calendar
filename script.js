@@ -4,10 +4,7 @@ let selectedDates = [];
 // les formulaires
 const parameterForm = document.forms["parameter-form"];
 const addLessonForm = document.forms["addLesson-form"];
-fillSelectOptions(
-  "levels",
-  levels
-);
+fillSelectOptions("levels", levels);
 fillSelectOptions(
   "teachers",
   teachers.map((teacher) => teacher.name)
@@ -16,13 +13,13 @@ fillSelectOptions(
 setForm(parameterForm, parameter);
 
 // créer la liste des leçons et le calendrier
-// see calendar: parameterForm.onsubmit = function (e) {
-// see calendar:   e.preventDefault();
-// see calendar:   setParameters(this, parameter);
+parameterForm.onsubmit = function (e) {
+  e.preventDefault();
+  setParameters(this, parameter);
   selectedDates = getSelectedDates(parameter.startDate, parameter.numberDays);
   buildHtml();
   navigate("lessons-calendar-wrapper");
-// see calendar: };
+};
 
 // ajouter une leçon
 addLessonForm.onsubmit = function (e) {
@@ -41,16 +38,14 @@ addLessonForm.onsubmit = function (e) {
 };
 
 // supprimer une leçon
-function removeLesson(date) {
-  lessons = lessons.filter(
-    (lesson) => !isLessonToRemove(lesson, date)
-  );
+function removeLesson(date, level) {
+  lessons = lessons.filter((lesson) => !isLesson(lesson, date, level));
   buildHtml();
 }
 
 // selectionner une leçon
-function highlightLesson(date) {
-  const lesson = lessons.find((l) => isLessonToRemove(l, date));
+function highlightLesson(date, level) {
+  const lesson = lessons.find((l) => isLesson(l, date, level));
   if (!!lesson) {
     const previousHighlight = lesson.highlight;
     // reset all
