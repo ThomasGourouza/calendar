@@ -1,141 +1,52 @@
 function buildHtmlLessonListAndCalendar(
-  lessonForm,
   lessonList,
-  startDate,
-  endDate,
-  visibility,
-  colorLessonBy,
-  lang,
-  minTime,
-  minLunchTime,
-  maxLunchTime,
-  filters,
   dates,
-  quarterTimes,
+  levels,
   highlight,
   remove
 ) {
-  buildHtmlLessonList(
-    lessonForm,
-    lessonList,
-    startDate,
-    endDate,
-    lang,
-    visibility,
-    colorLessonBy,
-    filters,
-    highlight,
-    remove
-  );
-  buildHtmlCalendar(
-    lessonList,
-    visibility,
-    startDate,
-    endDate,
-    lang,
-    minTime,
-    minLunchTime,
-    maxLunchTime,
-    colorLessonBy,
-    filters,
-    dates,
-    quarterTimes,
-    highlight
-  );
+  buildHtmlLessonList(lessonList, highlight, remove);
+  buildHtmlCalendar(lessonList, dates, levels, highlight);
 }
 
-function buildHtmlLessonList(
-  lessonForm,
-  lessonList,
-  startDate,
-  endDate,
-  lang,
-  visibility,
-  colorLessonBy,
-  filters,
-  highlight,
-  remove
-) {
+function buildHtmlLessonList(lessonList, highlight, remove) {
   const lessonsTbody = document.getElementById("lessons");
   const trs = lessonsTbody.querySelectorAll("tr");
   for (let i = trs.length - 1; i > 0; i--) {
     lessonsTbody.removeChild(trs[i]);
   }
-  lessonForm.date.setAttribute("min", startDate);
-  lessonForm.date.setAttribute("max", endDate);
-  filterAndSort(lessonList, visibility, startDate, endDate, filters).forEach(
-    (lesson) => {
-      const tr = putElementIn("tr", lessonsTbody);
-      if (lesson.highlight) {
-        tr.className = "highlightedRow";
-      }
-      tr.onclick = () => {
-        highlight(lesson.date, lesson.time);
-      };
-
-      const dateTd = putElementIn("td", tr);
-      dateTd.innerHTML = printDateText(lesson.localDate, lang);
-
-      const timeFromTd = putElementIn("td", tr);
-      timeFromTd.innerHTML = lesson.timeFrom;
-
-      const timeToTd = putElementIn("td", tr);
-      timeToTd.innerHTML = lesson.timeTo;
-
-      const teacherTd = putElementIn("td", tr);
-      fillTdWithNameAndDisk(
-        teacherTd,
-        "teacherName",
-        lesson,
-        teachers,
-        colorLessonBy
-      );
-
-      const levelTd = putElementIn("td", tr);
-      fillTdWithNameAndDisk(
-        levelTd,
-        "levelName",
-        lesson,
-        levels,
-        colorLessonBy
-      );
-
-      const removeButtonTd = putElementIn("td", tr);
-      removeButtonTd.setAttribute("colspan", 2);
-      if (lesson.highlight) {
-        const removeButton = putElementIn("div", removeButtonTd);
-        removeButton.className = "button";
-        removeButton.onclick = () => {
-          remove(lesson.date, lesson.time);
-        };
-        removeButton.innerHTML = "-";
-      }
+  sort(lessonList).forEach((lesson) => {
+    const tr = putElementIn("tr", lessonsTbody);
+    if (lesson.highlight) {
+      tr.className = "highlightedRow";
     }
-  );
+    tr.onclick = () => {
+      highlight(lesson.date);
+    };
+
+    const dateTd = putElementIn("td", tr);
+    dateTd.innerHTML = printDateText(lesson.localDate);
+
+    const teacherTd = putElementIn("td", tr);
+    fillTdWithTeacherAndDisk(teacherTd, lesson, teachers);
+
+    const levelTd = putElementIn("td", tr);
+    levelTd.innerHTML = lesson.level;
+
+    const removeButtonTd = putElementIn("td", tr);
+    removeButtonTd.setAttribute("colspan", 2);
+    if (lesson.highlight) {
+      const removeButton = putElementIn("div", removeButtonTd);
+      removeButton.className = "button";
+      removeButton.onclick = () => {
+        remove(lesson.date);
+      };
+      removeButton.innerHTML = "-";
+    }
+  });
 }
 
-function buildHtmlCalendar(
-  lessonList,
-  visibility,
-  startDate,
-  endDate,
-  lang,
-  minTime,
-  minLunchTime,
-  maxLunchTime,
-  colorLessonBy,
-  filters,
-  dates,
-  quarterTimes,
-  highlight
-) {
-  const filteredSortedList = filterAndSort(
-    lessonList,
-    visibility,
-    startDate,
-    endDate,
-    filters
-  );
+function buildHtmlCalendar(lessonList, dates, levels, highlight) {
   if (dates.length === 0) {
     return;
   }
@@ -155,35 +66,38 @@ function buildHtmlCalendar(
   // Headers jours
   dates.forEach((date) => {
     const thDay = putElementIn("th", tr);
-    thDay.innerHTML = printDateText(date, lang);
+    thDay.innerHTML = printDateText(date);
+    if(thDay.innerHTML === "") {
+      thDay.className = "weekend";
+    }
   });
 
   // Contenu du calendrier
-  quarterTimes.forEach((quarterTime) => {
+  levels.forEach((level) => {
     const tr = putElementIn("tr", tbody);
     const td = putElementIn("td", tr);
-    if ([1, 3].includes(quarterTime % 4)) {
-      td.innerHTML = getTimeTextFrom(quarterTime, minTime);
-    }
+    td.innerHTML = level;
+    
     dates.forEach((date) => {
       const td = putElementIn("td", tr);
-      if (isLunchTime(quarterTime, minTime, minLunchTime, maxLunchTime)) {
-        td.className = "lunch";
-      }
-      const lesson = filteredSortedList.find((l) =>
-        isLessonToShow(l, getDateTextFromLocalDate(date), quarterTime, minTime)
-      );
-      if (!!lesson) {
-        td.className = "booked";
-        td.innerHTML = lesson.getInnerHtml(quarterTime, minTime);
-        td.style.backgroundColor = lesson.getBackgroundColor(colorLessonBy);
-        if (lesson.highlight) {
-          td.classList.add("highlighted-lesson");
+      if (date !== "") {
+        const lesson = sort(lessonList).find((l) =>
+          isLessonToShow(l, getDateTextFromLocalDate(date), level)
+        );
+        if (!!lesson) {
+          td.className = "booked";
+          td.innerHTML = lesson.teacherName;
+          td.style.backgroundColor = lesson.backgroundColor;
+          if (lesson.highlight) {
+            td.classList.add("highlighted-lesson");
+          }
+          td.setAttribute("title", lesson.title);
+          td.onclick = () => {
+            highlight(lesson.date);
+          };
         }
-        td.setAttribute("title", lesson.title);
-        td.onclick = () => {
-          highlight(lesson.date, lesson.time);
-        };
+      } else {
+        td.className = "weekend";
       }
     });
   });

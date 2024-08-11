@@ -32,18 +32,11 @@ function styleBorderThick() {
 
 function styleColorCalendarCells() {
   // normal cells
-  const allCellsSelector = `table.calendar tbody tr td:not(:first-child):not(.booked)`;
+  const allCellsSelector = `table.calendar tbody tr td:not(:first-child):not(.booked):not(.weekend)`;
   styleColorEvenCells(
     "--table-content-odd",
     "--table-content-even",
     allCellsSelector
-  );
-  // lunch cells
-  const allLunchCellsSelector = `table.calendar td.lunch:not(.booked)`;
-  styleColorEvenCells(
-    "--table-lunch-odd",
-    "--table-lunch-even",
-    allLunchCellsSelector
   );
 }
 
@@ -63,17 +56,15 @@ function colorCells(cellsSelector, color) {
   });
 }
 
-function fillTdWithNameAndDisk(td, name, lesson, list, colorLessonBy) {
+function fillTdWithTeacherAndDisk(td, lesson, list) {
   const wrapper = putElementIn("div", td);
   wrapper.className = "two-col-td";
   const divName = putElementIn("div", wrapper);
-  divName.innerHTML = lesson[name];
+  divName.innerHTML = lesson.teacherName;
   const divDisk = putElementIn("div", wrapper);
-  if (colorLessonBy === name) {
-    divDisk.style.backgroundColor = list.find(
-      (item) => item.name === lesson[name]
-    )?.color;
-  }
+  divDisk.style.backgroundColor = list.find(
+    (item) => item.teacherName === lesson.teacherName
+  )?.color;
 }
 
 function getStyle(cssVariable) {

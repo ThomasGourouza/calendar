@@ -1,17 +1,16 @@
-function getQuarterTimes(minTime, maxTime) {
-  const quarterTimes = [];
-  for (let i = 1; i <= (maxTime - minTime) * 4; i++) {
-    quarterTimes.push(i);
-  }
-  return quarterTimes;
-}
-
-function getSelectedDates(startDate, endDate) {
+function getSelectedDates(startDate, numberDays) {
+  const result = [];
   const dateFrom = new Date(startDate);
-  const dateTo = new Date(endDate);
-  let dates = [];
-  for (let date = dateFrom; date <= dateTo; date.setDate(date.getDate() + 1)) {
-    dates.push(new Date(date));
+  let daysAdded = 0;
+  while (daysAdded < numberDays) {
+    if (![0, 6].includes(dateFrom.getDay())) {
+      result.push(new Date(dateFrom));
+      daysAdded++;
+    } else if (dateFrom.getDay() == 6) {
+      result.push("");
+      daysAdded++;
+    }
+    dateFrom.setDate(dateFrom.getDate() + 1);
   }
-  return dates;
+  return result;
 }

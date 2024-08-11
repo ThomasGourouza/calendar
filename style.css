@@ -4,11 +4,9 @@
   --box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   --table-border-radius: 15px;
   --table-border-color: rgb(105, 105, 105);
-  --table-border-dashed-color: rgb(154, 154, 154);
   --table-border-thick-color: black;
   --table-border: 1px solid var(--table-border-color);
   --table-border-thick: 1px solid var(--table-border-thick-color);
-  --table-border-dashed: 1px dashed var(--table-border-dashed-color);
   --table-header-title: beige;
   --table-header-day-odd: rgb(105, 208, 2);
   --table-header-day-even: chartreuse;
@@ -24,11 +22,13 @@
   /* longueur des cellules du calendrier */
   --table-content-td-width: 100px;
   /* hauteur des cellules du calendrier */
-  --table-content-td-height: calc(var(--table-content-td-width) / 10);
+  --table-content-td-height: calc(var(--table-content-td-width) / 2);
   /* Largeur de la page -> modifié dynamiquement avec JS */
   --page-width: 0px;
   /* lorsqu'on selectionne une leçon dans le calendrier */
   --highlighted-lesson-opacity: 0.5;
+  /* colonne weekend */
+  --table-weekend-width: 50px;
 
   /* Lessons */
   --table-lesson-margin-top: 10px;
@@ -89,20 +89,17 @@ table.calendar thead tr:first-child th:not(:first-child) {
   border-bottom: none;
   border-bottom: var(--table-border-thick);
 }
-table.calendar thead tr:first-child th:not(:first-child):nth-child(2n) {
+table.calendar thead tr:first-child th:not(:first-child):nth-child(2n):not(.weekend) {
   background-color: var(--table-header-day-odd);
 }
-table.calendar thead tr:first-child th:not(:first-child):nth-child(2n + 1) {
+table.calendar thead tr:first-child th:not(:first-child):nth-child(2n + 1):not(.weekend) {
   background-color: var(--table-header-day-even);
 }
 table.calendar thead tr th {
   border: var(--table-border);
 }
-table.calendar tbody tr:nth-child(4n) td {
+table.calendar tbody tr td {
   border-bottom: var(--table-border);
-}
-table.calendar tbody tr:nth-child(2n) td {
-  border-bottom: var(--table-border-dashed);
 }
 table.calendar tbody tr:last-child td {
   border-bottom: var(--table-border);
@@ -122,24 +119,26 @@ table.calendar tbody tr td:first-child {
   background-color: var(--table-time);
   width: var(--table-time-td-width);
   min-width: var(--table-time-td-width);
-  font-size: small;
-  text-align: left;
-  padding-left: 5px;
-  vertical-align: top;
   border-left: var(--table-border);
 }
 /* Le contenu */
-table.calendar tbody tr td:not(:first-child) {
+table.calendar tbody tr td:not(:first-child):not(.weekend) {
   width: var(--table-content-td-width);
   min-width: var(--table-content-td-width);
   border-right: var(--table-border);
-  font-size: small;
 }
 table.calendar tbody tr td:not(:first-child).booked {
   cursor: pointer;
 }
 table.calendar tbody tr td:not(:first-child).booked.highlighted-lesson {
   opacity: var(--highlighted-lesson-opacity);
+}
+
+table.calendar th.weekend,
+table.calendar td.weekend {
+  background-color: gray;
+  width: var(--table-weekend-width);
+  min-width: var(--table-weekend-width);
 }
 
 /* Lessons */

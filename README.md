@@ -7,6 +7,7 @@ Calendar generator
 - data -> JSON + add 3 new models
 - settings (parameter) + data -> default if not in localstorage
 - ajouter jours fériés (colonne grise sans les salles (fine))
+- chaque case remplie par un professeur consomme 4 heures de son volume horaire, vu qu'il y a 20 séances de 4 heures dans la session.
 - enlever les colonnes du samedi + dimanche (2 parameters) -> jours fériés
 - nombres de jours maximum -> en tenant compte des jours fériés et weekend
 - possibilité de rentrer la durée exacte d'une leçon (toutes les leçons ont la même durée?)
