@@ -1,10 +1,10 @@
 // les données à charger
-let levels = [];
-let rooms = [];
-let teachers = [];
-let lessons = [];
-let translation = undefined;
-let parameter = undefined;
+// if JSON: let levels = [];
+// if JSON: let rooms = [];
+// if JSON: let teachers = [];
+// if JSON: let lessons = [];
+// if JSON: let translation = undefined;
+// if JSON: let parameter = undefined;
 
 // filtres des leçons
 let lessonFilters = [];
@@ -18,53 +18,53 @@ const parameterForm = document.forms["parameter-form"];
 const addLessonForm = document.forms["addLesson-form"];
 
 // load lessons and map to model
-loadData("lessons").then(
-  (data) =>
-    (lessons = data.map(
-      (l) => new Lesson(l.date, l.time, l.roomName, l.teacherName, l.levelName)
-    ))
-);
+// if JSON: loadData("lessons").then(
+// if JSON:   (data) =>
+// if JSON:     (lessons = data.map(
+// if JSON:       (l) => new Lesson(l.date, l.time, l.roomName, l.teacherName, l.levelName)
+// if JSON:     ))
+// if JSON: );
 // load translations
-loadData("translation", "translations").then((data) => (translation = data));
+// if JSON: loadData("translation", "translations").then((data) => (translation = data));
 
 // load data and fill options in html template
-loadData("levels").then((data) => {
-  levels = data;
-  fillSelectOptions(
-    "levels",
-    levels.map((level) => level.name)
-  );
-});
-loadData("rooms").then((data) => {
-  rooms = data;
-  fillSelectOptions(
-    "rooms",
-    rooms.map((room) => room.name)
-  );
-});
-loadData("teachers").then((data) => {
-  teachers = data;
-  fillSelectOptions(
-    "teachers",
-    teachers.map((teacher) => teacher.name)
-  );
-});
+// if JSON: loadData("levels").then((data) => {
+// if JSON: levels = data;
+fillSelectOptions(
+  "levels",
+  levels.map((level) => level.name)
+);
+// if JSON: });
+// if JSON: loadData("rooms").then((data) => {
+// if JSON: rooms = data;
+fillSelectOptions(
+  "rooms",
+  rooms.map((room) => room.name)
+);
+// if JSON: });
+// if JSON: loadData("teachers").then((data) => {
+// if JSON: teachers = data;
+fillSelectOptions(
+  "teachers",
+  teachers.map((teacher) => teacher.name)
+);
+// if JSON: });
 // load parameter and init form with default parameters
-loadData("parameter").then((data) => {
-  parameter = data;
-  setForm(parameterForm, parameter);
-});
+// if JSON: loadData("parameter").then((data) => {
+// if JSON: parameter = data;
+setForm(parameterForm, parameter);
+// if JSON: });
 
 // créer la liste des leçons et le calendrier
-parameterForm.onsubmit = function (e) {
-  e.preventDefault();
-  validateCalendarForm(this);
-  setParameters(this, parameter);
+// if JSON: parameterForm.onsubmit = function (e) {
+// if JSON:   e.preventDefault();
+// if JSON:   validateCalendarForm(this);
+// if JSON:   setParameters(this, parameter);
   allQuarterTimes = getQuarterTimes(parameter.minTime, parameter.maxTime);
   selectedDates = getSelectedDates(parameter.startDate, parameter.endDate);
   buildHtml();
   navigate("lessons-calendar-wrapper");
-};
+// if JSON: };
 // ajouter une leçon
 addLessonForm.onsubmit = function (e) {
   e.preventDefault();
