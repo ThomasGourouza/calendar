@@ -71,7 +71,7 @@
               <th>Nom</th>
               <th>Indispo. récurrente</th>
               <th>Congés</th>
-              <th>Volume horaire</th>
+              <th>Volume horaire (h)</th>
               <th>Niveaux préférés</th>
             </tr>
           </thead>
@@ -84,7 +84,7 @@
           <thead>
             <tr>
               <th>Nom</th>
-              <th>Volume horaire</th>
+              <th>Volume horaire (h)</th>
             </tr>
           </thead>
           <tbody id="tbody-levels"></tbody>
@@ -105,7 +105,7 @@
       </div>
     </div>
     <div id="lessons-calendar-wrapper" class="page" style="display: none">
-      <button onclick="navigate('conditions-wrapper')">Précédent</button>
+      <button onclick="navigate('confirmation-wrapper')">Précédent</button>
       <div id="lessons-wrapper">
         <form name="addLesson-form">
           <h1>Leçons</h1>
@@ -147,6 +147,7 @@
     <script src="utils/html-conditions-builder-util.js"></script>
     <script src="utils/html-confirmations-builder-util.js"></script>
     <script src="utils/html-calendar-builder-util.js"></script>
+    <script src="utils/create-lessons-logic.js"></script>
     <script src="utils/date-public-util.js"></script>
     <!-- Load models -->
     <script src="models/lesson.js"></script>

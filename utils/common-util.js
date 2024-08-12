@@ -55,3 +55,13 @@ function sort(lessonList) {
   });
   return lessonList;
 }
+
+function isValide(workingHours) {
+  return workingHours.every(
+    (workingHour) =>
+      (!workingHour.min && !workingHour.max) ||
+      (!workingHour.min && !!workingHour.max) ||
+      (!!workingHour.min && !workingHour.max) ||
+      +workingHour.min <= +workingHour.max
+  );
+}

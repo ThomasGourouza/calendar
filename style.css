@@ -62,7 +62,7 @@
   --table-level-content: rgb(252, 232, 207);
   --table-level-header-height: 40px;
   --table-level-content-td-height: 30px;
-  --table-level-content-td-width: 150px;
+  --table-level-content-td-width: 100px;
 }
 
 body {
@@ -415,5 +415,5 @@ table.levels tbody tr:last-child td:first-child {
   vertical-align: top;
 }
 #teachers-wrapper {
-  margin-right: 60px;
+  margin-right: 80px;
 }

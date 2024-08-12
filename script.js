@@ -10,6 +10,7 @@ flatpickr("#bankHolidays", {
 // dates sélectionnées
 let selectedDates = [];
 let teacherConditions = [];
+let levelsWithHours = [];
 
 // les formulaires
 const parameterForm = document.forms["parameter-form"];
@@ -90,15 +91,29 @@ function generateTeacherAndLevelConditions() {
     availabilities: teacher.getAvailabilities(selectedDates),
     preferedLevelNames: teacher.preferedLevelNames,
   }));
-  console.log(teacherConditions);
-  console.log(levels);
-  buildHtmlConfirmations(teacherConditions, levels);
-  navigate("confirmation-wrapper");
+  levelsWithHours = levels.filter((level) => !!level.hours);
+  if (
+    isValide(
+      teacherConditions.map(
+        (teacherCondition) => teacherCondition.workingHours
+      ),
+      levelsWithHours
+    )
+  ) {
+    if (levelsWithHours.length > 0) {
+      buildHtmlConfirmations(teacherConditions, levelsWithHours);
+      navigate("confirmation-wrapper");
+    } else {
+      alert("Aucun niveau ne possède d'heure.");
+    }
+  } else {
+    alert("Volume horaire incorrect.");
+  }
 }
 
 // créer la liste des leçons et le calendrier
 function generateLessonListAndBuildHtml() {
-  // lessons = getLessonList(teacherConditions, levels);
+  lessons = getLessonList(teacherConditions, levelsWithHours);
   buildHtml();
   navigate("lessons-calendar-wrapper");
 }
