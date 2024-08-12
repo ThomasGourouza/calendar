@@ -23,6 +23,7 @@ function fillTdWithTeacherAndDisk(td, lesson, list) {
   divDisk.style.backgroundColor = list.find(
     (item) => item.name === lesson.teacherName
   )?.color;
+  divDisk.style.border = getStyle("--table-border");
 }
 
 function getStyle(cssVariable) {
