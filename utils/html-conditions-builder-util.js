@@ -1,0 +1,131 @@
+const weekDays = [
+  { name: "Lundi", index: 1 },
+  { name: "Mardi", index: 2 },
+  { name: "Mercredi", index: 3 },
+  { name: "Jeudi", index: 4 },
+  { name: "Vendredi", index: 5 },
+];
+
+function buildHtmlConditions(teachers, levelNames) {
+  const teachersTbody = document.getElementById("tbody-teachers");
+  while (teachersTbody.firstChild) {
+    teachersTbody.removeChild(teachersTbody.firstChild);
+  }
+  teachers.forEach((teacher) => {
+    const tr = putElementIn("tr", teachersTbody);
+
+    const nameTd = putElementIn("td", tr);
+    fillTdWithTeacherAndDisk(nameTd, teacher.name, teacher.color);
+
+    const recDaysOffTd = putElementIn("td", tr);
+    const recDaysOffSelect = putElementIn("select", recDaysOffTd);
+    recDaysOffSelect.setAttribute("multiple", "true");
+    recDaysOffSelect.setAttribute("size", "1");
+    recDaysOffSelect.style.width = "80%";
+    recDaysOffSelect.style.height = "90%";
+    recDaysOffSelect.setAttribute(
+      "title",
+      "Maintenir la touche Ctrl pour une selection multiple."
+    );
+    weekDays.forEach((weekDay) => {
+      const daysOffOption = putElementIn("option", recDaysOffSelect);
+      daysOffOption.setAttribute("value", weekDay.index);
+      daysOffOption.innerHTML = weekDay.name;
+    });
+    recDaysOffSelect.value = teacher.recurrentDaysOff;
+    recDaysOffSelect.addEventListener("change", (event) =>
+      handleRecDaysOffSelectChange(event, teacher)
+    );
+
+    const daysOffTd = putElementIn("td", tr);
+    const daysOffInput = putElementIn("input", daysOffTd);
+    daysOffInput.setAttribute("type", "date");
+    daysOffInput.setAttribute("placeholder", "Congés");
+    daysOffInput.className = "teacher-days-off";
+    daysOffInput.style.width = "80%";
+    flatpickr(".teacher-days-off", {
+      mode: "multiple",
+      dateFormat,
+    });
+    daysOffInput.value = teacher.daysOff;
+    daysOffInput.addEventListener("change", (event) =>
+      handleDaysOffInputChange(event, teacher)
+    );
+
+    const workingHoursTd = putElementIn("td", tr);
+    const workingHoursMinLabel = putElementIn("label", workingHoursTd);
+    workingHoursMinLabel.innerHTML = "Min: ";
+    workingHoursMinLabel.style.paddingLeft = "5px";
+    const workingHoursMinInput = putElementIn("input", workingHoursTd);
+    workingHoursMinInput.setAttribute("type", "number");
+    workingHoursMinInput.setAttribute("min", 0);
+    workingHoursMinInput.style.width = "20%";
+    workingHoursMinInput.setAttribute(
+      "title",
+      "Laisser le champ vide pour ne pas mettre de limite."
+    );
+    workingHoursMinInput.value = teacher.workingHours.min;
+    workingHoursMinInput.addEventListener("change", (event) =>
+      handleWorkingHoursMinInputChange(event, teacher)
+    );
+    const workingHoursMaxLabel = putElementIn("label", workingHoursTd);
+    workingHoursMaxLabel.innerHTML = "Max: ";
+    workingHoursMaxLabel.style.paddingLeft = "10px";
+    const workingHoursMaxInput = putElementIn("input", workingHoursTd);
+    workingHoursMaxInput.setAttribute("type", "number");
+    workingHoursMaxInput.setAttribute("min", 0);
+    workingHoursMaxInput.style.width = "20%";
+    workingHoursMaxInput.setAttribute(
+      "title",
+      "Laisser le champ vide pour ne pas mettre de limite."
+    );
+    workingHoursMaxInput.value = teacher.workingHours.max;
+    workingHoursMaxInput.addEventListener("change", (event) =>
+      handleWorkingHoursMaxInputChange(event, teacher)
+    );
+
+    const levelsTd = putElementIn("td", tr);
+    const levelsSelect = putElementIn("select", levelsTd);
+    levelsSelect.setAttribute("multiple", "true");
+    levelsSelect.setAttribute("size", "1");
+    levelsSelect.style.width = "80%";
+    levelsSelect.style.height = "90%";
+    levelsSelect.setAttribute(
+      "title",
+      "Maintenir la touche Ctrl pour une selection multiple."
+    );
+    levelNames.forEach((name) => {
+      const levelOption = putElementIn("option", levelsSelect);
+      levelOption.setAttribute("value", name);
+      levelOption.innerHTML = name;
+    });
+    recDaysOffSelect.value = teacher.preferedLevelNames;
+    recDaysOffSelect.addEventListener("change", (event) =>
+      handleLevelsSelectChange(event, teacher)
+    );
+  });
+}
+
+function handleRecDaysOffSelectChange(event, teacher) {
+  teacher.recurrentDaysOff = Array.from(event.target.selectedOptions).map(
+    (option) => option.value
+  );
+}
+
+function handleDaysOffInputChange(event, teacher) {
+  teacher.daysOff = event.target.value.split(", ");
+}
+
+function handleWorkingHoursMinInputChange(event, teacher) {
+  teacher.workingHours.min = event.target.value;
+}
+
+function handleWorkingHoursMaxInputChange(event, teacher) {
+  teacher.workingHours.max = event.target.value;
+}
+
+function handleLevelsSelectChange(event, teacher) {
+  teacher.preferedLevelNames = Array.from(event.target.selectedOptions).map(
+    (option) => option.value
+  );
+}

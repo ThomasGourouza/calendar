@@ -62,9 +62,25 @@
       </form>
     </div>
     <div id="conditions-wrapper" class="page" style="display: none">
-      Yo
       <button onclick="navigate('settings-wrapper')">Précédent</button>
       <button onclick="navigate('lessons-calendar-wrapper')">Suivant</button>
+      <div id="teachers-wrapper">
+        <form name="teachers-form">
+          <h1>Professeurs</h1>
+          <table class="teachers">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Indispo. récurrente</th>
+                <th>Congés</th>
+                <th>Volume horaire</th>
+                <th>Niveaux préférés</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-teachers"></tbody>
+          </table>
+        </form>
+      </div>
     </div>
     <div id="lessons-calendar-wrapper" class="page" style="display: none">
       <button onclick="navigate('conditions-wrapper')">Précédent</button>
@@ -75,7 +91,7 @@
             <thead>
               <tr>
                 <th>Date</th>
-                <th>Enseignant</th>
+                <th>Professeur</th>
                 <th>Niveau</th>
                 <th>Action</th>
               </tr>
@@ -106,7 +122,8 @@
 
     <!-- Load util files -->
     <script src="utils/common-util.js"></script>
-    <script src="utils/html-builder-util.js"></script>
+    <script src="utils/html-conditions-builder-util.js"></script>
+    <script src="utils/html-calendar-builder-util.js"></script>
     <script src="utils/date-public-util.js"></script>
     <!-- Load models -->
     <script src="models/lesson.js"></script>

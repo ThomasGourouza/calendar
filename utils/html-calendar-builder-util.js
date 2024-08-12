@@ -28,7 +28,11 @@ function buildHtmlLessonList(lessonList, teachers, highlight, remove) {
     dateTd.innerHTML = printDateFull(lesson.localDate);
 
     const teacherTd = putElementIn("td", tr);
-    fillTdWithTeacherAndDisk(teacherTd, lesson, teachers);
+    fillTdWithTeacherAndDisk(
+      teacherTd,
+      lesson.teacherName,
+      teachers.find((teacher) => teacher.name === lesson.teacherName)?.color
+    );
 
     const levelTd = putElementIn("td", tr);
     levelTd.innerHTML = lesson.levelName;
@@ -108,6 +112,7 @@ function buildHtmlCalendar(lessonList, dates, highlight) {
             td.className = "booked";
             td.innerHTML = lesson.teacherName;
             td.style.backgroundColor = lesson.backgroundColor;
+            td.style.color = lesson.textColor;
             if (lesson.highlight) {
               td.classList.add("highlighted-lesson");
             }
@@ -150,15 +155,13 @@ function sizeCalendarPage(daysNumber) {
   );
 }
 
-function fillTdWithTeacherAndDisk(td, lesson, list) {
+function fillTdWithTeacherAndDisk(td, teacherName, teacherColor) {
   const wrapper = putElementIn("div", td);
   wrapper.className = "two-col-td";
   const divName = putElementIn("div", wrapper);
-  divName.innerHTML = lesson.teacherName;
+  divName.innerHTML = teacherName;
   const divDisk = putElementIn("div", wrapper);
-  divDisk.style.backgroundColor = list.find(
-    (item) => item.name === lesson.teacherName
-  )?.color;
+  divDisk.style.backgroundColor = teacherColor;
   divDisk.style.border = getStyle("--table-border");
 }
 

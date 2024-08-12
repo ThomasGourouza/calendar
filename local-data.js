@@ -33,18 +33,28 @@ const teachers = [
   new Teacher(
     "Pauline",
     "blue",
+    "white",
     [],
     [],
     { min: undefined, max: undefined },
     []
   ),
-  new Teacher("Hervé", "green", [], [], { min: 12, max: 12 }, []),
-  new Teacher("Delphine", "yellow", [], [], { min: 4, max: undefined }, []),
-  new Teacher("Magda", "red", [], [], { min: undefined, max: 8 }, []),
-  new Teacher("Soufia", "aqua", [], [], { min: 4, max: 8 }, []),
+  new Teacher("Hervé", "green", "white", [], [], { min: 12, max: 12 }, []),
+  new Teacher(
+    "Delphine",
+    "yellow",
+    "black",
+    [],
+    [],
+    { min: 4, max: undefined },
+    []
+  ),
+  new Teacher("Magda", "red", "white", [], [], { min: undefined, max: 8 }, []),
+  new Teacher("Soufia", "aqua", "black", [], [], { min: 4, max: 8 }, []),
   new Teacher(
     "Valérie",
     "orange",
+    "black",
     [],
     [],
     { min: undefined, max: undefined },
@@ -53,15 +63,25 @@ const teachers = [
   new Teacher(
     "Julien",
     "beige",
+    "black",
     [],
     [],
     { min: undefined, max: undefined },
     []
   ),
-  new Teacher("Maeva", "blue", [], [], { min: undefined, max: undefined }, []),
+  new Teacher(
+    "Maeva",
+    "blue",
+    "white",
+    [],
+    [],
+    { min: undefined, max: undefined },
+    []
+  ),
   new Teacher(
     "Olivia",
     "green",
+    "white",
     [],
     [],
     { min: undefined, max: undefined },
@@ -70,12 +90,21 @@ const teachers = [
   new Teacher(
     "François",
     "yellow",
+    "black",
     [],
     [],
     { min: undefined, max: undefined },
     []
   ),
-  new Teacher("Aline", "red", [], [], { min: undefined, max: undefined }, []),
+  new Teacher(
+    "Aline",
+    "red",
+    "white",
+    [],
+    [],
+    { min: undefined, max: undefined },
+    []
+  ),
 ];
 
 const translation = {};

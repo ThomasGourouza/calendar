@@ -2,16 +2,22 @@ class Teacher {
   constructor(
     name,
     color,
-    recurrentDayOffs,
-    dayOffs,
+    textColor,
+    recurrentDaysOff,
+    daysOff,
     workingHours,
     preferedLevelNames
   ) {
     this.name = name;
     this.color = color;
-    this.recurrentDayOffs = recurrentDayOffs;
-    this.dayOffs = dayOffs;
+    this.textColor = textColor;
+    this.recurrentDaysOff = recurrentDaysOff;
+    this.daysOff = daysOff;
     this.workingHours = workingHours;
     this.preferedLevelNames = preferedLevelNames;
+  }
+
+  getAvailabilities(selectedDates) {
+    console.log(selectedDates, this.recurrentDaysOff, daysOff);
   }
 }

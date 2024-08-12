@@ -24,7 +24,7 @@ fillSelectOptions(
 // load parameter and init form with default parameters
 setForm(parameterForm, parameter);
 
-// créer la liste des leçons et le calendrier
+// créer la liste des professeurs
 parameterForm.onsubmit = function (e) {
   e.preventDefault();
   setParameters(this, parameter);
@@ -32,6 +32,10 @@ parameterForm.onsubmit = function (e) {
     parameter.startDate,
     parameter.numberDays,
     parameter.bankHolidays
+  );
+  buildHtmlConditions(
+    teachers,
+    levels.map((level) => level.name)
   );
   buildHtml();
   navigate("conditions-wrapper");
@@ -80,6 +84,7 @@ function navigate(page) {
   document.getElementById(page).style.display = "block";
 }
 
+// créer la liste des leçons et le calendrier
 function buildHtml() {
   return buildHtmlLessonListAndCalendar(
     lessons,

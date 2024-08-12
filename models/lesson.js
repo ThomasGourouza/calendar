@@ -14,4 +14,7 @@ class Lesson {
   get backgroundColor() {
     return teachers.find((teacher) => teacher.name === this.teacherName)?.color;
   }
+  get textColor() {
+    return teachers.find((teacher) => teacher.name === this.teacherName)?.textColor;
+  }
 }
