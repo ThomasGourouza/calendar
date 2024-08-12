@@ -1,8 +1,8 @@
 class Lesson {
-  constructor(date, teacherName, level) {
+  constructor(date, teacherName, levelName) {
     this.date = date;
     this.teacherName = teacherName;
-    this.level = level;
+    this.levelName = levelName;
     this.highlight = false;
   }
 

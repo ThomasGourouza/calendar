@@ -86,7 +86,7 @@
                   </select>
                 </td>
                 <td>
-                  <select id="levels" name="level" required>
+                  <select id="levels" name="levelName" required>
                     <option value=""></option>
                   </select>
                 </td>
@@ -100,16 +100,13 @@
     </div>
 
     <!-- Load util files -->
-    <script src="utils/settings-util.js"></script>
-    <script src="utils/condition-util.js"></script>
-    <script src="utils/sort-util.js"></script>
-    <script src="utils/form-util.js"></script>
-    <script src="utils/html-util.js"></script>
+    <script src="utils/common-util.js"></script>
     <script src="utils/html-builder-util.js"></script>
-    <script src="utils/date-private-util.js"></script>
     <script src="utils/date-public-util.js"></script>
     <!-- Load models -->
     <script src="models/lesson.js"></script>
+    <script src="models/teacher.js"></script>
+    <script src="models/level.js"></script>
     <!-- Load data for local development -->
     <script src="local-data.js"></script>
     <!-- Flatpickr JS -->

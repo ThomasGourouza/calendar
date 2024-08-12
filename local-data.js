@@ -1,24 +1,24 @@
 const levels = [
-  "A0",
-  "A1.2",
-  "A2.2",
-  "A2.3",
-  "B1.1",
-  "B1.2",
-  "B1.3",
-  // "B2.1",
-  // "B2.2",
-  // "B2.3",
-  // "B2.4",
-  // "B2/C1",
-  // "C1.1",
-  // "C1.2",
-  // "C1.3",
-  // "C1.4",
-  // "C1.5",
-  // "C1.6",
-  // "C1.7",
-  // "C1.8",
+  new Level("A0", 10),
+  new Level("A1.2", 10),
+  new Level("A2.2", 10),
+  new Level("A2.3", 10),
+  new Level("B1.1", 10),
+  new Level("B1.2", 10),
+  new Level("B1.3", 10),
+  // new Level("B2.1", 10),
+  // new Level("B2.2", 10),
+  // new Level("B2.3", 10),
+  // new Level("B2.4", 10),
+  // new Level("B2/C1", 10),
+  // new Level("C1.1", 10),
+  // new Level("C1.2", 10),
+  // new Level("C1.3", 10),
+  // new Level("C1.4", 10),
+  // new Level("C1.5", 10),
+  // new Level("C1.6", 10),
+  // new Level("C1.7", 10),
+  // new Level("C1.8", 10),
 ];
 
 let lessons = [
@@ -30,17 +30,52 @@ let lessons = [
 ];
 
 const teachers = [
-  { name: "Pauline", color: "blue" },
-  { name: "Hervé", color: "green" },
-  { name: "Delphine", color: "yellow" },
-  { name: "Magda", color: "red" },
-  { name: "Soufia", color: "aqua" },
-  { name: "Valérie", color: "orange" },
-  { name: "Julien", color: "beige" },
-  { name: "Maeva", color: "blue" },
-  { name: "Olivia", color: "green" },
-  { name: "François", color: "yellow" },
-  { name: "Aline", color: "red" },
+  new Teacher(
+    "Pauline",
+    "blue",
+    [],
+    [],
+    { min: undefined, max: undefined },
+    []
+  ),
+  new Teacher("Hervé", "green", [], [], { min: 12, max: 12 }, []),
+  new Teacher("Delphine", "yellow", [], [], { min: 4, max: undefined }, []),
+  new Teacher("Magda", "red", [], [], { min: undefined, max: 8 }, []),
+  new Teacher("Soufia", "aqua", [], [], { min: 4, max: 8 }, []),
+  new Teacher(
+    "Valérie",
+    "orange",
+    [],
+    [],
+    { min: undefined, max: undefined },
+    []
+  ),
+  new Teacher(
+    "Julien",
+    "beige",
+    [],
+    [],
+    { min: undefined, max: undefined },
+    []
+  ),
+  new Teacher("Maeva", "blue", [], [], { min: undefined, max: undefined }, []),
+  new Teacher(
+    "Olivia",
+    "green",
+    [],
+    [],
+    { min: undefined, max: undefined },
+    []
+  ),
+  new Teacher(
+    "François",
+    "yellow",
+    [],
+    [],
+    { min: undefined, max: undefined },
+    []
+  ),
+  new Teacher("Aline", "red", [], [], { min: undefined, max: undefined }, []),
 ];
 
 const translation = {};

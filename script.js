@@ -13,7 +13,10 @@ let selectedDates = [];
 // les formulaires
 const parameterForm = document.forms["parameter-form"];
 const addLessonForm = document.forms["addLesson-form"];
-fillSelectOptions("levels", levels);
+fillSelectOptions(
+  "levels",
+  levels.map((level) => level.name)
+);
 fillSelectOptions(
   "teachers",
   teachers.map((teacher) => teacher.name)
@@ -43,7 +46,7 @@ addLessonForm.onsubmit = function (e) {
     new Lesson(
       getLessonDate(this.date.value),
       this.teacherName.value,
-      this.level.value
+      this.levelName.value
     )
   );
   this.reset();
@@ -51,14 +54,14 @@ addLessonForm.onsubmit = function (e) {
 };
 
 // supprimer une leçon
-function removeLesson(date, level) {
-  lessons = lessons.filter((lesson) => !isLesson(lesson, date, level));
+function removeLesson(date, levelName) {
+  lessons = lessons.filter((lesson) => !isLesson(lesson, date, levelName));
   buildHtml();
 }
 
 // selectionner une leçon
-function highlightLesson(date, level) {
-  const lesson = lessons.find((l) => isLesson(l, date, level));
+function highlightLesson(date, levelName) {
+  const lesson = lessons.find((l) => isLesson(l, date, levelName));
   if (!!lesson) {
     const previousHighlight = lesson.highlight;
     // reset all
@@ -81,7 +84,6 @@ function buildHtml() {
   return buildHtmlLessonListAndCalendar(
     lessons,
     selectedDates,
-    levels,
     teachers,
     highlightLesson,
     removeLesson
