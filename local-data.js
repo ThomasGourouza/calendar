@@ -46,7 +46,8 @@ const teachers = [
 const translation = {};
 
 const parameter = {
-  lessonDuration: 4,
-  numberDays: 20,
   startDate: "2024-08-08",
+  numberDays: 20,
+  bankHolidays: [],
+  lessonDuration: 4,
 };

@@ -66,20 +66,29 @@ function buildHtmlCalendar(lessonList, dates, levels, highlight) {
   th.setAttribute("rowspan", 2);
 
   // Headers jours
-  // TODO: jour de la semaine
   dates.forEach((date) => {
-    const thDay = putElementIn("th", tr1);
-    thDay.innerHTML = printWeekDay(date);
-    if(thDay.innerHTML === "") {
-      thDay.className = "weekend";
-    }
-  });
-  // TODO: date
-  dates.forEach((date) => {
-    const thDay = putElementIn("th", tr2);
-    thDay.innerHTML = printDate(date);
-    if(thDay.innerHTML === "") {
-      thDay.className = "weekend";
+    const thDay1 = putElementIn("th", tr1);
+    const thDay2 = putElementIn("th", tr2);
+    switch (date.type) {
+      case "regular": {
+        thDay1.innerHTML = printWeekDay(date.date);
+        thDay2.innerHTML = printDate(date.date);
+        break;
+      }
+      case "holiday": {
+        thDay1.innerHTML = printWeekDay(date.date);
+        thDay1.className = "holiday";
+        thDay2.innerHTML = printDate(date.date);
+        thDay2.className = "holiday";
+        break;
+      }
+      case "weekend": {
+        thDay1.className = "weekend";
+        thDay2.className = "weekend";
+        break;
+      }
+      default:
+        break;
     }
   });
 
@@ -88,27 +97,38 @@ function buildHtmlCalendar(lessonList, dates, levels, highlight) {
     const tr = putElementIn("tr", tbody);
     const td = putElementIn("td", tr);
     td.innerHTML = level;
-    
+
     dates.forEach((date) => {
       const td = putElementIn("td", tr);
-      if (date !== "") {
-        const lesson = sort(lessonList).find((l) =>
-          isLesson(l, getDateTextFromLocalDate(date), level)
-        );
-        if (!!lesson) {
-          td.className = "booked";
-          td.innerHTML = lesson.teacherName;
-          td.style.backgroundColor = lesson.backgroundColor;
-          if (lesson.highlight) {
-            td.classList.add("highlighted-lesson");
+      switch (date.type) {
+        case "regular": {
+          const lesson = sort(lessonList).find((l) =>
+            isLesson(l, getDateTextFromLocalDate(date.date), level)
+          );
+          if (!!lesson) {
+            td.className = "booked";
+            td.innerHTML = lesson.teacherName;
+            td.style.backgroundColor = lesson.backgroundColor;
+            if (lesson.highlight) {
+              td.classList.add("highlighted-lesson");
+            }
+            td.setAttribute("title", lesson.title);
+            td.onclick = () => {
+              highlight(lesson.date, lesson.level);
+            };
           }
-          td.setAttribute("title", lesson.title);
-          td.onclick = () => {
-            highlight(lesson.date, lesson.level);
-          };
+          break;
         }
-      } else {
-        td.className = "weekend";
+        case "holiday": {
+          td.className = "holiday";
+          break;
+        }
+        case "weekend": {
+          td.className = "weekend";
+          break;
+        }
+        default:
+          break;
       }
     });
   });

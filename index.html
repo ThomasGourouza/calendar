@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calendrier</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
     <link rel="icon" type="image/x-icon" href="icon.png" />
   </head>
   <body>
@@ -14,16 +18,14 @@
         <div class="two-col-layout">
           <div>
             <h2>Calendrier</h2>
-            <label>Durée d'une leçon:</label>
-            <select name="lessonDuration" required>
-              <option value="1">1h</option>
-              <option value="1.5">1h30</option>
-              <option value="2">2h</option>
-              <option value="2.5">2h30</option>
-              <option value="3">3h</option>
-              <option value="3.5">3h30</option>
-              <option value="4">4h</option>
-            </select>
+            <label>Date de début:</label>
+            <input
+              type="date"
+              id="startDate"
+              name="startDate"
+              placeholder="Date de début"
+              required
+            />
             <br /><br />
             <label>Nombres de jours:</label>
             <input
@@ -34,8 +36,25 @@
               required
             />
             <br /><br />
-            <label>Start Date:</label>
-            <input type="date" name="startDate" required />
+            <label>Jours fériés:</label>
+            <input
+              type="date"
+              id="bankHolidays"
+              name="bankHolidays"
+              placeholder="Jours fériés"
+              required
+            />
+            <br /><br />
+            <label>Durée d'une leçon:</label>
+            <select name="lessonDuration" required>
+              <option value="1">1h</option>
+              <option value="1.5">1h30</option>
+              <option value="2">2h</option>
+              <option value="2.5">2h30</option>
+              <option value="3">3h</option>
+              <option value="3.5">3h30</option>
+              <option value="4">4h</option>
+            </select>
             <br /><br />
             <input type="submit" value="Suivant" />
           </div>
@@ -93,6 +112,8 @@
     <script src="models/lesson.js"></script>
     <!-- Load data for local development -->
     <script src="local-data.js"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <!-- Load script -->
     <script src="script.js"></script>
   </body>

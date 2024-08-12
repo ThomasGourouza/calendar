@@ -8,15 +8,11 @@
   --table-border: 1px solid var(--table-border-color);
   --table-border-thick: 1px solid var(--table-border-thick-color);
   --table-header-title: beige;
-  --table-header-day-odd: rgb(105, 208, 2);
-  --table-header-day-even: chartreuse;
+  --table-header-day: chartreuse;
   /* hauteur des headers des jours */
   --table-header-height: calc(var(--table-content-td-height) - 10px);
   --table-time: rgb(242, 196, 60);
-  --table-content-odd: burlywood;
-  --table-content-even: rgb(245, 202, 147);
-  --table-lunch-odd: rgb(171, 181, 193);
-  --table-lunch-even: rgb(209, 219, 231);
+  --table-content: rgb(245, 202, 147);
   /* longueur des cellules des heures du calendrier */
   --table-time-td-width: 70px;
   /* longueur des cellules du calendrier */
@@ -30,6 +26,7 @@
   /* colonne weekend */
   --table-weekend-width: 50px;
   --table-weekend-color: gray;
+  --table-holiday-color: rgb(206, 206, 206);
 
   /* Lessons */
   --table-lesson-margin-top: 10px;
@@ -82,7 +79,10 @@ table.calendar thead tr:first-child th:first-child {
 table.calendar thead tr:first-child th:last-child {
   border-radius: 0 var(--table-border-radius) 0 0;
 }
-table.calendar thead tr:first-child th:not(:first-child):not(.weekend) {
+table.calendar
+  thead
+  tr:first-child
+  th:not(:first-child):not(.weekend) {
   /* Les jours */
   border-left: none;
   border-bottom: var(--table-border);
@@ -97,20 +97,14 @@ table.calendar tbody tr td:first-child {
 table.calendar
   thead
   tr:first-child
-  th:not(:first-child):nth-child(2n):not(.weekend) {
-  background-color: var(--table-header-day-odd);
+  th:not(:first-child):not(.weekend):not(.holiday) {
+  background-color: var(--table-header-day);
 }
 table.calendar
   thead
-  tr:first-child
-  th:not(:first-child):nth-child(2n + 1):not(.weekend) {
-  background-color: var(--table-header-day-even);
-}
-table.calendar thead tr:last-child th:nth-child(2n):not(.weekend) {
-  background-color: var(--table-header-day-even);
-}
-table.calendar thead tr:last-child th:nth-child(2n + 1):not(.weekend) {
-  background-color: var(--table-header-day-odd);
+  tr:last-child
+  th:not(.weekend):not(.holiday) {
+  background-color: var(--table-header-day);
 }
 table.calendar thead tr:first-child th {
   border-top: var(--table-border);
@@ -162,14 +156,16 @@ table.calendar td.weekend {
   min-width: var(--table-weekend-width);
 }
 
-table.calendar tbody tr td:not(:first-child):not(.booked):not(.weekend) {
-  background-color: var(--table-content-odd);
+table.calendar th.holiday,
+table.calendar td.holiday {
+  background-color: var(--table-holiday-color);
 }
+
 table.calendar
   tbody
   tr
-  td:not(:first-child):not(.booked):nth-child(2n - 1):not(.weekend) {
-  background-color: var(--table-content-even);
+  td:not(:first-child):not(.booked):not(.weekend):not(.holiday) {
+  background-color: var(--table-content);
 }
 
 /* Lessons */

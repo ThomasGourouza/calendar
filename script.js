@@ -1,3 +1,12 @@
+const dateFormat = "Y-m-d";
+flatpickr("#startDate", {
+  dateFormat,
+});
+flatpickr("#bankHolidays", {
+  mode: "multiple",
+  dateFormat,
+});
+
 // dates sélectionnées
 let selectedDates = [];
 
@@ -16,7 +25,11 @@ setForm(parameterForm, parameter);
 parameterForm.onsubmit = function (e) {
   e.preventDefault();
   setParameters(this, parameter);
-  selectedDates = getSelectedDates(parameter.startDate, parameter.numberDays);
+  selectedDates = getSelectedDates(
+    parameter.startDate,
+    parameter.numberDays,
+    parameter.bankHolidays
+  );
   buildHtml();
   navigate("lessons-calendar-wrapper");
 };
