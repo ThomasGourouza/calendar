@@ -34,7 +34,7 @@ parameterForm.onsubmit = function (e) {
     parameter.bankHolidays
   );
   buildHtml();
-  navigate("lessons-calendar-wrapper");
+  navigate("conditions-wrapper");
 };
 
 // ajouter une leçon

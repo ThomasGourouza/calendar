@@ -1,6 +1,6 @@
 :root {
   /* Calendar */
-  --table-margin-top: 30px;
+  --table-margin-top: 20px;
   --box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   --table-border-radius: 15px;
   --table-border-color: rgb(105, 105, 105);
@@ -10,13 +10,13 @@
   --table-header-title: beige;
   --table-header-day: chartreuse;
   /* hauteur des headers des jours */
-  --table-header-height: calc(var(--table-content-td-height) - 10px);
+  --table-header-height: 20px;
   --table-time: rgb(242, 196, 60);
   --table-content: rgb(245, 202, 147);
   /* longueur des cellules des heures du calendrier */
-  --table-time-td-width: 70px;
+  --table-time-td-width: 40px;
   /* longueur des cellules du calendrier */
-  --table-content-td-width: 100px;
+  --table-content-td-width: 60px;
   /* hauteur des cellules du calendrier */
   --table-content-td-height: calc(var(--table-content-td-width) / 2);
   /* Largeur de la page -> modifié dynamiquement avec JS */
@@ -24,7 +24,7 @@
   /* lorsqu'on selectionne une leçon dans le calendrier */
   --highlighted-lesson-opacity: 0.5;
   /* colonne weekend */
-  --table-weekend-width: 50px;
+  --table-weekend-width: 25px;
   --table-weekend-color: gray;
   --table-holiday-color: rgb(206, 206, 206);
 
@@ -79,6 +79,9 @@ table.calendar thead tr:first-child th:first-child {
 table.calendar thead tr:first-child th:last-child {
   border-radius: 0 var(--table-border-radius) 0 0;
 }
+table.calendar thead tr {
+  font-size: x-small;
+}
 table.calendar
   thead
   tr:first-child
@@ -90,9 +93,6 @@ table.calendar
 table.calendar thead tr:last-child th:nth-child(n):not(.weekend) {
   border-right: var(--table-border);
   border-bottom: var(--table-border-thick);
-}
-table.calendar tbody tr td:first-child {
-  border-right: var(--table-border-thick);
 }
 table.calendar
   thead
@@ -111,6 +111,12 @@ table.calendar thead tr:first-child th {
 }
 table.calendar thead tr:first-child th:not(.weekend) {
   border: var(--table-border);
+}
+table.calendar tbody tr {
+  font-size: x-small;
+}
+table.calendar tbody tr td:first-child {
+  border-right: var(--table-border-thick);
 }
 table.calendar tbody tr td {
   border-bottom: var(--table-border);

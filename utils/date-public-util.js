@@ -72,29 +72,29 @@ function getDayText(day) {
 function getMonthText(month) {
   switch (month) {
     case 1:
-      return "Janvier";
+      return "Janv.";
     case 2:
-      return "Février";
+      return "Févr.";
     case 3:
       return "Mars";
     case 4:
-      return "Avril";
+      return "Avr.";
     case 5:
       return "Mai";
     case 6:
       return "Juin";
     case 7:
-      return "Juillet";
+      return "Juill.";
     case 8:
       return "Août";
     case 9:
-      return "Septembre";
+      return "Sept.";
     case 10:
-      return "Octobre";
+      return "Oct.";
     case 11:
-      return "Novembre";
+      return "Nov.";
     case 12:
-      return "Décembre";
+      return "Déc.";
     default:
       return "";
   }
