@@ -64,10 +64,10 @@ const teachers = [
     "Julien",
     "beige",
     "black",
-    [],
-    [],
-    { min: undefined, max: undefined },
-    []
+    ["1", "4"],
+    ["2024-08-14", "2024-08-19", "2024-08-20"],
+    { min: undefined, max: 12 },
+    ["A0", "A1.2"]
   ),
   new Teacher(
     "Maeva",

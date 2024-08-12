@@ -33,11 +33,17 @@ parameterForm.onsubmit = function (e) {
     parameter.numberDays,
     parameter.bankHolidays
   );
+  const regularDates = selectedDates
+    .filter((date) => date.type === "regular")
+    .map((date) => date.date);
+  const firstDate = regularDates[0];
+  const lastDate = regularDates[regularDates.length - 1];
   buildHtmlConditions(
     teachers,
-    levels.map((level) => level.name)
+    levels.map((level) => level.name),
+    printDateFull(firstDate),
+    printDateFull(lastDate)
   );
-  buildHtml();
   navigate("conditions-wrapper");
 };
 
@@ -74,6 +80,19 @@ function highlightLesson(date, levelName) {
     lesson.highlight = !previousHighlight;
     buildHtml();
   }
+}
+
+// créer la liste des leçons et le calendrier
+function generateLessonListAndBuildHtml() {
+  const teacherList = teachers.map((teacher) => ({
+    name: teacher.name,
+    workingHours: teacher.name,
+    availabilities: teacher.getAvailabilities(selectedDates),
+    preferedLevelNames: teacher.preferedLevelNames,
+  }));
+  console.log(teacherList);
+  buildHtml();
+  navigate("lessons-calendar-wrapper");
 }
 
 // changer de section

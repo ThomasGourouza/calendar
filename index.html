@@ -63,8 +63,9 @@
     </div>
     <div id="conditions-wrapper" class="page" style="display: none">
       <button onclick="navigate('settings-wrapper')">Précédent</button>
-      <button onclick="navigate('lessons-calendar-wrapper')">Suivant</button>
+      <button onclick="generateLessonListAndBuildHtml()">Suivant</button>
       <div id="teachers-wrapper">
+        <p id="date-indication"></p>
         <form name="teachers-form">
           <h1>Professeurs</h1>
           <table class="teachers">

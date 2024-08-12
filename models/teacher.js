@@ -18,6 +18,14 @@ class Teacher {
   }
 
   getAvailabilities(selectedDates) {
-    console.log(selectedDates, this.recurrentDaysOff, daysOff);
+    const availabilities = selectedDates.filter(
+      (date) =>
+        date.type === "regular" &&
+        !this.recurrentDaysOff.map((d) => +d).includes(date.date.getDay()) &&
+        !this.daysOff
+          .map((d) => new Date(d))
+          .some((d) => d.getTime() === date.date.getTime())
+    );
+    return availabilities;
   }
 }

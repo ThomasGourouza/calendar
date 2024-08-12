@@ -1,12 +1,14 @@
 const weekDays = [
-  { name: "Lundi", index: 1 },
-  { name: "Mardi", index: 2 },
-  { name: "Mercredi", index: 3 },
-  { name: "Jeudi", index: 4 },
-  { name: "Vendredi", index: 5 },
+  { name: "Lundi", index: "1" },
+  { name: "Mardi", index: "2" },
+  { name: "Mercredi", index: "3" },
+  { name: "Jeudi", index: "4" },
+  { name: "Vendredi", index: "5" },
 ];
 
-function buildHtmlConditions(teachers, levelNames) {
+function buildHtmlConditions(teachers, levelNames, startDate, endDate) {
+  const dateIndication = document.getElementById("date-indication");
+  dateIndication.innerHTML = `La période va de ${startDate} à ${endDate}.`;
   const teachersTbody = document.getElementById("tbody-teachers");
   while (teachersTbody.firstChild) {
     teachersTbody.removeChild(teachersTbody.firstChild);
@@ -32,7 +34,6 @@ function buildHtmlConditions(teachers, levelNames) {
       daysOffOption.setAttribute("value", weekDay.index);
       daysOffOption.innerHTML = weekDay.name;
     });
-    recDaysOffSelect.value = teacher.recurrentDaysOff;
     recDaysOffSelect.addEventListener("change", (event) =>
       handleRecDaysOffSelectChange(event, teacher)
     );
@@ -47,7 +48,6 @@ function buildHtmlConditions(teachers, levelNames) {
       mode: "multiple",
       dateFormat,
     });
-    daysOffInput.value = teacher.daysOff;
     daysOffInput.addEventListener("change", (event) =>
       handleDaysOffInputChange(event, teacher)
     );
@@ -64,7 +64,6 @@ function buildHtmlConditions(teachers, levelNames) {
       "title",
       "Laisser le champ vide pour ne pas mettre de limite."
     );
-    workingHoursMinInput.value = teacher.workingHours.min;
     workingHoursMinInput.addEventListener("change", (event) =>
       handleWorkingHoursMinInputChange(event, teacher)
     );
@@ -79,7 +78,6 @@ function buildHtmlConditions(teachers, levelNames) {
       "title",
       "Laisser le champ vide pour ne pas mettre de limite."
     );
-    workingHoursMaxInput.value = teacher.workingHours.max;
     workingHoursMaxInput.addEventListener("change", (event) =>
       handleWorkingHoursMaxInputChange(event, teacher)
     );
@@ -99,7 +97,6 @@ function buildHtmlConditions(teachers, levelNames) {
       levelOption.setAttribute("value", name);
       levelOption.innerHTML = name;
     });
-    recDaysOffSelect.value = teacher.preferedLevelNames;
     recDaysOffSelect.addEventListener("change", (event) =>
       handleLevelsSelectChange(event, teacher)
     );
