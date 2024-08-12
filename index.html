@@ -15,49 +15,47 @@
     <div id="settings-wrapper" class="page">
       <form name="parameter-form">
         <h1>Paramètres</h1>
-        <div class="two-col-layout">
-          <div>
-            <h2>Calendrier</h2>
-            <label>Date de début:</label>
-            <input
-              type="date"
-              id="startDate"
-              name="startDate"
-              placeholder="Date de début"
-              required
-            />
-            <br /><br />
-            <label>Nombres de jours:</label>
-            <input
-              type="number"
-              name="numberDays"
-              min="1"
-              style="width: 50px"
-              required
-            />
-            <br /><br />
-            <label>Jours fériés:</label>
-            <input
-              type="date"
-              id="bankHolidays"
-              name="bankHolidays"
-              placeholder="Jours fériés"
-              required
-            />
-            <br /><br />
-            <label>Durée d'une leçon:</label>
-            <select name="lessonDuration" required>
-              <option value="1">1h</option>
-              <option value="1.5">1h30</option>
-              <option value="2">2h</option>
-              <option value="2.5">2h30</option>
-              <option value="3">3h</option>
-              <option value="3.5">3h30</option>
-              <option value="4">4h</option>
-            </select>
-            <br /><br />
-            <input type="submit" value="Suivant" />
-          </div>
+        <div>
+          <h2>Calendrier</h2>
+          <label>Date de début:</label>
+          <input
+            type="date"
+            id="startDate"
+            name="startDate"
+            placeholder="Date de début"
+            required
+          />
+          <br /><br />
+          <label>Nombres de jours:</label>
+          <input
+            type="number"
+            name="numberDays"
+            min="1"
+            style="width: 50px"
+            required
+          />
+          <br /><br />
+          <label>Jours fériés:</label>
+          <input
+            type="date"
+            id="bankHolidays"
+            name="bankHolidays"
+            placeholder="Jours fériés"
+            required
+          />
+          <br /><br />
+          <label>Durée d'une leçon:</label>
+          <select name="lessonDuration" required>
+            <option value="1">1h</option>
+            <option value="1.5">1h30</option>
+            <option value="2">2h</option>
+            <option value="2.5">2h30</option>
+            <option value="3">3h</option>
+            <option value="3.5">3h30</option>
+            <option value="4">4h</option>
+          </select>
+          <br /><br />
+          <input type="submit" value="Suivant" />
         </div>
       </form>
     </div>
@@ -65,33 +63,33 @@
       <button onclick="navigate('settings-wrapper')">Précédent</button>
       <button onclick="generateLessonListAndBuildHtml()">Suivant</button>
       <p id="date-indication"></p>
-      <div id="teachers-wrapper">
-        <h1>Professeurs</h1>
-        <table class="teachers">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Indispo. récurrente</th>
-              <th>Congés</th>
-              <th>Volume horaire</th>
-              <th>Niveaux préférés</th>
-            </tr>
-          </thead>
-          <tbody id="tbody-teachers"></tbody>
-        </table>
-      </div>
-      <div id="levels-wrapper">
-        <h1>Niveaux</h1>
-        <table class="levels">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Volume horaire</th>
-            </tr>
-          </thead>
-          <tbody id="tbody-levels"></tbody>
-        </table>
-      </div>
+        <div id="teachers-wrapper" class="two-col-layout">
+          <h1>Professeurs</h1>
+          <table class="teachers">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Indispo. récurrente</th>
+                <th>Congés</th>
+                <th>Volume horaire</th>
+                <th>Niveaux préférés</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-teachers"></tbody>
+          </table>
+        </div>
+        <div id="levels-wrapper" class="two-col-layout">
+          <h1>Niveaux</h1>
+          <table class="levels">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Volume horaire</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-levels"></tbody>
+          </table>
+        </div>
     </div>
     <div id="lessons-calendar-wrapper" class="page" style="display: none">
       <button onclick="navigate('conditions-wrapper')">Précédent</button>

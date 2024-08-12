@@ -53,7 +53,7 @@
   --table-teacher-content: rgb(252, 232, 207);
   --table-teacher-header-height: 40px;
   --table-teacher-content-td-height: 30px;
-  --table-teacher-content-td-width: 150px;
+  --table-teacher-content-td-width: 120px;
   --table-teacher-content-td-width-larger: 200px;
 
   /* Levels */
@@ -74,10 +74,8 @@ body {
 
 /* Calendar */
 div#calendar-wrapper,
-div#lessons-wrapper,
-div#teachers-wrapper,
-div#levels-wrapper {
-  margin-top: 50px;
+div#lessons-wrapper {
+  margin-top: 30px;
   min-width: var(--page-width);
 }
 table.calendar {
@@ -412,13 +410,10 @@ table.levels tbody tr:last-child td:first-child {
   border-radius: 0 0 0 var(--table-border-radius);
 }
 
-/* pour les deux formulaires en haut de page */
-
 .two-col-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  display: inline-block;
+  vertical-align: top;
 }
-.two-col-layout div {
-  padding: 10px;
+#teachers-wrapper {
+  margin-right: 60px;
 }
