@@ -61,35 +61,48 @@
     </div>
     <div id="conditions-wrapper" class="page" style="display: none">
       <button onclick="navigate('settings-wrapper')">Précédent</button>
-      <button onclick="generateLessonListAndBuildHtml()">Suivant</button>
-      <p id="date-indication"></p>
-        <div id="teachers-wrapper" class="two-col-layout">
-          <h1>Professeurs</h1>
-          <table class="teachers">
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Indispo. récurrente</th>
-                <th>Congés</th>
-                <th>Volume horaire</th>
-                <th>Niveaux préférés</th>
-              </tr>
-            </thead>
-            <tbody id="tbody-teachers"></tbody>
-          </table>
-        </div>
-        <div id="levels-wrapper" class="two-col-layout">
-          <h1>Niveaux</h1>
-          <table class="levels">
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Volume horaire</th>
-              </tr>
-            </thead>
-            <tbody id="tbody-levels"></tbody>
-          </table>
-        </div>
+      <button onclick="generateTeacherAndLevelConditions()">Suivant</button>
+      <p class="date-indication"></p>
+      <div id="teachers-wrapper" class="two-col-layout">
+        <h1>Professeurs</h1>
+        <table class="teachers">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Indispo. récurrente</th>
+              <th>Congés</th>
+              <th>Volume horaire</th>
+              <th>Niveaux préférés</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-teachers"></tbody>
+        </table>
+      </div>
+      <div id="levels-wrapper" class="two-col-layout">
+        <h1>Niveaux</h1>
+        <table class="levels">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Volume horaire</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-levels"></tbody>
+        </table>
+      </div>
+    </div>
+    <div id="confirmation-wrapper" class="page" style="display: none">
+      <button onclick="navigate('conditions-wrapper')">Précédent</button>
+      <button onclick="generateLessonListAndBuildHtml()">Confirmer</button>
+      <p class="date-indication"></p>
+      <div id="teachers-wrapper" class="two-col-layout">
+        <h1>Professeurs</h1>
+        <div id="teachers-confirmation"></div>
+      </div>
+      <div id="levels-wrapper" class="two-col-layout">
+        <h1>Niveaux</h1>
+        <div id="levels-confirmation"></div>
+      </div>
     </div>
     <div id="lessons-calendar-wrapper" class="page" style="display: none">
       <button onclick="navigate('conditions-wrapper')">Précédent</button>
@@ -132,6 +145,7 @@
     <!-- Load util files -->
     <script src="utils/common-util.js"></script>
     <script src="utils/html-conditions-builder-util.js"></script>
+    <script src="utils/html-confirmations-builder-util.js"></script>
     <script src="utils/html-calendar-builder-util.js"></script>
     <script src="utils/date-public-util.js"></script>
     <!-- Load models -->

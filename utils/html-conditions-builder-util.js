@@ -7,8 +7,10 @@ const weekDays = [
 ];
 
 function buildHtmlConditions(teachers, levels, startDate, endDate) {
-  const dateIndication = document.getElementById("date-indication");
-  dateIndication.innerHTML = `La période va de ${startDate} à ${endDate}.`;
+  Array.from(document.getElementsByClassName("date-indication")).forEach(
+    (dateIndication) =>
+      (dateIndication.innerHTML = `La période va du ${startDate} au ${endDate}.`)
+  );
   buildHtmlTeachersConditions(
     teachers,
     levels.map((level) => level.name)
@@ -147,6 +149,16 @@ function buildHtmlLevelsConditions(levels) {
     nameTd.innerHTML = level.name;
 
     const hoursTd = putElementIn("td", tr);
-    hoursTd.innerHTML = level.hours;
+    const hoursInput = putElementIn("input", hoursTd);
+    hoursInput.setAttribute("type", "number");
+    hoursInput.setAttribute("min", 0);
+    hoursInput.style.width = "40px";
+    hoursInput.addEventListener("change", (event) =>
+      handleHoursInputChange(event, level)
+    );
   });
+}
+
+function handleHoursInputChange(event, level) {
+  level.hours = event.target.value;
 }

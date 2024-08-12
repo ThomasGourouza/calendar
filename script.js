@@ -9,6 +9,7 @@ flatpickr("#bankHolidays", {
 
 // dates sélectionnées
 let selectedDates = [];
+let teacherConditions = [];
 
 // les formulaires
 const parameterForm = document.forms["parameter-form"];
@@ -82,15 +83,22 @@ function highlightLesson(date, levelName) {
   }
 }
 
-// créer la liste des leçons et le calendrier
-function generateLessonListAndBuildHtml() {
-  const teacherList = teachers.map((teacher) => ({
+function generateTeacherAndLevelConditions() {
+  teacherConditions = teachers.map((teacher) => ({
     name: teacher.name,
-    workingHours: teacher.name,
+    workingHours: teacher.workingHours,
     availabilities: teacher.getAvailabilities(selectedDates),
     preferedLevelNames: teacher.preferedLevelNames,
   }));
-  console.log(teacherList);
+  console.log(teacherConditions);
+  console.log(levels);
+  buildHtmlConfirmations(teacherConditions, levels);
+  navigate("confirmation-wrapper");
+}
+
+// créer la liste des leçons et le calendrier
+function generateLessonListAndBuildHtml() {
+  // lessons = getLessonList(teacherConditions, levels);
   buildHtml();
   navigate("lessons-calendar-wrapper");
 }
