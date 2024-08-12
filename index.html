@@ -64,23 +64,33 @@
     <div id="conditions-wrapper" class="page" style="display: none">
       <button onclick="navigate('settings-wrapper')">Précédent</button>
       <button onclick="generateLessonListAndBuildHtml()">Suivant</button>
+      <p id="date-indication"></p>
       <div id="teachers-wrapper">
-        <p id="date-indication"></p>
-        <form name="teachers-form">
-          <h1>Professeurs</h1>
-          <table class="teachers">
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Indispo. récurrente</th>
-                <th>Congés</th>
-                <th>Volume horaire</th>
-                <th>Niveaux préférés</th>
-              </tr>
-            </thead>
-            <tbody id="tbody-teachers"></tbody>
-          </table>
-        </form>
+        <h1>Professeurs</h1>
+        <table class="teachers">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Indispo. récurrente</th>
+              <th>Congés</th>
+              <th>Volume horaire</th>
+              <th>Niveaux préférés</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-teachers"></tbody>
+        </table>
+      </div>
+      <div id="levels-wrapper">
+        <h1>Niveaux</h1>
+        <table class="levels">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Volume horaire</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-levels"></tbody>
+        </table>
       </div>
     </div>
     <div id="lessons-calendar-wrapper" class="page" style="display: none">

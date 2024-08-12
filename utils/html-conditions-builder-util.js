@@ -9,7 +9,10 @@ const weekDays = [
 function buildHtmlConditions(teachers, levels, startDate, endDate) {
   const dateIndication = document.getElementById("date-indication");
   dateIndication.innerHTML = `La période va de ${startDate} à ${endDate}.`;
-  buildHtmlTeachersConditions(teachers, levels.map((level) => level.name));
+  buildHtmlTeachersConditions(
+    teachers,
+    levels.map((level) => level.name)
+  );
   buildHtmlLevelsConditions(levels);
 }
 
@@ -133,4 +136,17 @@ function handleLevelsSelectChange(event, teacher) {
 }
 
 function buildHtmlLevelsConditions(levels) {
+  const levelsTbody = document.getElementById("tbody-levels");
+  while (levelsTbody.firstChild) {
+    levelsTbody.removeChild(levelsTbody.firstChild);
+  }
+  levels.forEach((level) => {
+    const tr = putElementIn("tr", levelsTbody);
+
+    const nameTd = putElementIn("td", tr);
+    nameTd.innerHTML = level.name;
+
+    const hoursTd = putElementIn("td", tr);
+    hoursTd.innerHTML = level.hours;
+  });
 }
