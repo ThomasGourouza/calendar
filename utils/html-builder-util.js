@@ -2,14 +2,15 @@ function buildHtmlLessonListAndCalendar(
   lessonList,
   dates,
   levels,
+  teachers,
   highlight,
   remove
 ) {
-  buildHtmlLessonList(lessonList, highlight, remove);
+  buildHtmlLessonList(lessonList, teachers, highlight, remove);
   buildHtmlCalendar(lessonList, dates, levels, highlight);
 }
 
-function buildHtmlLessonList(lessonList, highlight, remove) {
+function buildHtmlLessonList(lessonList, teachers, highlight, remove) {
   const lessonsTbody = document.getElementById("lessons");
   const trs = lessonsTbody.querySelectorAll("tr");
   for (let i = trs.length - 1; i > 0; i--) {
@@ -25,7 +26,7 @@ function buildHtmlLessonList(lessonList, highlight, remove) {
     };
 
     const dateTd = putElementIn("td", tr);
-    dateTd.innerHTML = printDateText(lesson.localDate);
+    dateTd.innerHTML = printDateFull(lesson.localDate);
 
     const teacherTd = putElementIn("td", tr);
     fillTdWithTeacherAndDisk(teacherTd, lesson, teachers);
@@ -65,16 +66,18 @@ function buildHtmlCalendar(lessonList, dates, levels, highlight) {
   th.setAttribute("rowspan", 2);
 
   // Headers jours
+  // TODO: jour de la semaine
   dates.forEach((date) => {
     const thDay = putElementIn("th", tr1);
-    thDay.innerHTML = printDateText(date);
+    thDay.innerHTML = printWeekDay(date);
     if(thDay.innerHTML === "") {
       thDay.className = "weekend";
     }
   });
+  // TODO: date
   dates.forEach((date) => {
     const thDay = putElementIn("th", tr2);
-    thDay.innerHTML = printDateText(date);
+    thDay.innerHTML = printDate(date);
     if(thDay.innerHTML === "") {
       thDay.className = "weekend";
     }

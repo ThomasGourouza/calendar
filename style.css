@@ -11,7 +11,7 @@
   --table-header-day-odd: rgb(105, 208, 2);
   --table-header-day-even: chartreuse;
   /* hauteur des headers des jours */
-  --table-header-day-height: calc(var(--table-content-td-height) + 25px);
+  --table-header-height: calc(var(--table-content-td-height) - 10px);
   --table-time: rgb(242, 196, 60);
   --table-content-odd: burlywood;
   --table-content-even: rgb(245, 202, 147);
@@ -71,8 +71,8 @@ table.calendar {
   border-radius: var(--table-border-radius);
   box-shadow: var(--box-shadow);
 }
-table.calendar thead tr:first-child th {
-  height: var(--table-header-day-height);
+table.calendar thead tr th {
+  height: var(--table-header-height);
 }
 table.calendar thead tr:first-child th:first-child {
   /* Titre du tableau */
@@ -197,6 +197,10 @@ table.lessons thead tr th:last-child {
 }
 table.lessons tbody tr {
   cursor: pointer;
+}
+table.lessons tbody tr:not(:first-child) td:first-child {
+  text-align: left;
+  padding-left: 15px;
 }
 table.lessons tbody tr form {
   border-left: var(--table-border);

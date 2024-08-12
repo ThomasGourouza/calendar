@@ -21,7 +21,7 @@ function fillTdWithTeacherAndDisk(td, lesson, list) {
   divName.innerHTML = lesson.teacherName;
   const divDisk = putElementIn("div", wrapper);
   divDisk.style.backgroundColor = list.find(
-    (item) => item.teacherName === lesson.teacherName
+    (item) => item.name === lesson.teacherName
   )?.color;
 }
 

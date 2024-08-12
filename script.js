@@ -69,6 +69,7 @@ function buildHtml() {
     lessons,
     selectedDates,
     levels,
+    teachers,
     highlightLesson,
     removeLesson
   );

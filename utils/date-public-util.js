@@ -17,11 +17,25 @@ function getLessonDate(dateValue) {
   return `${day}/${month}/${year}`;
 }
 
-function printDateText(d) {
+function printDateFull(d) {
   if (d !== "") {
-    return `${getDayText(d.getDay())} ${d.getDate()} ${getMonthText(
-      d.getMonth() + 1
-    )} ${d.getFullYear()}`;
+    return `${printWeekDay(d)} ${printDate(d)} ${d.getFullYear()}`;
+  } else {
+    return "";
+  }
+}
+
+function printWeekDay(d) {
+  if (d !== "") {
+    return `${getDayText(d.getDay())}`;
+  } else {
+    return "";
+  }
+}
+
+function printDate(d) {
+  if (d !== "") {
+    return `${d.getDate()} ${getMonthText(d.getMonth() + 1)}`;
   } else {
     return "";
   }
