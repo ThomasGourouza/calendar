@@ -6,9 +6,14 @@ const weekDays = [
   { name: "Vendredi", index: "5" },
 ];
 
-function buildHtmlConditions(teachers, levelNames, startDate, endDate) {
+function buildHtmlConditions(teachers, levels, startDate, endDate) {
   const dateIndication = document.getElementById("date-indication");
   dateIndication.innerHTML = `La période va de ${startDate} à ${endDate}.`;
+  buildHtmlTeachersConditions(teachers, levels.map((level) => level.name));
+  buildHtmlLevelsConditions(levels);
+}
+
+function buildHtmlTeachersConditions(teachers, levelNames) {
   const teachersTbody = document.getElementById("tbody-teachers");
   while (teachersTbody.firstChild) {
     teachersTbody.removeChild(teachersTbody.firstChild);
@@ -125,4 +130,7 @@ function handleLevelsSelectChange(event, teacher) {
   teacher.preferedLevelNames = Array.from(event.target.selectedOptions).map(
     (option) => option.value
   );
+}
+
+function buildHtmlLevelsConditions(levels) {
 }

@@ -40,7 +40,7 @@ parameterForm.onsubmit = function (e) {
   const lastDate = regularDates[regularDates.length - 1];
   buildHtmlConditions(
     teachers,
-    levels.map((level) => level.name),
+    levels,
     printDateFull(firstDate),
     printDateFull(lastDate)
   );
