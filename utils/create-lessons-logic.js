@@ -8,8 +8,22 @@ function getLessonList(
   selectedDates.forEach((date) => {
     levelsWithHours.forEach((level) => {
       if (level.hours >= lessonDuration) {
-        const preferredTeacher = randomOrder(teacherConditions).find(
-          (t) =>
+        const preferredTeacher = randomOrder(teacherConditions).find((t) => {
+          const teacherLevels = [
+            ...new Set(
+              finalLessonList
+                .filter((l) => l.teacherName === t.name)
+                .map((l) => l.levelName)
+            ),
+          ];
+          const levelTeachers = [
+            ...new Set(
+              finalLessonList
+                .filter((l) => l.levelName === level.name)
+                .map((l) => l.teacherName)
+            ),
+          ];
+          return (
             (!t.workingHours.max ||
               (!!t.workingHours.max && t.workingHours.max >= lessonDuration)) &&
             t.availabilities.includes(date) &&
@@ -18,8 +32,11 @@ function getLessonList(
             !finalLessonList
               .filter((l) => l.date === date)
               .map((l) => l.teacherName)
-              .includes(t.name)
-        );
+              .includes(t.name) &&
+            (teacherLevels.includes(level.name) || teacherLevels.length < 3) &&
+            (levelTeachers.includes(t.name) || levelTeachers.length < 3)
+          );
+        });
         if (!!preferredTeacher) {
           level.hours -= lessonDuration;
           preferredTeacher.workingHours.max -= lessonDuration;
@@ -27,8 +44,22 @@ function getLessonList(
             new Lesson(date, preferredTeacher.name, level.name)
           );
         } else {
-          const randomTeacher = randomOrder(teacherConditions).find(
-            (t) =>
+          const randomTeacher = randomOrder(teacherConditions).find((t) => {
+            const teacherLevels = [
+              ...new Set(
+                finalLessonList
+                  .filter((l) => l.teacherName === t.name)
+                  .map((l) => l.levelName)
+              ),
+            ];
+            const levelTeachers = [
+              ...new Set(
+                finalLessonList
+                  .filter((l) => l.levelName === level.name)
+                  .map((l) => l.teacherName)
+              ),
+            ];
+            return (
               (!t.workingHours.max ||
                 (!!t.workingHours.max &&
                   t.workingHours.max >= lessonDuration)) &&
@@ -36,8 +67,12 @@ function getLessonList(
               !finalLessonList
                 .filter((l) => l.date === date)
                 .map((l) => l.teacherName)
-                .includes(t.name)
-          );
+                .includes(t.name) &&
+              (teacherLevels.includes(level.name) ||
+                teacherLevels.length < 3) &&
+              (levelTeachers.includes(t.name) || levelTeachers.length < 3)
+            );
+          });
           if (!!randomTeacher) {
             level.hours -= lessonDuration;
             randomTeacher.workingHours.max -= lessonDuration;
@@ -46,12 +81,32 @@ function getLessonList(
             );
           } else {
             const overWorkingTeacher = randomOrder(teacherConditions).find(
-              (t) =>
-                t.availabilities.includes(date) &&
-                !finalLessonList
-                  .filter((l) => l.date === date)
-                  .map((l) => l.teacherName)
-                  .includes(t.name)
+              (t) => {
+                const teacherLevels = [
+                  ...new Set(
+                    finalLessonList
+                      .filter((l) => l.teacherName === t.name)
+                      .map((l) => l.levelName)
+                  ),
+                ];
+                const levelTeachers = [
+                  ...new Set(
+                    finalLessonList
+                      .filter((l) => l.levelName === level.name)
+                      .map((l) => l.teacherName)
+                  ),
+                ];
+                return (
+                  t.availabilities.includes(date) &&
+                  !finalLessonList
+                    .filter((l) => l.date === date)
+                    .map((l) => l.teacherName)
+                    .includes(t.name) &&
+                  (teacherLevels.includes(level.name) ||
+                    teacherLevels.length < 3) &&
+                  (levelTeachers.includes(t.name) || levelTeachers.length < 3)
+                );
+              }
             );
             if (!!overWorkingTeacher) {
               level.hours -= lessonDuration;
@@ -59,6 +114,22 @@ function getLessonList(
               finalLessonList.push(
                 new Lesson(date, overWorkingTeacher.name, level.name)
               );
+            } else {
+              const lastChoiceTeacher = randomOrder(teacherConditions).find(
+                (t) =>
+                  t.availabilities.includes(date) &&
+                  !finalLessonList
+                    .filter((l) => l.date === date)
+                    .map((l) => l.teacherName)
+                    .includes(t.name)
+              );
+              if (!!lastChoiceTeacher) {
+                level.hours -= lessonDuration;
+                lastChoiceTeacher.workingHours.max -= lessonDuration;
+                finalLessonList.push(
+                  new Lesson(date, lastChoiceTeacher.name, level.name)
+                );
+              }
             }
           }
         }
