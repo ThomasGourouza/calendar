@@ -17,6 +17,12 @@ function getLessonDate(dateValue) {
   return `${day}/${month}/${year}`;
 }
 
+function textDateToInput(d) {
+  return `${formatNumberToText(d.getFullYear())}-${formatNumberToText(
+    d.getMonth() + 1
+  )}-${formatNumberToText(d.getDate())}`;
+}
+
 function printDateFull(d) {
   if (d !== "") {
     return `${printWeekDay(d)} ${printDate(d)} ${d.getFullYear()}`;

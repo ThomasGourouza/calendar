@@ -13,6 +13,7 @@
   --table-header-height: 20px;
   --table-time: rgb(242, 196, 60);
   --table-content: rgb(245, 202, 147);
+  --table-content-highlighted: rgb(252, 232, 207);
   /* longueur des cellules des heures du calendrier */
   --table-time-td-width: 40px;
   /* longueur des cellules du calendrier */
@@ -114,10 +115,7 @@ table.calendar thead tr:last-child th:not(:first-child):not(.weekend) {
   border-right: var(--table-border);
   border-bottom: var(--table-border-thick);
 }
-table.calendar
-  thead
-  tr
-  th:not(:first-child):not(.weekend):not(.holiday) {
+table.calendar thead tr th:not(:first-child):not(.weekend):not(.holiday) {
   background-color: var(--table-header-day);
 }
 table.calendar thead tr:first-child th {
@@ -161,7 +159,8 @@ table.calendar tbody tr td:not(:first-child):not(.weekend) {
   min-width: var(--table-content-td-width);
   border-right: var(--table-border);
 }
-table.calendar tbody tr td:not(:first-child).booked {
+table.calendar .booked,
+table.calendar .free {
   cursor: pointer;
 }
 table.calendar tbody tr td:not(:first-child).booked.highlighted-lesson {

@@ -10,6 +10,8 @@ function buildHtmlLessonListAndCalendar(
 }
 
 function buildHtmlLessonList(lessonList, teachers, remove) {
+  document.getElementById("date").value = "";
+  document.getElementById("levels").value = "";
   const lessonsTbody = document.getElementById("lessons");
   const trs = lessonsTbody.querySelectorAll("tr");
   for (let i = trs.length - 1; i > 0; i--) {
@@ -108,6 +110,11 @@ function buildHtmlCalendar(lessonList, dates, highlight) {
             td.onclick = () => {
               highlight(lesson.date, lesson.levelName);
             };
+          } else {
+            td.className = "free";
+            td.onclick = () => {
+              fillAddForm(date.date, level, td);
+            };
           }
           break;
         }
@@ -126,6 +133,16 @@ function buildHtmlCalendar(lessonList, dates, highlight) {
   });
   sizeCalendarPage(dates.length);
   createDownloadButton(divForDownloadButton, table);
+}
+
+// selectionner un créneau
+function fillAddForm(date, level, td) {
+  Array.from(document.getElementsByClassName("free")).forEach(
+    (e) => (e.style.backgroundColor = getStyle("--table-content"))
+  );
+  td.style.backgroundColor = getStyle("--table-content-highlighted");
+  document.getElementById("date").value = textDateToInput(date);
+  document.getElementById("levels").value = level;
 }
 
 function createDownloadButton(wrapper, table) {
