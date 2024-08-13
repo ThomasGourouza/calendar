@@ -6,27 +6,19 @@ const levels = [
   new Level("B1.1", undefined),
   new Level("B1.2", undefined),
   new Level("B1.3", undefined),
-  // new Level("B2.1", undefined),
-  // new Level("B2.2", undefined),
-  // new Level("B2.3", undefined),
-  // new Level("B2.4", undefined),
-  // new Level("B2/C1", undefined),
-  // new Level("C1.1", undefined),
-  // new Level("C1.2", undefined),
-  // new Level("C1.3", undefined),
-  // new Level("C1.4", undefined),
-  // new Level("C1.5", undefined),
-  // new Level("C1.6", undefined),
-  // new Level("C1.7", undefined),
-  // new Level("C1.8", undefined),
-];
-
-let lessons = [
-  new Lesson("08/08/2024", "Pauline", "A2.3"),
-  new Lesson("09/08/2024", "Pauline", "A2.3"),
-  new Lesson("09/08/2024", "Hervé", "A2.2"),
-  new Lesson("12/08/2024", "Magda", "A0"),
-  new Lesson("13/08/2024", "Delphine", "A1.2"),
+  new Level("B2.1", undefined),
+  new Level("B2.2", undefined),
+  new Level("B2.3", undefined),
+  new Level("B2.4", undefined),
+  new Level("B2/C1", undefined),
+  new Level("C1.1", undefined),
+  new Level("C1.2", undefined),
+  new Level("C1.3", undefined),
+  new Level("C1.4", undefined),
+  new Level("C1.5", undefined),
+  new Level("C1.6", undefined),
+  new Level("C1.7", undefined),
+  new Level("C1.8", undefined),
 ];
 
 const teachers = [
@@ -39,18 +31,42 @@ const teachers = [
     { min: undefined, max: undefined },
     []
   ),
-  new Teacher("Hervé", "green", "white", [], [], { min: 12, max: 12 }, []),
+  new Teacher(
+    "Hervé",
+    "green",
+    "white",
+    [],
+    [],
+    { min: undefined, max: undefined },
+    []
+  ),
   new Teacher(
     "Delphine",
     "yellow",
     "black",
     [],
     [],
-    { min: 4, max: undefined },
+    { min: undefined, max: undefined },
     []
   ),
-  new Teacher("Magda", "red", "white", [], [], { min: undefined, max: 8 }, []),
-  new Teacher("Soufia", "aqua", "black", [], [], { min: 4, max: 8 }, []),
+  new Teacher(
+    "Magda",
+    "red",
+    "white",
+    [],
+    [],
+    { min: undefined, max: undefined },
+    []
+  ),
+  new Teacher(
+    "Soufia",
+    "aqua",
+    "black",
+    [],
+    [],
+    { min: undefined, max: undefined },
+    []
+  ),
   new Teacher(
     "Valérie",
     "orange",
@@ -66,7 +82,7 @@ const teachers = [
     "black",
     ["1", "4"],
     ["2024-08-14", "2024-08-19", "2024-08-20"],
-    { min: undefined, max: 12 },
+    { min: undefined, max: undefined },
     ["A0", "A1.2"]
   ),
   new Teacher(
@@ -110,7 +126,7 @@ const teachers = [
 const translation = {};
 
 const parameter = {
-  startDate: "2024-08-08",
+  startDate: "",
   numberDays: 20,
   bankHolidays: [],
   lessonDuration: 4,

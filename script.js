@@ -11,6 +11,7 @@ flatpickr("#bankHolidays", {
 let selectedDates = [];
 let teacherConditions = [];
 let levelsWithHours = [];
+let lessons = [];
 
 // les formulaires
 const parameterForm = document.forms["parameter-form"];
@@ -54,7 +55,7 @@ parameterForm.onsubmit = function (e) {
 // ajouter une leçon
 addLessonForm.onsubmit = function (e) {
   e.preventDefault();
-  // TODO: verifier que la lecon n'est pas en conflit avec une autre: validateLessonForm();
+  // TODO: verifier que la leçon n'est pas en conflit avec une autre: validateLessonForm();
   // create lesson
   lessons.push(
     new Lesson(
@@ -116,7 +117,9 @@ function generateTeacherAndLevelConditions() {
 // créer la liste des leçons et le calendrier
 function generateLessonListAndBuildHtml() {
   lessons = getLessonList(
-    selectedDates.filter((d) => d.type === "regular").map((d) => d.date),
+    selectedDates
+      .filter((d) => d.type === "regular")
+      .map((d) => getDateTextFromLocalDate(d.date)),
     teacherConditions,
     levelsWithHours,
     parameter.lessonDuration
