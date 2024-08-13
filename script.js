@@ -30,6 +30,10 @@ setForm(parameterForm, parameter);
 // créer la liste des professeurs
 parameterForm.onsubmit = function (e) {
   e.preventDefault();
+  if (!parameterForm.startDate.value) {
+    alert("Date de début!");
+    return;
+  }
   setParameters(this, parameter);
   selectedDates = getSelectedDates(
     parameter.startDate,
@@ -108,9 +112,11 @@ function generateTeacherAndLevelConditions() {
       navigate("confirmation-wrapper");
     } else {
       alert("Aucun niveau ne possède d'heure.");
+      return;
     }
   } else {
     alert("Volume horaire incorrect.");
+    return;
   }
 }
 
