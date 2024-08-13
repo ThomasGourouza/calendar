@@ -65,3 +65,9 @@ function isValide(workingHours) {
       +workingHour.min <= +workingHour.max
   );
 }
+
+function existLesson(newLesson, lessons) {
+  return lessons.some(
+    (l) => l.date === newLesson.date && l.levelName === newLesson.levelName
+  );
+}

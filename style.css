@@ -32,7 +32,6 @@
   --table-lesson-margin-top: 10px;
   --table-lesson-header: rgb(214, 255, 173);
   --table-lesson-content: rgb(252, 232, 207);
-  --table-lesson-content-highlighted: rgb(255, 201, 135);
   --table-button-remove: rgb(160, 7, 7);
   --table-button-remove-hover: rgb(247, 5, 5);
   --table-button-add: rgb(0, 91, 12);
@@ -212,9 +211,6 @@ table.lessons thead tr th:not(:first-child) {
 table.lessons thead tr th:last-child {
   border-radius: 0 var(--table-border-radius) 0 0;
 }
-table.lessons tbody tr {
-  cursor: pointer;
-}
 table.lessons tbody tr:not(:first-child) td:first-child {
   text-align: left;
   padding-left: 15px;
@@ -222,11 +218,8 @@ table.lessons tbody tr:not(:first-child) td:first-child {
 table.lessons tbody tr form {
   border-left: var(--table-border);
 }
-table.lessons tbody tr:not(.highlightedRow) td {
+table.lessons tbody tr td {
   background-color: var(--table-lesson-content);
-}
-table.lessons tbody tr.highlightedRow td {
-  background-color: var(--table-lesson-content-highlighted);
 }
 table.lessons tbody tr td {
   height: var(--table-lesson-content-td-height);
@@ -325,11 +318,8 @@ table.teachers thead tr th:last-child {
 table.teachers tbody tr form {
   border-left: var(--table-border);
 }
-table.teachers tbody tr:not(.highlightedRow) td {
+table.teachers tbody tr td {
   background-color: var(--table-teacher-content);
-}
-table.teachers tbody tr.highlightedRow td {
-  background-color: var(--table-teacher-content-highlighted);
 }
 table.teachers tbody tr td {
   height: var(--table-teacher-content-td-height);
@@ -385,11 +375,8 @@ table.levels thead tr th:last-child {
 table.levels tbody tr form {
   border-left: var(--table-border);
 }
-table.levels tbody tr:not(.highlightedRow) td {
+table.levels tbody tr td {
   background-color: var(--table-level-content);
-}
-table.levels tbody tr.highlightedRow td {
-  background-color: var(--table-level-content-highlighted);
 }
 table.levels tbody tr td {
   height: var(--table-level-content-td-height);

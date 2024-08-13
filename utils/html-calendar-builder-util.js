@@ -5,48 +5,37 @@ function buildHtmlLessonListAndCalendar(
   highlight,
   remove
 ) {
-  buildHtmlLessonList(lessonList, teachers, highlight, remove);
   buildHtmlCalendar(lessonList, dates, highlight);
+  buildHtmlLessonList(lessonList, teachers, remove);
 }
 
-function buildHtmlLessonList(lessonList, teachers, highlight, remove) {
+function buildHtmlLessonList(lessonList, teachers, remove) {
   const lessonsTbody = document.getElementById("lessons");
   const trs = lessonsTbody.querySelectorAll("tr");
   for (let i = trs.length - 1; i > 0; i--) {
     lessonsTbody.removeChild(trs[i]);
   }
-  sort(lessonList).forEach((lesson) => {
+  const lesson = lessonList.find((l) => l.highlight);
+  if (!!lesson) {
     const tr = putElementIn("tr", lessonsTbody);
-    if (lesson.highlight) {
-      tr.className = "highlightedRow";
-    }
-    tr.onclick = () => {
-      highlight(lesson.date, lesson.levelName);
-    };
-
     const dateTd = putElementIn("td", tr);
     dateTd.innerHTML = printDateFull(lesson.localDate);
-
     const teacherTd = putElementIn("td", tr);
     fillTdWithTeacherAndDisk(
       teacherTd,
       lesson.teacherName,
       teachers.find((teacher) => teacher.name === lesson.teacherName)?.color
     );
-
     const levelTd = putElementIn("td", tr);
     levelTd.innerHTML = lesson.levelName;
-
     const removeButtonTd = putElementIn("td", tr);
-    if (lesson.highlight) {
-      const removeButton = putElementIn("div", removeButtonTd);
-      removeButton.className = "button";
-      removeButton.onclick = () => {
-        remove(lesson.date, lesson.levelName);
-      };
-      removeButton.innerHTML = "-";
-    }
-  });
+    const removeButton = putElementIn("div", removeButtonTd);
+    removeButton.className = "button";
+    removeButton.onclick = () => {
+      remove(lesson.date, lesson.levelName);
+    };
+    removeButton.innerHTML = "-";
+  }
 }
 
 function buildHtmlCalendar(lessonList, dates, highlight) {

@@ -59,15 +59,19 @@ parameterForm.onsubmit = function (e) {
 // ajouter une leçon
 addLessonForm.onsubmit = function (e) {
   e.preventDefault();
-  // TODO: verifier que la leçon n'est pas en conflit avec une autre: validateLessonForm();
-  // create lesson
-  lessons.push(
-    new Lesson(
-      getLessonDate(this.date.value),
-      this.teacherName.value,
-      this.levelName.value
-    )
+  const newLesson = new Lesson(
+    getLessonDate(this.date.value),
+    this.teacherName.value,
+    this.levelName.value
   );
+  if (existLesson(newLesson, lessons)) {
+    alert(
+      `Une leçon existe déjà le ${newLesson.date} pour le niveau ${newLesson.levelName}.`
+    );
+    return;
+  }
+  // create lesson
+  lessons.push(newLesson);
   this.reset();
   buildHtml();
 };
