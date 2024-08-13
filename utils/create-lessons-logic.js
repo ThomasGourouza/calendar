@@ -11,6 +11,23 @@ function getLessonList(dates, tConditions, levelsHours, lessonDuration) {
           const lTeachers = [...new Set(finalLessonList.filter((l) => l.levelName === level.name).map((l) => l.teacherName))];
           return (teacherLevels.includes(level.name) || teacherLevels.length < 3) && (lTeachers.includes(t.name) || lTeachers.length < 3);
         });
+        const availableVeryLimitedTeachers = availableTeachers.filter(t => {
+          const teacherLevels = [...new Set(finalLessonList.filter((l) => l.teacherName === t.name).map((l) => l.levelName))];
+          const lTeachers = [...new Set(finalLessonList.filter((l) => l.levelName === level.name).map((l) => l.teacherName))];
+          return (teacherLevels.includes(level.name) || teacherLevels.length === 0) && (lTeachers.includes(t.name) || lTeachers.length === 0);
+        });
+
+        const exactVeryLimitedTeachers = availableVeryLimitedTeachers.filter(t => !!t.workingHours.min && (t.workingHours.min === t.workingHours.max) && (t.workingHours.max >= lessonDuration));
+        const minVeryLimitedTeachers = availableVeryLimitedTeachers.filter(t => !!t.workingHours.min && !t.workingHours.max && (t.workingHours.min >= 0));
+        const betweenVeryLimitedTeachers = availableVeryLimitedTeachers.filter(t => !!t.workingHours.min && !!t.workingHours.max && (t.workingHours.min < t.workingHours.max) && (t.workingHours.min >= 0) && (t.workingHours.max >= lessonDuration));
+        const maxVeryLimitedTeachers = availableVeryLimitedTeachers.filter(t => !t.workingHours.min && !!t.workingHours.max && (t.workingHours.max >= lessonDuration));
+        const undeterminedVeryLimitedTeachers = availableVeryLimitedTeachers.filter(t => !t.workingHours.min && !t.workingHours.max);
+
+        const preferredExactVeryLimitedTeachers = exactVeryLimitedTeachers.filter(t => t.preferedLevelNames.includes(level.name));
+        const preferredMinVeryLimitedTeachers = minVeryLimitedTeachers.filter(t => t.preferedLevelNames.includes(level.name));
+        const preferredBetweenVeryLimitedTeachers = betweenVeryLimitedTeachers.filter(t => t.preferedLevelNames.includes(level.name));
+        const preferredMaxVeryLimitedTeachers = maxVeryLimitedTeachers.filter(t => t.preferedLevelNames.includes(level.name));
+        const preferredUndeterminedVeryLimitedTeachers = undeterminedVeryLimitedTeachers.filter(t => t.preferedLevelNames.includes(level.name));
 
         const exactLimitedTeachers = availableLimitedTeachers.filter(t => !!t.workingHours.min && (t.workingHours.min === t.workingHours.max) && (t.workingHours.max >= lessonDuration));
         const minLimitedTeachers = availableLimitedTeachers.filter(t => !!t.workingHours.min && !t.workingHours.max && (t.workingHours.min >= 0));
@@ -37,7 +54,29 @@ function getLessonList(dates, tConditions, levelsHours, lessonDuration) {
         const preferredUndeterminedTeachers = undeterminedTeachers.filter(t => t.preferedLevelNames.includes(level.name));
 
         let selectedTeacher;
-        if (preferredExactLimitedTeachers.length > 0) {
+        if (preferredExactVeryLimitedTeachers.length > 0) {
+          selectedTeacher = randomOrder(preferredExactVeryLimitedTeachers)[0];
+        } else if (preferredMinVeryLimitedTeachers.length > 0) {
+          selectedTeacher = randomOrder(preferredMinVeryLimitedTeachers)[0];
+        } else if (preferredBetweenVeryLimitedTeachers.length > 0) {
+          selectedTeacher = randomOrder(preferredBetweenVeryLimitedTeachers)[0];
+        } else if (preferredMaxVeryLimitedTeachers.length > 0) {
+          selectedTeacher = randomOrder(preferredMaxVeryLimitedTeachers)[0];
+        } else if (preferredUndeterminedVeryLimitedTeachers.length > 0) {
+          selectedTeacher = randomOrder(preferredUndeterminedVeryLimitedTeachers)[0];
+        } else if (exactVeryLimitedTeachers.length > 0) {
+          selectedTeacher = randomOrder(exactVeryLimitedTeachers)[0];
+        } else if (minVeryLimitedTeachers.length > 0) {
+          selectedTeacher = randomOrder(minVeryLimitedTeachers)[0];
+        } else if (betweenVeryLimitedTeachers.length > 0) {
+          selectedTeacher = randomOrder(betweenVeryLimitedTeachers)[0];
+        } else if (maxVeryLimitedTeachers.length > 0) {
+          selectedTeacher = randomOrder(maxVeryLimitedTeachers)[0];
+        } else if (undeterminedVeryLimitedTeachers.length > 0) {
+          selectedTeacher = randomOrder(undeterminedVeryLimitedTeachers)[0];
+        } else if (availableVeryLimitedTeachers.length > 0) {
+          selectedTeacher = randomOrder(availableVeryLimitedTeachers)[0];
+        } else if (preferredExactLimitedTeachers.length > 0) {
           selectedTeacher = randomOrder(preferredExactLimitedTeachers)[0];
         } else if (preferredMinLimitedTeachers.length > 0) {
           selectedTeacher = randomOrder(preferredMinLimitedTeachers)[0];
