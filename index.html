@@ -14,46 +14,59 @@
   <body>
     <div id="settings-wrapper" class="page">
       <form name="parameter-form">
+        <input type="submit" value="Suivant" />
         <h1>Paramètres</h1>
         <div>
-          <h2>Calendrier</h2>
-          <label>Date de début:</label>
-          <input
-            type="date"
-            id="startDate"
-            name="startDate"
-            placeholder="Date de début"
-          />
-          <br /><br />
-          <label>Nombres de jours:</label>
-          <input
-            type="number"
-            name="numberDays"
-            min="1"
-            style="width: 50px"
-            required
-          />
-          <br /><br />
-          <label>Jours fériés:</label>
-          <input
-            type="date"
-            id="bankHolidays"
-            name="bankHolidays"
-            placeholder="Jours fériés"
-          />
-          <br /><br />
-          <label>Durée d'une leçon:</label>
-          <select name="lessonDuration" required>
-            <option value="1">1h</option>
-            <option value="1.5">1h30</option>
-            <option value="2">2h</option>
-            <option value="2.5">2h30</option>
-            <option value="3">3h</option>
-            <option value="3.5">3h30</option>
-            <option value="4">4h</option>
-          </select>
-          <br /><br />
-          <input type="submit" value="Suivant" />
+          <table class="parameter">
+            <thead>
+              <tr>
+                <th>Date de début</th>
+                <th>Nombre de jours</th>
+                <th>Jours fériés</th>
+                <th>Durée d'une leçon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input
+                    type="date"
+                    id="startDate"
+                    name="startDate"
+                    placeholder="Date de début"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name="numberDays"
+                    min="1"
+                    style="width: 50px"
+                    required
+                  />
+                </td>
+                <td>
+                  <input
+                    type="date"
+                    id="bankHolidays"
+                    name="bankHolidays"
+                    placeholder="Jours fériés"
+                  />
+                </td>
+                <td>
+                  <select name="lessonDuration" required>
+                    <option value="1">1h</option>
+                    <option value="1.5">1h30</option>
+                    <option value="2">2h</option>
+                    <option value="2.5">2h30</option>
+                    <option value="3">3h</option>
+                    <option value="3.5">3h30</option>
+                    <option value="4">4h</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </form>
     </div>
