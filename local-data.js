@@ -80,10 +80,10 @@ const teachers = [
     "Julien",
     "beige",
     "black",
-    ["1", "4"],
-    ["2024-08-14", "2024-08-19", "2024-08-20"],
+    [],
+    [],
     { min: undefined, max: undefined },
-    ["A0", "A1.2"]
+    []
   ),
   new Teacher(
     "Maeva",
