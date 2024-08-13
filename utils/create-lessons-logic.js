@@ -136,8 +136,6 @@ function getLessonList(
       }
     });
   });
-  // console.log(teacherConditions);
-  // console.log(levelsWithHours);
   return finalLessonList;
 }
 

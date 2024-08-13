@@ -59,14 +59,15 @@ function buildHtmlCalendar(lessonList, dates, highlight) {
   }
   const h1 = putElementIn("h1", wrapper);
   h1.innerHTML = "Calendrier";
+  const divForDownloadButton = putElementIn("div", wrapper);
   const table = putElementIn("table", wrapper);
   table.className = "calendar";
   const thead = putElementIn("thead", table);
   const tbody = putElementIn("tbody", table);
   const tr1 = putElementIn("tr", thead);
   const tr2 = putElementIn("tr", thead);
-  const th1 = putElementIn("th", tr1);
-  const th2 = putElementIn("th", tr2);
+  putElementIn("th", tr1);
+  putElementIn("th", tr2);
 
   // Headers jours
   dates.forEach((date) => {
@@ -94,13 +95,11 @@ function buildHtmlCalendar(lessonList, dates, highlight) {
         break;
     }
   });
-
   // Contenu du calendrier
   [...new Set(lessonList.map((l) => l.levelName))].sort().forEach((level) => {
     const tr = putElementIn("tr", tbody);
     const td = putElementIn("td", tr);
     td.innerHTML = level;
-
     dates.forEach((date) => {
       const td = putElementIn("td", tr);
       switch (date.type) {
@@ -137,6 +136,42 @@ function buildHtmlCalendar(lessonList, dates, highlight) {
     });
   });
   sizeCalendarPage(dates.length);
+  createDownloadButton(divForDownloadButton, table);
+}
+
+function createDownloadButton(wrapper, table) {
+  const downloadButton = putElementIn("button", wrapper);
+  downloadButton.setAttribute("id", "download-button");
+  downloadButton.innerHTML = "Télécharger";
+  downloadButton.addEventListener("click", function () {
+    const rows = table.querySelectorAll("tr");
+    let csvContent = "";
+    rows.forEach((row) => {
+      const rowContent = Array.from(row.querySelectorAll("th, td")).map(
+        (r) => r.textContent
+      );
+      console.log(rowContent);
+      csvContent += rowContent.join(";") + "\n";
+    });
+    const utf8BOM = "\ufeff";
+    const blob = new Blob([`${utf8BOM}${csvContent}`], {
+      type: "text/csv;charset=utf-8;",
+    });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    const today = new Date();
+    link.setAttribute(
+      "download",
+      `calendrier_${formatNumberToText(today.getDate())}-${formatNumberToText(
+        today.getMonth() + 1
+      )}-${formatNumberToText(today.getFullYear())}.csv`
+    );
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
 }
 
 function fillSelectOptions(selectId, optionList) {
