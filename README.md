@@ -5,7 +5,6 @@ Calendar generator
 # TODO:
 
 - settings (parameter) + data -> default if not in localstorage
-- chaque case remplie par un professeur consomme 4 heures de son volume horaire, vu qu'il y a 20 séances de 4 heures dans la session.
 - un prof -> max 3 levels différents. un level -> max 3 profs différent
 - un cours par jour max
 - un prof par jour max
