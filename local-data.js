@@ -126,7 +126,7 @@ const teachers = [
 const translation = {};
 
 const parameter = {
-  startDate: undefined,
+  startDate: "",
   numberDays: 20,
   bankHolidays: [],
   lessonDuration: 4,
