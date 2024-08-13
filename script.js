@@ -122,12 +122,13 @@ function generateTeacherAndLevelConditions() {
 
 // créer la liste des leçons et le calendrier
 function generateLessonListAndBuildHtml() {
+  const dates = selectedDates
+    .filter((d) => d.type === "regular")
+    .map((d) => getDateTextFromLocalDate(d.date));
   lessons = getLessonList(
-    [...selectedDates
-      .filter((d) => d.type === "regular")
-      .map((d) => getDateTextFromLocalDate(d.date))],
-    [...teacherConditions],
-    [...levelsWithHours],
+    dates,
+    teacherConditions.map((x) => ({ ...x })),
+    levelsWithHours.map((x) => ({ ...x })),
     parameter.lessonDuration
   );
   buildHtml();
