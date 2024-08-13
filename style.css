@@ -88,10 +88,17 @@ table.calendar {
 table.calendar thead tr th {
   height: var(--table-header-height);
 }
+/* Titre du tableau */
 table.calendar thead tr:first-child th:first-child {
-  /* Titre du tableau */
   border-radius: var(--table-border-radius) 0 0 0;
   background-color: var(--table-header-title);
+  border-left: var(--table-border);
+}
+table.calendar thead tr:last-child th:first-child {
+  background-color: var(--table-header-title);
+  border-left: var(--table-border);
+  border-right: var(--table-border);
+  border-bottom: var(--table-border);
 }
 table.calendar thead tr:first-child th:last-child {
   border-radius: 0 var(--table-border-radius) 0 0;
@@ -104,24 +111,21 @@ table.calendar thead tr:first-child th:not(:first-child):not(.weekend) {
   border-left: none;
   border-bottom: var(--table-border);
 }
-table.calendar thead tr:last-child th:nth-child(n):not(.weekend) {
+table.calendar thead tr:last-child th:not(:first-child):not(.weekend) {
   border-right: var(--table-border);
   border-bottom: var(--table-border-thick);
 }
 table.calendar
   thead
-  tr:first-child
+  tr
   th:not(:first-child):not(.weekend):not(.holiday) {
-  background-color: var(--table-header-day);
-}
-table.calendar thead tr:last-child th:not(.weekend):not(.holiday) {
   background-color: var(--table-header-day);
 }
 table.calendar thead tr:first-child th {
   border-top: var(--table-border);
 }
 table.calendar thead tr:first-child th:not(.weekend) {
-  border: var(--table-border);
+  border-right: var(--table-border);
 }
 table.calendar tbody tr {
   font-size: x-small;

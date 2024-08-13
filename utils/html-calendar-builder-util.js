@@ -65,8 +65,8 @@ function buildHtmlCalendar(lessonList, dates, highlight) {
   const tbody = putElementIn("tbody", table);
   const tr1 = putElementIn("tr", thead);
   const tr2 = putElementIn("tr", thead);
-  const th = putElementIn("th", tr1);
-  th.setAttribute("rowspan", 2);
+  const th1 = putElementIn("th", tr1);
+  const th2 = putElementIn("th", tr2);
 
   // Headers jours
   dates.forEach((date) => {
