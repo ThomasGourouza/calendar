@@ -150,7 +150,6 @@ function createDownloadButton(wrapper, table) {
       const rowContent = Array.from(row.querySelectorAll("th, td")).map(
         (r) => r.textContent
       );
-      console.log(rowContent);
       csvContent += rowContent.join(";") + "\n";
     });
     const utf8BOM = "\ufeff";

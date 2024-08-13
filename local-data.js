@@ -1,9 +1,9 @@
 const levels = [
-  new Level("A0", 20),
-  new Level("A1.2", 20),
-  new Level("A2.2", 20),
-  new Level("A2.3", 20),
-  new Level("B1.1", 20),
+  new Level("A0", undefined),
+  new Level("A1.2", undefined),
+  new Level("A2.2", undefined),
+  new Level("A2.3", undefined),
+  new Level("B1.1", undefined),
   new Level("B1.2", undefined),
   new Level("B1.3", undefined),
   new Level("B2.1", undefined),
@@ -126,7 +126,7 @@ const teachers = [
 const translation = {};
 
 const parameter = {
-  startDate: "2024-08-14",
+  startDate: "",
   numberDays: 20,
   bankHolidays: [],
   lessonDuration: 4,
