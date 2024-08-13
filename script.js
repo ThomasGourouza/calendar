@@ -44,7 +44,9 @@ parameterForm.onsubmit = function (e) {
     teachers,
     levels,
     printDateFull(firstDate),
-    printDateFull(lastDate)
+    printDateFull(lastDate),
+    parameter.lessonDuration,
+    parameter.numberDays
   );
   navigate("conditions-wrapper");
 };
@@ -113,7 +115,12 @@ function generateTeacherAndLevelConditions() {
 
 // créer la liste des leçons et le calendrier
 function generateLessonListAndBuildHtml() {
-  lessons = getLessonList(teacherConditions, levelsWithHours);
+  lessons = getLessonList(
+    selectedDates.filter((d) => d.type === "regular").map((d) => d.date),
+    teacherConditions,
+    levelsWithHours,
+    parameter.lessonDuration
+  );
   buildHtml();
   navigate("lessons-calendar-wrapper");
 }

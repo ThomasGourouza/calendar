@@ -6,10 +6,18 @@ const weekDays = [
   { name: "Vendredi", index: "5" },
 ];
 
-function buildHtmlConditions(teachers, levels, startDate, endDate) {
+function buildHtmlConditions(
+  teachers,
+  levels,
+  startDate,
+  endDate,
+  lessonDuration,
+  numberDays
+) {
   Array.from(document.getElementsByClassName("date-indication")).forEach(
     (dateIndication) =>
-      (dateIndication.innerHTML = `La période va du ${startDate} au ${endDate}.`)
+      (dateIndication.innerHTML = `<p>La période va du ${startDate} au ${endDate} et comporte ${numberDays} jours de travail.</p>
+        <p>Chaque leçon dure ${lessonDuration}h.</p>`)
   );
   buildHtmlTeachersConditions(
     teachers,
