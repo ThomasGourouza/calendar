@@ -115,7 +115,7 @@ function buildHtmlTeachersConditions(teachers, levelNames) {
       levelOption.setAttribute("value", name);
       levelOption.innerHTML = name;
     });
-    recDaysOffSelect.addEventListener("change", (event) =>
+    levelsSelect.addEventListener("change", (event) =>
       handleLevelsSelectChange(event, teacher)
     );
   });
