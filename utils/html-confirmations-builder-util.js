@@ -8,9 +8,10 @@ function buildHtmlTeachersConfirmations(teacherConditions) {
   while (div.firstChild) {
     div.removeChild(div.firstChild);
   }
+  const ul = putElementIn("ul", div);
   teacherConditions.forEach((teacherCondition) => {
-    const p = putElementIn("p", div);
-    p.innerHTML = `${teacherCondition.name} est disponible ${
+    const li = putElementIn("li", ul);
+    li.innerHTML = `${teacherCondition.name} est disponible ${
       teacherCondition.availabilities.length
     } jours, pour ${confirmHours(
       teacherCondition.workingHours
@@ -23,9 +24,10 @@ function buildHtmlLevelsConfirmations(levels) {
   while (div.firstChild) {
     div.removeChild(div.firstChild);
   }
+  const ul = putElementIn("ul", div);
   levels.forEach((level) => {
-    const p = putElementIn("p", div);
-    p.innerHTML = `Le niveau ${level.name} possède ${level.hours}h.`;
+    const li = putElementIn("li", ul);
+    li.innerHTML = `Le niveau ${level.name} possède ${level.hours}h.`;
   });
 }
 

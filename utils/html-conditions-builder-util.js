@@ -16,8 +16,8 @@ function buildHtmlConditions(
 ) {
   Array.from(document.getElementsByClassName("date-indication")).forEach(
     (dateIndication) =>
-      (dateIndication.innerHTML = `<p>La période va du ${startDate} au ${endDate} et comporte ${numberDays} jours de travail.</p>
-        <p>Chaque leçon dure ${lessonDuration}h.</p>`)
+      (dateIndication.innerHTML = `<ul><li>La période va du ${startDate} au ${endDate} et comporte ${numberDays} jours de travail.</li>
+        <li>Chaque leçon dure ${lessonDuration}h.</li></ul>`)
   );
   buildHtmlTeachersConditions(
     teachers,
