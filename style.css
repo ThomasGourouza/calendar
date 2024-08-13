@@ -202,6 +202,14 @@ table.lessons thead tr th {
   border-bottom: var(--table-border-thick);
   background-color: var(--table-lesson-header);
 }
+table.lessons thead tr th:not(:last-child) {
+  width: var(--table-lesson-content-td-width);
+  min-width: var(--table-lesson-content-td-width);
+}
+table.lessons thead tr th:last-child {
+  width: var(--table-lesson-action-td-width);
+  min-width: var(--table-lesson-action-td-width);
+}
 table.lessons thead tr th:first-child {
   border-radius: var(--table-border-radius) 0 0 0;
 }
@@ -224,8 +232,6 @@ table.lessons tbody tr td {
 table.lessons tbody tr td {
   height: var(--table-lesson-content-td-height);
   text-align: center;
-  width: var(--table-lesson-content-td-width);
-  min-width: var(--table-lesson-content-td-width);
   border-right: var(--table-border);
   border-bottom: var(--table-border);
   font-size: small;
@@ -235,10 +241,6 @@ table.lessons tbody tr td:first-child {
 }
 table.lessons tbody tr td:not(:first-child) {
   border-left: none;
-}
-table.lessons tbody tr td:last-child {
-  width: var(--table-lesson-action-td-width);
-  min-width: var(--table-lesson-action-td-width);
 }
 table.lessons tbody tr:last-child td:last-child {
   border-radius: 0 0 var(--table-border-radius) 0;
