@@ -94,8 +94,14 @@
         <table class="levels">
           <thead>
             <tr>
+              <th>
+                <input
+                  id="levels-checkbox"
+                  type="checkbox"
+                  onchange="selectOrUnselectAll(this.checked)"
+                />
+              </th>
               <th>Nom</th>
-              <th>Volume horaire (h)</th>
             </tr>
           </thead>
           <tbody id="tbody-levels"></tbody>

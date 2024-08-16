@@ -8,6 +8,7 @@ class Teacher {
     workingHours,
     preferedLevelNames
   ) {
+    this.active = true;
     this.name = name;
     this.color = color;
     this.textColor = textColor;

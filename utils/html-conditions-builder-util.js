@@ -6,9 +6,9 @@ const weekDays = [
   { name: "Vendredi", index: "5" },
 ];
 
-function buildHtmlConditions(
+function buildHtmlTeachersConditions(
   teachers,
-  levels,
+  levelNames,
   startDate,
   endDate,
   lessonDuration,
@@ -19,14 +19,6 @@ function buildHtmlConditions(
       (dateIndication.innerHTML = `<ul><li>La période va du ${startDate} au ${endDate} et comporte ${numberDays} jours de travail.</li>
         <li>Chaque leçon dure ${lessonDuration}h.</li></ul>`)
   );
-  buildHtmlTeachersConditions(
-    teachers,
-    levels.map((level) => level.name)
-  );
-  buildHtmlLevelsConditions(levels);
-}
-
-function buildHtmlTeachersConditions(teachers, levelNames) {
   const teachersTbody = document.getElementById("tbody-teachers");
   while (teachersTbody.firstChild) {
     teachersTbody.removeChild(teachersTbody.firstChild);
@@ -153,20 +145,19 @@ function buildHtmlLevelsConditions(levels) {
   levels.forEach((level) => {
     const tr = putElementIn("tr", levelsTbody);
 
+    const activeTd = putElementIn("td", tr);
+    const activeInput = putElementIn("input", activeTd);
+    activeInput.setAttribute("type", "checkbox");
+    activeInput.checked = level.active;
+    activeInput.addEventListener("change", (event) =>
+      handleActiveChange(event, level)
+    );
+
     const nameTd = putElementIn("td", tr);
     nameTd.innerHTML = level.name;
-
-    const hoursTd = putElementIn("td", tr);
-    const hoursInput = putElementIn("input", hoursTd);
-    hoursInput.setAttribute("type", "number");
-    hoursInput.setAttribute("min", 0);
-    hoursInput.style.width = "40px";
-    hoursInput.addEventListener("change", (event) =>
-      handleHoursInputChange(event, level)
-    );
   });
 }
 
-function handleHoursInputChange(event, level) {
-  level.hours = event.target.value;
+function handleActiveChange(event, level) {
+  level.active = event.target.checked;
 }

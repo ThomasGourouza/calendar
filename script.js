@@ -16,10 +16,7 @@ let lessons = [];
 // les formulaires
 const parameterForm = document.forms["parameter-form"];
 const addLessonForm = document.forms["addLesson-form"];
-fillSelectOptions(
-  "levels",
-  levels.map((level) => level.name)
-);
+fillSelectOptions("levels", levelNames);
 fillSelectOptions(
   "teachers",
   teachers.map((teacher) => teacher.name)
@@ -27,7 +24,7 @@ fillSelectOptions(
 // load parameter and init form with default parameters
 setForm(parameterForm, parameter);
 
-// créer la liste des professeurs
+// créer la liste des parametres pour les professeurs et les niveaux
 parameterForm.onsubmit = function (e) {
   e.preventDefault();
   if (!parameterForm.startDate.value) {
@@ -45,16 +42,24 @@ parameterForm.onsubmit = function (e) {
     .map((date) => date.date);
   const firstDate = regularDates[0];
   const lastDate = regularDates[regularDates.length - 1];
-  buildHtmlConditions(
+  levelsWithHours = levelNames.map((l) => new Level(l, parameter));
+  buildHtmlTeachersConditions(
     teachers,
-    levels,
+    levelNames,
     printDateFull(firstDate),
     printDateFull(lastDate),
     parameter.lessonDuration,
     parameter.numberDays
   );
+  document.getElementById("levels-checkbox").checked = true;
+  buildHtmlLevelsConditions(levelsWithHours);
   navigate("conditions-wrapper");
 };
+
+function selectOrUnselectAll(value) {
+  levelsWithHours.forEach((l) => (l.active = value));
+  buildHtmlLevelsConditions(levelsWithHours);
+}
 
 // ajouter une leçon
 addLessonForm.onsubmit = function (e) {
@@ -102,29 +107,32 @@ function generateTeacherAndLevelConditions() {
     availabilities: teacher.getAvailabilities(selectedDates),
     preferedLevelNames: teacher.preferedLevelNames,
   }));
-  levelsWithHours = levels.filter((level) => !!level.hours);
   if (
     isValide(
-      teacherConditions.map(
-        (teacherCondition) => teacherCondition.workingHours
-      ),
-      levelsWithHours
+      teacherConditions.map((teacherCondition) => teacherCondition.workingHours)
     )
   ) {
-    if (levelsWithHours.length > 0) {
-      buildHtmlConfirmations(teacherConditions, levelsWithHours);
+    if (levelsWithHours.some((l) => l.active)) {
+      buildHtmlConfirmations(
+        teacherConditions,
+        levelsWithHours.filter((l) => l.active)
+      );
       navigate("confirmation-wrapper");
     } else {
-      alert("Aucun niveau ne possède d'heure.");
+      alert("Aucun niveau sélectionné.");
       return;
     }
   } else {
-    const teachers = teacherConditions.filter(
-      (t) =>
-        !!t.workingHours.min &&
-        !!t.workingHours.max &&
-        +t.workingHours.min > +t.workingHours.max
-    ).map(t => t.name).join(", ").replace(/, ([^,]*)$/, ' et $1');
+    const teachers = teacherConditions
+      .filter(
+        (t) =>
+          !!t.workingHours.min &&
+          !!t.workingHours.max &&
+          +t.workingHours.min > +t.workingHours.max
+      )
+      .map((t) => t.name)
+      .join(", ")
+      .replace(/, ([^,]*)$/, " et $1");
     alert(`Volume horaire incorrect pour ${teachers}`);
     return;
   }
@@ -138,19 +146,11 @@ function generateLessonListAndBuildHtml() {
   lessons = getLessonList(
     dates,
     teacherConditions.map((x) => ({ ...x })),
-    levelsWithHours.map((x) => ({ ...x })),
+    levelsWithHours.filter((l) => l.active).map((x) => ({ ...x })),
     parameter.lessonDuration
   );
   buildHtml();
   navigate("lessons-calendar-wrapper");
-}
-
-// changer de section
-function navigate(page) {
-  document.querySelectorAll(".page").forEach((p) => {
-    p.style.display = "none";
-  });
-  document.getElementById(page).style.display = "block";
 }
 
 // créer la liste des leçons et le calendrier
@@ -162,4 +162,12 @@ function buildHtml() {
     highlightLesson,
     removeLesson
   );
+}
+
+// changer de section
+function navigate(page) {
+  document.querySelectorAll(".page").forEach((p) => {
+    p.style.display = "none";
+  });
+  document.getElementById(page).style.display = "block";
 }
