@@ -68,7 +68,8 @@ function buildHtmlTeachersConditions(
     workingHoursMinLabel.style.paddingLeft = "5px";
     const workingHoursMinInput = putElementIn("input", workingHoursTd);
     workingHoursMinInput.setAttribute("type", "number");
-    workingHoursMinInput.setAttribute("min", 0);
+    workingHoursMinInput.setAttribute("min", lessonDuration);
+    workingHoursMinInput.setAttribute("max", lessonDuration * numberDays);
     workingHoursMinInput.style.width = "20%";
     workingHoursMinInput.setAttribute(
       "title",
@@ -82,7 +83,8 @@ function buildHtmlTeachersConditions(
     workingHoursMaxLabel.style.paddingLeft = "10px";
     const workingHoursMaxInput = putElementIn("input", workingHoursTd);
     workingHoursMaxInput.setAttribute("type", "number");
-    workingHoursMaxInput.setAttribute("min", 0);
+    workingHoursMaxInput.setAttribute("min", lessonDuration);
+    workingHoursMaxInput.setAttribute("max", lessonDuration * numberDays);
     workingHoursMaxInput.style.width = "20%";
     workingHoursMaxInput.setAttribute(
       "title",

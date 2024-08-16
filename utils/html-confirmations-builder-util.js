@@ -1,21 +1,21 @@
-function buildHtmlConfirmations(teacherConditions, levels) {
-  buildHtmlTeachersConfirmations(teacherConditions);
+function buildHtmlConfirmations(teachers, levels, selectedDates) {
+  buildHtmlTeachersConfirmations(teachers, selectedDates);
   buildHtmlLevelsConfirmations(levels);
 }
 
-function buildHtmlTeachersConfirmations(teacherConditions) {
+function buildHtmlTeachersConfirmations(teachers, selectedDates) {
   const div = document.getElementById("teachers-confirmation");
   while (div.firstChild) {
     div.removeChild(div.firstChild);
   }
   const ul = putElementIn("ul", div);
-  teacherConditions.forEach((teacherCondition) => {
+  teachers.forEach((teacher) => {
     const li = putElementIn("li", ul);
-    li.innerHTML = `${teacherCondition.name} est disponible ${
-      teacherCondition.availabilities.length
+    li.innerHTML = `${teacher.name} est disponible ${
+      teacher.getAvailabilities(selectedDates).length
     } jours, pour ${confirmHours(
-      teacherCondition.workingHours
-    )} et ${levelsToString(teacherCondition.preferedLevelNames)}.`;
+      teacher.workingHours
+    )} et ${levelsToString(teacher.preferedLevelNames)}.`;
   });
 }
 

@@ -1,25 +1,3 @@
-// const levels = [
-//   new Level("A0", parameter),
-//   new Level("A1.2", parameter),
-//   new Level("A2.2", parameter),
-//   new Level("A2.3", parameter),
-//   new Level("B1.1", parameter),
-//   new Level("B1.2", parameter),
-//   new Level("B1.3", parameter),
-//   new Level("B2.1", parameter),
-//   new Level("B2.2", parameter),
-//   new Level("B2.3", parameter),
-//   new Level("B2.4", parameter),
-//   new Level("B2/C1", parameter),
-//   new Level("C1.1", parameter),
-//   new Level("C1.2", parameter),
-//   new Level("C1.3", parameter),
-//   new Level("C1.4", parameter),
-//   new Level("C1.5", parameter),
-//   new Level("C1.6", parameter),
-//   new Level("C1.7", parameter),
-//   new Level("C1.8", parameter),
-// ];
 const levelNames = [
   "A0",
   "A1.2",
@@ -42,107 +20,61 @@ const levelNames = [
   "C1.7",
   "C1.8",
 ];
+const teacherNames = [
+  "Pauline",
+  "Hervé",
+  "Delphine",
+  "Magda",
+  "Soufia",
+  "Valérie",
+  "Julien",
+  "Maeva",
+  "Olivia",
+  "François",
+  "Aline",
+];
 
-const teachers = [
-  new Teacher(
-    "Pauline",
-    "blue",
-    "white",
-    [],
-    [],
-    { min: undefined, max: undefined },
-    []
-  ),
-  new Teacher(
-    "Hervé",
-    "green",
-    "white",
-    [],
-    [],
-    { min: undefined, max: undefined },
-    []
-  ),
-  new Teacher(
-    "Delphine",
-    "yellow",
-    "black",
-    [],
-    [],
-    { min: undefined, max: undefined },
-    []
-  ),
-  new Teacher(
-    "Magda",
-    "red",
-    "white",
-    [],
-    [],
-    { min: undefined, max: undefined },
-    []
-  ),
-  new Teacher(
-    "Soufia",
-    "aqua",
-    "black",
-    [],
-    [],
-    { min: undefined, max: undefined },
-    []
-  ),
-  new Teacher(
-    "Valérie",
-    "orange",
-    "black",
-    [],
-    [],
-    { min: undefined, max: undefined },
-    []
-  ),
-  new Teacher(
-    "Julien",
-    "beige",
-    "black",
-    [],
-    [],
-    { min: undefined, max: undefined },
-    []
-  ),
-  new Teacher(
-    "Maeva",
-    "blue",
-    "white",
-    [],
-    [],
-    { min: undefined, max: undefined },
-    []
-  ),
-  new Teacher(
-    "Olivia",
-    "green",
-    "white",
-    [],
-    [],
-    { min: undefined, max: undefined },
-    []
-  ),
-  new Teacher(
-    "François",
-    "yellow",
-    "black",
-    [],
-    [],
-    { min: undefined, max: undefined },
-    []
-  ),
-  new Teacher(
-    "Aline",
-    "red",
-    "white",
-    [],
-    [],
-    { min: undefined, max: undefined },
-    []
-  ),
+const colors = [
+  {
+    backgroundColor: "blue",
+    textColor: "white",
+  },
+  {
+    backgroundColor: "green",
+    textColor: "white",
+  },
+  {
+    backgroundColor: "red",
+    textColor: "white",
+  },
+  {
+    backgroundColor: "orange",
+    textColor: "white",
+  },
+  {
+    backgroundColor: "purple",
+    textColor: "white",
+  },
+  {
+    backgroundColor: "aqua",
+    textColor: "black",
+  },
+  {
+    backgroundColor: "yellow",
+    textColor: "black",
+  },
+  {
+    backgroundColor: "beige",
+    textColor: "black",
+  },
+  {
+    backgroundColor: "chartreuse",
+    textColor: "black",
+  },
+  {
+    backgroundColor: "turquoise",
+    textColor: "black",
+  },
 ];
 
 const parameter = {

@@ -9,18 +9,15 @@ flatpickr("#bankHolidays", {
 
 // dates sélectionnées
 let selectedDates = [];
-let teacherConditions = [];
-let levelsWithHours = [];
+let levels = [];
+let teachers = [];
 let lessons = [];
 
 // les formulaires
 const parameterForm = document.forms["parameter-form"];
 const addLessonForm = document.forms["addLesson-form"];
 fillSelectOptions("levels", levelNames);
-fillSelectOptions(
-  "teachers",
-  teachers.map((teacher) => teacher.name)
-);
+fillSelectOptions("teachers", teacherNames);
 // load parameter and init form with default parameters
 setForm(parameterForm, parameter);
 
@@ -42,7 +39,9 @@ parameterForm.onsubmit = function (e) {
     .map((date) => date.date);
   const firstDate = regularDates[0];
   const lastDate = regularDates[regularDates.length - 1];
-  levelsWithHours = levelNames.map((l) => new Level(l, parameter));
+  teachers = teacherNames.map(
+    (t, index) => new Teacher(t, parameter, colors[index % colors.length])
+  );
   buildHtmlTeachersConditions(
     teachers,
     levelNames,
@@ -52,13 +51,14 @@ parameterForm.onsubmit = function (e) {
     parameter.numberDays
   );
   document.getElementById("levels-checkbox").checked = true;
-  buildHtmlLevelsConditions(levelsWithHours);
+  levels = levelNames.map((l) => new Level(l, parameter));
+  buildHtmlLevelsConditions(levels);
   navigate("conditions-wrapper");
 };
 
 function selectOrUnselectAll(value) {
-  levelsWithHours.forEach((l) => (l.active = value));
-  buildHtmlLevelsConditions(levelsWithHours);
+  levels.forEach((l) => (l.active = value));
+  buildHtmlLevelsConditions(levels);
 }
 
 // ajouter une leçon
@@ -101,21 +101,18 @@ function highlightLesson(date, levelName) {
 }
 
 function generateTeacherAndLevelConditions() {
-  teacherConditions = teachers.map((teacher) => ({
-    name: teacher.name,
-    workingHours: teacher.workingHours,
-    availabilities: teacher.getAvailabilities(selectedDates),
-    preferedLevelNames: teacher.preferedLevelNames,
-  }));
   if (
     isValide(
-      teacherConditions.map((teacherCondition) => teacherCondition.workingHours)
+      teachers.map((teacher) => teacher.workingHours),
+      parameter.lessonDuration,
+      parameter.numberDays
     )
   ) {
-    if (levelsWithHours.some((l) => l.active)) {
+    if (levels.some((l) => l.active)) {
       buildHtmlConfirmations(
-        teacherConditions,
-        levelsWithHours.filter((l) => l.active)
+        teachers,
+        levels.filter((l) => l.active),
+        selectedDates
       );
       navigate("confirmation-wrapper");
     } else {
@@ -123,7 +120,7 @@ function generateTeacherAndLevelConditions() {
       return;
     }
   } else {
-    const teachers = teacherConditions
+    const invalidTeachers = teachers
       .filter(
         (t) =>
           !!t.workingHours.min &&
@@ -133,7 +130,7 @@ function generateTeacherAndLevelConditions() {
       .map((t) => t.name)
       .join(", ")
       .replace(/, ([^,]*)$/, " et $1");
-    alert(`Volume horaire incorrect pour ${teachers}`);
+    alert(`Volume horaire incorrect pour ${invalidTeachers}`);
     return;
   }
 }
@@ -145,8 +142,11 @@ function generateLessonListAndBuildHtml() {
     .map((d) => getDateTextFromLocalDate(d.date));
   lessons = getLessonList(
     dates,
-    teacherConditions.map((x) => ({ ...x })),
-    levelsWithHours.filter((l) => l.active).map((x) => ({ ...x })),
+    teachers.map((t) => ({
+      ...t,
+      availabilities: t.getAvailabilities(selectedDates),
+    })),
+    levels.filter((l) => l.active).map((l) => ({ ...l })),
     parameter.lessonDuration
   );
   buildHtml();
