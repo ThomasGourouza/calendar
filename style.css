@@ -81,10 +81,12 @@ body {
 }
 
 /* Calendar */
-div#calendar-wrapper,
-div#lessons-wrapper {
+div#calendar-wrapper {
   margin-top: 30px;
   min-width: var(--page-width);
+}
+div#lessons-wrapper {
+  margin-top: 50px;
 }
 table.calendar {
   margin-top: var(--table-margin-top);

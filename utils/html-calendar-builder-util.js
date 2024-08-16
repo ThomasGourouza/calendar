@@ -37,6 +37,7 @@ function buildHtmlLessonList(lessonList, teachers, remove) {
       remove(lesson.date, lesson.levelName);
     };
     removeButton.innerHTML = "-";
+    removeButton.setAttribute("title", "Supprimer");
   }
 }
 

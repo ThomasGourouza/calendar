@@ -119,7 +119,13 @@ function generateTeacherAndLevelConditions() {
       return;
     }
   } else {
-    alert("Volume horaire incorrect.");
+    const teachers = teacherConditions.filter(
+      (t) =>
+        !!t.workingHours.min &&
+        !!t.workingHours.max &&
+        +t.workingHours.min > +t.workingHours.max
+    ).map(t => t.name).join(", ").replace(/, ([^,]*)$/, ' et $1');
+    alert(`Volume horaire incorrect pour ${teachers}`);
     return;
   }
 }
