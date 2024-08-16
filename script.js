@@ -125,12 +125,19 @@ function generateTeacherAndLevelConditions() {
         (t) =>
           !!t.workingHours.min &&
           !!t.workingHours.max &&
-          +t.workingHours.min > +t.workingHours.max
+          (+t.workingHours.min > +t.workingHours.max ||
+            +t.workingHours.min < parameter.lessonDuration ||
+            +t.workingHours.max >
+              parameter.lessonDuration * parameter.numberDays)
       )
       .map((t) => t.name)
       .join(", ")
       .replace(/, ([^,]*)$/, " et $1");
-    alert(`Volume horaire incorrect pour ${invalidTeachers}`);
+    alert(
+      `Volume horaire incorrect pour ${invalidTeachers}. min ≥ ${
+        parameter.lessonDuration
+      }, max ≤ ${parameter.lessonDuration * parameter.numberDays} et min ≤ max.`
+    );
     return;
   }
 }
