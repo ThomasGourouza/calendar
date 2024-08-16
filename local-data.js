@@ -148,7 +148,7 @@ const teachers = [
 const translation = {};
 
 const parameter = {
-  startDate: "2024-08-16",
+  startDate: textDateToInput(new Date()),
   numberDays: 20,
   bankHolidays: [],
   lessonDuration: 4,
