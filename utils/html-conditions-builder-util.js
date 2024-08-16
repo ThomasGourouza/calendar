@@ -150,7 +150,7 @@ function buildHtmlLevelsConditions(levels) {
     activeInput.setAttribute("type", "checkbox");
     activeInput.checked = level.active;
     activeInput.addEventListener("change", (event) =>
-      handleActiveChange(level, event.target.checked)
+      handleActiveChange(level, event.target.checked, levels)
     );
 
     const nameTd = putElementIn("td", tr);
@@ -158,9 +158,12 @@ function buildHtmlLevelsConditions(levels) {
   });
 }
 
-function handleActiveChange(level, value) {
+function handleActiveChange(level, value, levels) {
   level.active = value;
   if (!value) {
     document.getElementById("levels-checkbox").checked = false;
+  }
+  if (levels.length === levels.filter((l) => l.active).length) {
+    document.getElementById("levels-checkbox").checked = true;
   }
 }

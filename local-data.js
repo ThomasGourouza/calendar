@@ -145,8 +145,6 @@ const teachers = [
   ),
 ];
 
-const translation = {};
-
 const parameter = {
   startDate: textDateToInput(new Date()),
   numberDays: 20,
