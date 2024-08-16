@@ -150,7 +150,7 @@ function buildHtmlLevelsConditions(levels) {
     activeInput.setAttribute("type", "checkbox");
     activeInput.checked = level.active;
     activeInput.addEventListener("change", (event) =>
-      handleActiveChange(event, level)
+      handleActiveChange(level, event.target.checked)
     );
 
     const nameTd = putElementIn("td", tr);
@@ -158,6 +158,9 @@ function buildHtmlLevelsConditions(levels) {
   });
 }
 
-function handleActiveChange(event, level) {
-  level.active = event.target.checked;
+function handleActiveChange(level, value) {
+  level.active = value;
+  if (!value) {
+    document.getElementById("levels-checkbox").checked = false;
+  }
 }
