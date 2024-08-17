@@ -152,11 +152,15 @@ function highlightLesson(date, levelName) {
 // génère le récapitulatif des conditions
 function generateTeacherAndLevelConditions() {
   if (
-    isValide(
-      teachers.map((teacher) => teacher.workingHours),
-      parameter.lessonDuration,
-      parameter.numberDays
-    )
+    teachers
+      .map((teacher) => teacher.workingHours)
+      .every((workingHours) =>
+        isValideHour(
+          workingHours,
+          parameter.lessonDuration,
+          parameter.numberDays
+        )
+      )
   ) {
     if (levels.some((l) => l.active)) {
       buildHtmlConfirmations(
@@ -175,12 +179,11 @@ function generateTeacherAndLevelConditions() {
     const invalidTeachers = teachers
       .filter(
         (t) =>
-          !!t.workingHours.min &&
-          !!t.workingHours.max &&
-          (+t.workingHours.min > +t.workingHours.max ||
-            +t.workingHours.min < parameter.lessonDuration ||
-            +t.workingHours.max >
-              parameter.lessonDuration * parameter.numberDays)
+          !isValideHour(
+            t.workingHours,
+            parameter.lessonDuration,
+            parameter.numberDays
+          )
       )
       .map((t) => t.name)
       .join(", ")

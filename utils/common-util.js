@@ -56,21 +56,13 @@ function sort(lessonList) {
   return lessonList;
 }
 
-function isValide(workingHours, lessonDuration, numberDays) {
-  return workingHours.every(
-    (workingHour) =>
-      (!workingHour.min && !workingHour.max) ||
-      (!workingHour.min &&
-        !!workingHour.max &&
-        +workingHour.max <= lessonDuration * numberDays) ||
-      (!!workingHour.min &&
-        !workingHour.max &&
-        +workingHour.min >= lessonDuration) ||
-      (!!workingHour.min &&
-        !!workingHour.max &&
-        +workingHour.min >= lessonDuration &&
-        +workingHour.max <= lessonDuration * numberDays &&
-        +workingHour.min <= +workingHour.max)
+function isValideHour(workingHours, lessonDuration, numberDays) {
+  return (
+    !!workingHours.min &&
+    !!workingHours.max &&
+    +workingHours.max <= lessonDuration * numberDays &&
+    +workingHours.min >= lessonDuration &&
+    +workingHours.min <= +workingHours.max
   );
 }
 
