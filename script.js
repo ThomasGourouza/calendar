@@ -2,12 +2,28 @@ const colName1 = "prof";
 const colName2 = "niv";
 const dateFormat = "Y-m-d";
 
-let teacherNames = [];
-let levelNames = [];
-let selectedDates = [];
-let levels = [];
-let teachers = [];
-let lessons = [];
+// récupère du localStorage
+let teacherNames = localStorage.getItem("teacherNames")?.split(",") ?? [];
+let levelNames = localStorage.getItem("levelNames")?.split(",") ?? [];
+let askConfirmation = ["true", "false"].includes(
+  localStorage.getItem("askConfirmation")
+)
+  ? localStorage.getItem("askConfirmation") === "true"
+  : true;
+
+let parameter;
+let selectedDates;
+let levels;
+let teachers;
+let lessons;
+init();
+
+const askConfirmationCheckbox = document.getElementById("ask-confirmation");
+askConfirmationCheckbox.checked = askConfirmation;
+askConfirmationCheckbox.addEventListener("change", (event) => {
+  askConfirmation = event.target.checked;
+  localStorage.setItem("askConfirmation", askConfirmation);
+});
 
 flatpickr("#startDate", {
   dateFormat,
@@ -180,14 +196,6 @@ function buildHtml() {
   );
 }
 
-// changer de section
-function navigate(page) {
-  document.querySelectorAll(".page").forEach((p) => {
-    p.style.display = "none";
-  });
-  document.getElementById(page).style.display = "block";
-}
-
 // selectionner les niveaux
 function selectOrUnselectAll(value) {
   levels.forEach((l) => (l.active = value));
@@ -215,6 +223,8 @@ function onLoadData(e, file) {
   const data = csvToArray(e.target.result);
   const keys = Object.keys(data[0]);
   checkData(file, nameList, data, keys);
+  teacherNames = [];
+  levelNames = [];
   const entries = data.map((entry) => Object.entries(entry));
   entries.forEach((entry) => {
     const teacher = entry.find((e) =>
@@ -233,8 +243,66 @@ function onLoadData(e, file) {
   if (levelNames.length > 0 && teacherNames.length > 0) {
     fillSelectOptions("levels", levelNames);
     fillSelectOptions("teachers", teacherNames);
+    localStorage.setItem("levelNames", levelNames.join(","));
+    localStorage.setItem("teacherNames", teacherNames.join(","));
     document.getElementById(
       "data-loaded"
     ).innerHTML = `Fichier "${file.name}" importé avec succès.`;
+  }
+}
+
+// changer de section
+function goBackTo(page, from = undefined) {
+  if (page === "settings-wrapper") {
+    const message =
+      from === "lessons-calendar-wrapper"
+        ? "Le calendrier actuel sera perdu"
+        : "Vous allez perdre vos modifications";
+    if (
+      !askConfirmation ||
+      (askConfirmation && confirm(`${message}. Continuer?`))
+    ) {
+      init();
+      navigate(page);
+    }
+  } else {
+    navigate(page);
+  }
+}
+function navigate(page) {
+  document.querySelectorAll(".page").forEach((p) => {
+    p.style.display = "none";
+  });
+  document.getElementById(page).style.display = "block";
+}
+
+function init() {
+  parameter = {
+    startDate: getNextMonday(),
+    numberDays: 20,
+    bankHolidays: [],
+    lessonDuration: 4,
+  };
+  selectedDates = [];
+  levels = [];
+  teachers = [];
+  lessons = [];
+  if (levelNames.length > 0 && teacherNames.length > 0) {
+    fillSelectOptions("levels", levelNames);
+    fillSelectOptions("teachers", teacherNames);
+    document.getElementById("data-loaded").innerHTML = "Données présentes.";
+  }
+}
+
+function confirmGenerateCalendar(from = undefined) {
+  const message =
+    from === "lessons-calendar-wrapper"
+      ? "Le calendrier actuel sera perdu"
+      : "Vous ne pourrez modifier ces paramètres";
+  if (
+    !askConfirmation ||
+    (askConfirmation && confirm(`${message}. Continuer?`))
+  ) {
+    generateLessonListAndBuildHtml();
   }
 }

@@ -16,8 +16,12 @@ function buildHtmlTeachersConditions(
 ) {
   Array.from(document.getElementsByClassName("date-indication")).forEach(
     (dateIndication) =>
-      (dateIndication.innerHTML = `<ul><li>La période va du ${startDate} au ${endDate} et comporte ${numberDays} jours de travail.</li>
-        <li>Chaque leçon dure ${lessonDuration}h.</li></ul>`)
+      (dateIndication.innerHTML = `
+        <ul>
+          <li>La période va du ${startDate} au ${endDate} et comporte ${numberDays} jours de travail.</li>
+          <li>Chaque leçon dure ${lessonDuration}h.</li>
+        </ul>
+      `)
   );
   const teachersTbody = document.getElementById("tbody-teachers");
   while (teachersTbody.firstChild) {
@@ -32,9 +36,8 @@ function buildHtmlTeachersConditions(
     const recDaysOffTd = putElementIn("td", tr);
     const recDaysOffSelect = putElementIn("select", recDaysOffTd);
     recDaysOffSelect.setAttribute("multiple", "true");
-    recDaysOffSelect.setAttribute("size", "1");
     recDaysOffSelect.style.width = "80%";
-    recDaysOffSelect.style.height = "90%";
+    recDaysOffSelect.style.height = "85%";
     recDaysOffSelect.setAttribute(
       "title",
       "Maintenir la touche Ctrl pour une selection multiple."
@@ -70,6 +73,7 @@ function buildHtmlTeachersConditions(
     workingHoursMinInput.setAttribute("type", "number");
     workingHoursMinInput.setAttribute("min", lessonDuration);
     workingHoursMinInput.setAttribute("max", lessonDuration * numberDays);
+    workingHoursMinInput.value = teacher.workingHours.min;
     workingHoursMinInput.style.width = "20%";
     workingHoursMinInput.setAttribute(
       "title",
@@ -85,6 +89,7 @@ function buildHtmlTeachersConditions(
     workingHoursMaxInput.setAttribute("type", "number");
     workingHoursMaxInput.setAttribute("min", lessonDuration);
     workingHoursMaxInput.setAttribute("max", lessonDuration * numberDays);
+    workingHoursMaxInput.value = teacher.workingHours.max;
     workingHoursMaxInput.style.width = "20%";
     workingHoursMaxInput.setAttribute(
       "title",
@@ -97,9 +102,8 @@ function buildHtmlTeachersConditions(
     const levelsTd = putElementIn("td", tr);
     const levelsSelect = putElementIn("select", levelsTd);
     levelsSelect.setAttribute("multiple", "true");
-    levelsSelect.setAttribute("size", "1");
     levelsSelect.style.width = "80%";
-    levelsSelect.style.height = "90%";
+    levelsSelect.style.height = "85%";
     levelsSelect.setAttribute(
       "title",
       "Maintenir la touche Ctrl pour une selection multiple."

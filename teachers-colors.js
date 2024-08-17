@@ -40,10 +40,3 @@ const colors = [
     textColor: "black",
   },
 ];
-
-const parameter = {
-  startDate: textDateToInput(new Date()),
-  numberDays: 20,
-  bankHolidays: [],
-  lessonDuration: 4,
-};

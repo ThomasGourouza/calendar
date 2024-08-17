@@ -54,6 +54,15 @@ function formatNumberToText(number) {
   return number < 10 ? `0${number}` : number;
 }
 
+function getNextMonday() {
+  const date = new Date();
+  const currentDay = date.getDay();
+  const daysUntilNextMonday = (8 - currentDay) % 7;
+  const nextMonday = new Date(date);
+  nextMonday.setDate(date.getDate() + daysUntilNextMonday);
+  return textDateToInput(nextMonday);
+}
+
 function getDayText(day) {
   switch (day) {
     case 1:
