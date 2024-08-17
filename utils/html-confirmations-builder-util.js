@@ -82,7 +82,7 @@ function buildHtmlLevelsConfirmations(levels) {
   const ul = putElementIn("ul", div);
   levels.forEach((level) => {
     const li = putElementIn("li", ul);
-    li.innerHTML = `Le niveau ${level.name} possède ${level.hours}h.`;
+    li.innerHTML = `${level.name}`;
   });
 }
 
