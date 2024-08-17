@@ -191,7 +191,11 @@ function generateTeacherAndLevelConditions() {
     alert(
       `Volume horaire incorrect pour ${invalidTeachers}. min ≥ ${
         parameter.lessonDuration
-      }, max ≤ ${parameter.lessonDuration * parameter.numberDays} et min ≤ max.`
+      }, max ≤ ${
+        parameter.lessonDuration * parameter.numberDays
+      } min ≤ max et le min et le max doivent être des multiples de ${
+        parameter.lessonDuration
+      }.`
     );
     return;
   }

@@ -62,7 +62,9 @@ function isValideHour(workingHours, lessonDuration, numberDays) {
     !!workingHours.max &&
     +workingHours.max <= lessonDuration * numberDays &&
     +workingHours.min >= lessonDuration &&
-    +workingHours.min <= +workingHours.max
+    +workingHours.min <= +workingHours.max &&
+    +workingHours.min % lessonDuration === 0 &&
+    +workingHours.max % lessonDuration === 0
   );
 }
 
