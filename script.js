@@ -102,6 +102,24 @@ function addLessonFormOnsubmit(event) {
     );
     return;
   }
+  if ([0, 6].includes(new Date(this.date.value).getDay())) {
+    alert(`Impossible d'ajouter une leçon le weekend.`);
+    return;
+  }
+  if (
+    selectedDates
+      .filter((d) => !!d.date && d.type !== "regular")
+      .map((d) => d.date.getTime())
+      .includes(new Date(this.date.value).getTime())
+  ) {
+    alert(
+      `Impossible d'ajouter une leçon. ${printDateFull(
+        new Date(this.date.value)
+      )} est un jour férié.`
+    );
+    return;
+  }
+
   // create lesson
   lessons.push(newLesson);
   this.reset();
