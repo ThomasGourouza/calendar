@@ -77,10 +77,8 @@ function getDayText(day) {
       return "Vendredi";
     case 6:
       return "Samedi";
-    case 7:
-      return "Dimanche";
     default:
-      return "";
+      return "Dimanche";
   }
 }
 

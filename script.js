@@ -103,7 +103,11 @@ function addLessonFormOnsubmit(event) {
     return;
   }
   if ([0, 6].includes(new Date(this.date.value).getDay())) {
-    alert(`Impossible d'ajouter une leçon le weekend.`);
+    alert(
+      `Impossible d'ajouter une leçon. ${printDateFull(
+        new Date(this.date.value)
+      )} est un weekend.`
+    );
     return;
   }
   if (
@@ -158,7 +162,9 @@ function generateTeacherAndLevelConditions() {
       buildHtmlConfirmations(
         teachers,
         levels.filter((l) => l.active),
-        selectedDates
+        selectedDates,
+        parameter.numberDays,
+        parameter.lessonDuration
       );
       navigate("confirmation-wrapper");
     } else {
