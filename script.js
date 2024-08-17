@@ -66,7 +66,7 @@ function parameterFormOnsubmit(event) {
   const regularDates = selectedDates
     .filter((date) => date.type === "regular")
     .map((date) => date.date);
-  const firstDate = regularDates[0];
+  const firstDate = selectedDates.map((date) => date.date)[0];
   const lastDate = regularDates[regularDates.length - 1];
   teachers = teacherNames.map(
     (t, index) => new Teacher(t, parameter, colors[index % colors.length])
@@ -78,7 +78,9 @@ function parameterFormOnsubmit(event) {
     printDateFull(lastDate),
     parameter.lessonDuration,
     parameter.numberDays,
-    parameter.bankHolidays
+    selectedDates
+      .filter((date) => date.type === "holiday")
+      .map((date) => date.date)
   );
   document.getElementById("levels-checkbox").checked = true;
   levels = levelNames.map((l) => new Level(l, parameter));

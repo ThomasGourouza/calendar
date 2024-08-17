@@ -15,11 +15,8 @@ function buildHtmlTeachersConditions(
   numberDays,
   bankHolidays
 ) {
-  const holidays = (
-    bankHolidays.length > 0 && !bankHolidays.includes("")
-      ? bankHolidays.map((bh) => printDateFull(new Date(bh)))
-      : []
-  )
+  const holidays = bankHolidays
+    .map((bh) => printDateFull(bh))
     .join(", ")
     .replace(/, ([^,]*)$/, " et $1");
 
