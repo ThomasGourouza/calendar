@@ -474,3 +474,24 @@ table.parameter tbody tr td input {
 #teachers-wrapper {
   margin-right: 80px;
 }
+
+#file-input {
+  display: none;
+}
+.custom-file-input {
+  display: inline-block;
+  padding: 2px 4px;
+  border: var(--table-border);
+  background-color: rgb(230, 230, 230);
+  color: black;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: small;
+}
+.custom-file-input:hover {
+  background-color: rgb(205, 205, 205);
+}
+
+#data-loaded {
+  margin-top: 30px;
+}

@@ -157,34 +157,36 @@ function createDownloadButton(wrapper, table) {
   const downloadButton = putElementIn("button", wrapper);
   downloadButton.setAttribute("id", "download-button");
   downloadButton.innerHTML = "Télécharger";
-  downloadButton.addEventListener("click", function () {
-    const rows = table.querySelectorAll("tr");
-    let csvContent = "";
-    rows.forEach((row) => {
-      const rowContent = Array.from(row.querySelectorAll("th, td")).map(
-        (r) => r.textContent
-      );
-      csvContent += rowContent.join(";") + "\n";
-    });
-    const utf8BOM = "\ufeff";
-    const blob = new Blob([`${utf8BOM}${csvContent}`], {
-      type: "text/csv;charset=utf-8;",
-    });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    const today = new Date();
-    link.setAttribute(
-      "download",
-      `calendrier_${formatNumberToText(today.getDate())}-${formatNumberToText(
-        today.getMonth() + 1
-      )}-${formatNumberToText(today.getFullYear())}.csv`
+  downloadButton.addEventListener("click", () => downloadCalendar(table));
+}
+
+function downloadCalendar(table) {
+  const rows = table.querySelectorAll("tr");
+  let csvContent = "";
+  rows.forEach((row) => {
+    const rowContent = Array.from(row.querySelectorAll("th, td")).map(
+      (r) => r.textContent
     );
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    csvContent += rowContent.join(";") + "\n";
   });
+  const utf8BOM = "\ufeff";
+  const blob = new Blob([`${utf8BOM}${csvContent}`], {
+    type: "text/csv;charset=utf-8;",
+  });
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+  link.setAttribute("href", url);
+  const today = new Date();
+  link.setAttribute(
+    "download",
+    `calendrier_${formatNumberToText(today.getDate())}-${formatNumberToText(
+      today.getMonth() + 1
+    )}-${formatNumberToText(today.getFullYear())}.csv`
+  );
+  link.style.visibility = "hidden";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 function fillSelectOptions(selectId, optionList) {

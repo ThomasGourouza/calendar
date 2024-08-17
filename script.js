@@ -1,4 +1,14 @@
+const colName1 = "prof";
+const colName2 = "niv";
 const dateFormat = "Y-m-d";
+
+let teacherNames = [];
+let levelNames = [];
+let selectedDates = [];
+let levels = [];
+let teachers = [];
+let lessons = [];
+
 flatpickr("#startDate", {
   dateFormat,
 });
@@ -7,25 +17,28 @@ flatpickr("#bankHolidays", {
   dateFormat,
 });
 
-// dates sélectionnées
-let selectedDates = [];
-let levels = [];
-let teachers = [];
-let lessons = [];
-
-// les formulaires
+// le formulaire des paramètres
 const parameterForm = document.forms["parameter-form"];
-const addLessonForm = document.forms["addLesson-form"];
-fillSelectOptions("levels", levelNames);
-fillSelectOptions("teachers", teacherNames);
-// load parameter and init form with default parameters
+parameterForm.onsubmit = parameterFormOnsubmit;
 setForm(parameterForm, parameter);
 
+// input de chargement des données
+const fileInput = document.getElementById("file-input");
+fileInput.addEventListener("change", readSingleFile);
+
+// le formulaire des leçons (dernière page)
+const addLessonForm = document.forms["addLesson-form"];
+addLessonForm.onsubmit = addLessonFormOnsubmit;
+
 // créer la liste des parametres pour les professeurs et les niveaux
-parameterForm.onsubmit = function (e) {
-  e.preventDefault();
+function parameterFormOnsubmit(event) {
+  event.preventDefault();
   if (!parameterForm.startDate.value) {
     alert("Date de début!");
+    return;
+  }
+  if (levelNames.length === 0 || teacherNames.length === 0) {
+    alert("Veuillez importer un fichier csv de professeurs et de niveaux.");
     return;
   }
   setParameters(this, parameter);
@@ -54,16 +67,11 @@ parameterForm.onsubmit = function (e) {
   levels = levelNames.map((l) => new Level(l, parameter));
   buildHtmlLevelsConditions(levels);
   navigate("conditions-wrapper");
-};
-
-function selectOrUnselectAll(value) {
-  levels.forEach((l) => (l.active = value));
-  buildHtmlLevelsConditions(levels);
 }
 
 // ajouter une leçon
-addLessonForm.onsubmit = function (e) {
-  e.preventDefault();
+function addLessonFormOnsubmit(event) {
+  event.preventDefault();
   const newLesson = new Lesson(
     getLessonDate(this.date.value),
     this.teacherName.value,
@@ -79,7 +87,7 @@ addLessonForm.onsubmit = function (e) {
   lessons.push(newLesson);
   this.reset();
   buildHtml();
-};
+}
 
 // supprimer une leçon
 function removeLesson(date, levelName) {
@@ -100,6 +108,7 @@ function highlightLesson(date, levelName) {
   }
 }
 
+// génère le récapitulatif des conditions
 function generateTeacherAndLevelConditions() {
   if (
     isValide(
@@ -142,7 +151,7 @@ function generateTeacherAndLevelConditions() {
   }
 }
 
-// créer la liste des leçons et le calendrier
+// génère les données des leçons et du calendrier
 function generateLessonListAndBuildHtml() {
   const dates = selectedDates
     .filter((d) => d.type === "regular")
@@ -160,7 +169,7 @@ function generateLessonListAndBuildHtml() {
   navigate("lessons-calendar-wrapper");
 }
 
-// créer la liste des leçons et le calendrier
+// construit la liste des leçons et le calendrier
 function buildHtml() {
   return buildHtmlLessonListAndCalendar(
     lessons,
@@ -177,4 +186,55 @@ function navigate(page) {
     p.style.display = "none";
   });
   document.getElementById(page).style.display = "block";
+}
+
+// selectionner les niveaux
+function selectOrUnselectAll(value) {
+  levels.forEach((l) => (l.active = value));
+  buildHtmlLevelsConditions(levels);
+}
+
+// importer données CSV
+function readSingleFile(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      onLoadData(e, file);
+    };
+    reader.onerror = (e) => {
+      alert("Une erreur est survenue.", e);
+    };
+    reader.readAsText(file, "UTF-8");
+  }
+}
+
+// créer les listes de profs et niveaux
+function onLoadData(e, file) {
+  const nameList = file.name.split(".");
+  const data = csvToArray(e.target.result);
+  const keys = Object.keys(data[0]);
+  checkData(file, nameList, data, keys);
+  const entries = data.map((entry) => Object.entries(entry));
+  entries.forEach((entry) => {
+    const teacher = entry.find((e) =>
+      e[0].toLocaleLowerCase().includes("prof")
+    )?.[1];
+    if (!!teacher) {
+      teacherNames.push(capitalize(teacher));
+    }
+    const level = entry.find((e) =>
+      e[0].toLocaleLowerCase().includes("niv")
+    )?.[1];
+    if (!!level) {
+      levelNames.push(formatLevel(level));
+    }
+  });
+  if (levelNames.length > 0 && teacherNames.length > 0) {
+    fillSelectOptions("levels", levelNames);
+    fillSelectOptions("teachers", teacherNames);
+    document.getElementById(
+      "data-loaded"
+    ).innerHTML = `Fichier "${file.name}" importé avec succès.`;
+  }
 }

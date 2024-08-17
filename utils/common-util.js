@@ -79,3 +79,57 @@ function existLesson(newLesson, lessons) {
     (l) => l.date === newLesson.date && l.levelName === newLesson.levelName
   );
 }
+
+function capitalize(teacher) {
+  if (!teacher) return teacher;
+  return teacher.charAt(0).toUpperCase() + teacher.slice(1).toLowerCase();
+}
+
+function formatLevel(level) {
+  return level.toLocaleLowerCase().includes("conv")
+    ? capitalize(level)
+    : level.toLocaleUpperCase();
+}
+
+function csvToArray(str, delimiter = ";") {
+  const rows = str
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .trim()
+    .split("\n");
+  const headers = rows[0].split(delimiter);
+  return rows.slice(1).map((row) => {
+    const values = row.split(delimiter);
+    const obj = {};
+    headers.forEach((header, i) => {
+      obj[header] = values[i];
+    });
+    return obj;
+  });
+}
+
+function checkData(file, nameList, data, keys) {
+  if (
+    nameList.length < 0 ||
+    nameList[1] !== "csv" ||
+    !file.type.includes("csv")
+  ) {
+    alert("Ce type de fichier n'est pas pris en charge.");
+    return;
+  }
+  if (data.length < 0) {
+    alert("Aucune donnée chargée.");
+    return;
+  }
+  if (keys.length < 2) {
+    alert("Aucune donnée chargée.");
+    return;
+  }
+  if (
+    !keys.some((header) => header.toLocaleLowerCase().includes(colName1)) ||
+    !keys.some((header) => header.toLocaleLowerCase().includes(colName2))
+  ) {
+    alert("Nom de colonne incorrect.");
+    return;
+  }
+}
