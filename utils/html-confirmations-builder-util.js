@@ -88,20 +88,20 @@ function buildHtmlLevelsConfirmations(levels) {
 
 function confirmHours(workingHours, numberDays, minHour) {
   const maxHours = numberDays * minHour;
-  if (workingHours.min === minHour && workingHours.max === maxHours) {
+  if (+workingHours.min === minHour && +workingHours.max === maxHours) {
     return "volume horaire indéterminé.";
   }
-  if (workingHours.min === workingHours.max) {
-    return `volume horaire d'exactement ${workingHours.min}h.`;
+  if (+workingHours.min === +workingHours.max) {
+    return `volume horaire d'exactement ${+workingHours.min}h.`;
   }
-  if (workingHours.min > minHour && workingHours.max === maxHours) {
-    return `volume horaire minimum de ${workingHours.min}h.`;
+  if (+workingHours.min > minHour && +workingHours.max === maxHours) {
+    return `volume horaire minimum de ${+workingHours.min}h.`;
   }
-  if (workingHours.min === minHour && workingHours.max < maxHours) {
-    return `volume horaire maximum de ${workingHours.max}h.`;
+  if (+workingHours.min === minHour && +workingHours.max < maxHours) {
+    return `volume horaire maximum de ${+workingHours.max}h.`;
   }
-  if (workingHours.min > minHour && workingHours.max < maxHours) {
-    return `volume horaire compris entre ${workingHours.min}h et ${workingHours.max}h.`;
+  if (+workingHours.min > minHour && +workingHours.max < maxHours) {
+    return `volume horaire compris entre ${+workingHours.min}h et ${+workingHours.max}h.`;
   }
   return "";
 }
