@@ -77,7 +77,8 @@ function parameterFormOnsubmit(event) {
     printDateFull(firstDate),
     printDateFull(lastDate),
     parameter.lessonDuration,
-    parameter.numberDays
+    parameter.numberDays,
+    parameter.bankHolidays
   );
   document.getElementById("levels-checkbox").checked = true;
   levels = levelNames.map((l) => new Level(l, parameter));

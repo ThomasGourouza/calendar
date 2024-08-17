@@ -12,13 +12,27 @@ function buildHtmlTeachersConditions(
   startDate,
   endDate,
   lessonDuration,
-  numberDays
+  numberDays,
+  bankHolidays
 ) {
+  const holidays = (
+    bankHolidays.length > 0 && !bankHolidays.includes("")
+      ? bankHolidays.map((bh) => printDateFull(new Date(bh)))
+      : []
+  )
+    .join(", ")
+    .replace(/, ([^,]*)$/, " et $1");
+
   Array.from(document.getElementsByClassName("date-indication")).forEach(
     (dateIndication) =>
       (dateIndication.innerHTML = `
         <ul>
           <li>La période va du ${startDate} au ${endDate} et comporte ${numberDays} jours de travail.</li>
+          <li>${
+            !holidays
+              ? "Il n'y a pas de jours fériés."
+              : "Les jours fériés sont "
+          } ${!holidays ? "" : holidays}</li>
           <li>Chaque leçon dure ${lessonDuration}h.</li>
         </ul>
       `)
