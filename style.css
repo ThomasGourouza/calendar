@@ -7,12 +7,12 @@
   --table-border-thick-color: black;
   --table-border: 1px solid var(--table-border-color);
   --table-border-thick: 1px solid var(--table-border-thick-color);
-  --table-header-title: beige;
-  --table-header-day: chartreuse;
+  --table-header-title: rgb(255, 255, 239);
+  --table-header-day: rgb(214, 255, 173);
   /* hauteur des headers des jours */
   --table-header-height: 20px;
-  --table-time: rgb(242, 196, 60);
-  --table-content: rgb(245, 202, 147);
+  --table-time: rgb(214, 255, 173);
+  --table-content: rgb(252, 232, 207);
   --table-content-highlighted: rgb(252, 232, 207);
   /* longueur des cellules des heures du calendrier */
   --table-time-td-width: 40px;
