@@ -329,12 +329,15 @@ function onLoadData(e, file) {
 }
 
 function erase() {
-  localStorage.removeItem("levelNames");
-  localStorage.removeItem("teacherNames");
-  teacherNames = [];
-  levelNames = [];
-  dataLoaded.innerHTML = "Pas de données.";
-  eraseData.style.display = "none";
+  const message = "Effacer la liste des professeurs et des niveaux ?";
+  if (!askConfirmation || (askConfirmation && confirm(message))) {
+    localStorage.removeItem("levelNames");
+    localStorage.removeItem("teacherNames");
+    teacherNames = [];
+    levelNames = [];
+    dataLoaded.innerHTML = "Pas de données.";
+    eraseData.style.display = "none";
+  }
 }
 
 // changer de section
@@ -388,7 +391,7 @@ function confirmGenerateCalendar(from = undefined) {
   const message =
     from === "lessons-calendar-wrapper"
       ? "Le calendrier actuel sera perdu"
-      : "Vous ne pourrez modifier ces paramètres";
+      : "Vous ne pourrez plus modifier ces paramètres";
   if (
     !askConfirmation ||
     (askConfirmation && confirm(`${message}. Continuer?`))
