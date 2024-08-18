@@ -123,7 +123,28 @@ function addLessonFormOnsubmit(event) {
     );
     return;
   }
-
+  if (
+    !selectedDates
+      .filter((d) => !!d.date && d.type === "regular")
+      .map((d) => d.date.getTime())
+      .includes(new Date(this.date.value).getTime())
+  ) {
+    alert(
+      `Impossible d'ajouter une leçon. ${printDateFull(
+        new Date(this.date.value)
+      )} est hors de la période.`
+    );
+    return;
+  }
+  if (
+    lessons
+      .filter((l) => l.teacherName === newLesson.teacherName)
+      .map((l) => l.localDate.getTime())
+      .includes(newLesson.localDate.getTime())
+  ) {
+    alert(`${newLesson.teacherName} a déjà une leçon le ${newLesson.date}.`);
+    return;
+  }
   // create lesson
   lessons.push(newLesson);
   this.reset();

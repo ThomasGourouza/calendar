@@ -29,7 +29,7 @@ function buildHtmlTeachersConditions(
             !holidays
               ? "Il n'y a pas de jours fériés."
               : "Les jours fériés sont "
-          } ${!holidays ? "" : holidays}</li>
+          } ${!holidays ? "" : holidays}.</li>
           <li>Chaque leçon dure ${lessonDuration}h.</li>
         </ul>
       `)

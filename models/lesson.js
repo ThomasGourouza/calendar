@@ -11,10 +11,16 @@ class Lesson {
     return new Date(+year, +month - 1, +day);
   }
 
+  get title() {
+    return `${this.date} - ${this.levelName}`;
+  }
+
   get backgroundColor() {
     return teachers.find((teacher) => teacher.name === this.teacherName)?.color;
   }
+
   get textColor() {
-    return teachers.find((teacher) => teacher.name === this.teacherName)?.textColor;
+    return teachers.find((teacher) => teacher.name === this.teacherName)
+      ?.textColor;
   }
 }
