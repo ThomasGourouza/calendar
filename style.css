@@ -162,6 +162,7 @@ table.calendar tbody tr td:first-child {
   width: var(--table-time-td-width);
   min-width: var(--table-time-td-width);
   border-left: var(--table-border);
+  font-weight: bold;
 }
 /* Le contenu */
 table.calendar tbody tr td:not(:first-child):not(.weekend) {
