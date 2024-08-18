@@ -6,14 +6,30 @@ function buildHtmlResultConfirmations(
   lessonDuration,
   lessons
 ) {
+  // Vérifie les heures de cours pour chaque niveau
+  const lessonLevelNames = lessons.map((l) => l.levelName);
+  const lessonLevelMap = lessonLevelNames.reduce((acc, levelName) => {
+    acc[levelName] = (acc[levelName] || 0) + 1;
+    return acc;
+  }, {});
+  const lessonLevelDone = Object.keys(lessonLevelMap).map((level) => {
+    return { name: level, hours: +lessonLevelMap[level] * lessonDuration };
+  });
+  const lessonLevelResults = levels.map((l) => ({
+    name: l.name,
+    remainingHours:
+      l.hours - (lessonLevelDone.find((r) => r.name === l.name)?.hours ?? 0),
+  }));
+
   // console.log(lessons);
+
   buildHtmlResultTeachersConfirmations(
     teachers,
     selectedDates,
     numberDays,
     lessonDuration
   );
-  buildHtmlResultLevelsConfirmations(levels);
+  buildHtmlResultLevelsConfirmations(lessonLevelResults);
 }
 
 function buildHtmlResultTeachersConfirmations(
@@ -76,15 +92,19 @@ function buildHtmlResultTeachersConfirmations(
   });
 }
 
-function buildHtmlResultLevelsConfirmations(levels) {
+function buildHtmlResultLevelsConfirmations(lessonLevelResults) {
   const div = document.getElementById("levels-result-confirmation");
   while (div.firstChild) {
     div.removeChild(div.firstChild);
   }
   const ul = putElementIn("ul", div);
-  levels.forEach((level) => {
+  lessonLevelResults.forEach((level) => {
     const li = putElementIn("li", ul);
-    li.innerHTML = `${level.name}`;
+    const message =
+      level.remainingHours === 0
+        ? "Toutes les heures ont été placées."
+        : `Il reste ${level.remainingHours}h à placer.`;
+    li.innerHTML = `${level.name}: ${message}`;
   });
 }
 
