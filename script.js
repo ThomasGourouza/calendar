@@ -1,6 +1,8 @@
 const colName1 = "prof";
 const colName2 = "niv";
 const dateFormat = "Y-m-d";
+const dataLoaded = document.getElementById("data-loaded");
+const eraseData = document.getElementById("erase-data");
 
 // récupère du localStorage
 let teacherNames = localStorage.getItem("teacherNames")?.split(",") ?? [];
@@ -318,10 +320,21 @@ function onLoadData(e, file) {
     fillSelectOptions("teachers", teacherNames);
     localStorage.setItem("levelNames", levelNames.join(","));
     localStorage.setItem("teacherNames", teacherNames.join(","));
-    document.getElementById(
-      "data-loaded"
-    ).innerHTML = `Fichier "${file.name}" importé avec succès.`;
+    dataLoaded.innerHTML = `Fichier "${file.name}" importé avec succès.`;
+    eraseData.style.display = "block";
+  } else {
+    dataLoaded.innerHTML = "Pas de données.";
+    eraseData.style.display = "none";
   }
+}
+
+function erase() {
+  localStorage.removeItem("levelNames");
+  localStorage.removeItem("teacherNames");
+  teacherNames = [];
+  levelNames = [];
+  dataLoaded.innerHTML = "Pas de données.";
+  eraseData.style.display = "none";
 }
 
 // changer de section
@@ -363,7 +376,11 @@ function init() {
   if (levelNames.length > 0 && teacherNames.length > 0) {
     fillSelectOptions("levels", levelNames);
     fillSelectOptions("teachers", teacherNames);
-    document.getElementById("data-loaded").innerHTML = "Données présentes.";
+    dataLoaded.innerHTML = "Données présentes.";
+    eraseData.style.display = "block";
+  } else {
+    dataLoaded.innerHTML = "Pas de données.";
+    eraseData.style.display = "none";
   }
 }
 

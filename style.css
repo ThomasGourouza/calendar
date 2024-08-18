@@ -497,7 +497,10 @@ table.parameter tbody tr td input {
 }
 
 #data-loaded {
-  margin-top: 30px;
+  margin-top: 40px;
+}
+#erase-data {
+  margin-top: 10px;
 }
 
 #confirmation {
