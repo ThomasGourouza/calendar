@@ -13,14 +13,14 @@ const colors = [
   },
   {
     backgroundColor: "orange",
-    textColor: "white",
+    textColor: "black",
   },
   {
     backgroundColor: "purple",
     textColor: "white",
   },
   {
-    backgroundColor: "aqua",
+    backgroundColor: "skyblue",
     textColor: "black",
   },
   {
@@ -28,7 +28,7 @@ const colors = [
     textColor: "black",
   },
   {
-    backgroundColor: "beige",
+    backgroundColor: "coral",
     textColor: "black",
   },
   {
@@ -36,7 +36,11 @@ const colors = [
     textColor: "black",
   },
   {
-    backgroundColor: "turquoise",
+    backgroundColor: "aqua",
+    textColor: "black",
+  },
+  {
+    backgroundColor: "olive",
     textColor: "black",
   },
 ];
