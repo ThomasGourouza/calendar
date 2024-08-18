@@ -65,11 +65,13 @@ function buildHtmlTeachersConfirmations(
       numberDays,
       lessonDuration
     );
+    const li6 = putElementIn("li", ul2);
     if (teacher.preferedLevelNames.length > 0) {
-      const li6 = putElementIn("li", ul2);
       li6.innerHTML = `niveaux préférés: ${teacher.preferedLevelNames
         .join(", ")
         .replace(/, ([^,]*)$/, " et $1")}.`;
+    } else {
+      li6.innerHTML = "sans préférence de niveau.";
     }
   });
 }

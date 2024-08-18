@@ -21,73 +21,156 @@ function buildHtmlResultConfirmations(
       l.hours - (lessonLevelDone.find((r) => r.name === l.name)?.hours ?? 0),
   }));
 
-  // console.log(lessons);
+  const groupedTeachers = lessons.reduce((acc, item) => {
+    const { teacherName, date, levelName } = item;
+    if (!acc[teacherName]) {
+      acc[teacherName] = [];
+    }
+    acc[teacherName].push({ date, levelName });
+    return acc;
+  }, {});
+  const teacherResults = Object.keys(groupedTeachers).map((teacherName) => {
+    const workingDates = groupedTeachers[teacherName].map(
+      (i) => new Date(toDateInput(i.date))
+    );
+    const dates = selectedDates
+      .filter((d) => d.type === "regular")
+      .map((d) => d.date);
+    const actualLevelNames = [
+      ...new Set(groupedTeachers[teacherName].map((i) => i.levelName)),
+    ];
+    const actualLevelNamesText = actualLevelNames
+      .join(", ")
+      .replace(/, ([^,]*)$/, " et $1");
+    const currentTeacher = teachers.find((t) => t.name === teacherName);
+    const recurrentDaysOff =
+      currentTeacher?.recurrentDaysOff?.map((d) => +d) ?? [];
+    const recurrentDaysOffDates = dates.filter((d) =>
+      recurrentDaysOff.includes(d.getDay())
+    );
+    const workingHours = currentTeacher?.workingHours;
+    const daysOff = (
+      currentTeacher?.daysOff?.map((d) => new Date(d)) ?? []
+    ).filter(
+      (d) =>
+        !recurrentDaysOffDates.map((r) => r.getTime()).includes(d.getTime())
+    );
+    const preferedLevelNames = currentTeacher?.preferedLevelNames ?? [];
+    const preferedLevelNamesText = preferedLevelNames
+      .join(", ")
+      .replace(/, ([^,]*)$/, " et $1");
 
-  buildHtmlResultTeachersConfirmations(
-    teachers,
-    selectedDates,
-    numberDays,
-    lessonDuration
-  );
+    const preferedX = preferedLevelNames.length > 1 ? "x" : "";
+    const preferedS = preferedLevelNames.length > 1 ? "s" : "";
+    const preferedBe = preferedLevelNames.length > 1 ? "sont" : "est";
+    const preferedThe = preferedLevelNames.length > 1 ? "Les" : "Le";
+    const actualX = actualLevelNames.length > 1 ? "x" : "";
+    const actualThe = actualLevelNames.length > 1 ? "les" : "le";
+    const preferedText =
+      preferedLevelNames.length > 0
+        ? `${preferedThe} niveau${preferedX} préféré${preferedS} ${preferedBe} ${preferedLevelNamesText}.`
+        : "Aucun niveau préféré.";
+    const actualText =
+      actualLevelNames.length > 0
+        ? `Travaille avec ${actualThe} niveau${actualX} ${actualLevelNamesText}.`
+        : "Ne travaille avec aucun niveau.";
+    const levelResultText = `${preferedText} ${actualText}`;
+
+    let levelResultColor = "red";
+    if (preferedLevelNames.length > 0) {
+      if (actualLevelNames.length > 0) {
+        if (actualLevelNames.every((l) => preferedLevelNames.includes(l))) {
+          levelResultColor = "green";
+        } else {
+          if (actualLevelNames.some((l) => preferedLevelNames.includes(l))) {
+            levelResultColor = "orange";
+          }
+        }
+      }
+    } else {
+      if (actualLevelNames.length > 0) {
+        levelResultColor = "black";
+      }
+    }
+
+    return {
+      teacherName,
+      hours: confirmResultHours(
+        workingHours,
+        numberDays,
+        lessonDuration,
+        workingDates.length * lessonDuration
+      ),
+      levels: {
+        text: levelResultText,
+        color: levelResultColor,
+      },
+      recurrentDaysOff: {
+        true: recurrentDaysOff.length > 0,
+        text: recurrentDaysOff
+          .map((d) => getDayText(d))
+          .join(", ")
+          .replace(/, ([^,]*)$/, " et $1"),
+        workDuringTimeOff: workHolidays(
+          workingDates.filter((d) =>
+            recurrentDaysOffDates.map((o) => o.getTime()).includes(d.getTime())
+          )
+        ),
+      },
+      daysOff: {
+        true: daysOff.length > 0,
+        text: daysOff
+          .map((d) => printDateFull(d))
+          .join(", ")
+          .replace(/, ([^,]*)$/, " et $1"),
+        workDuringTimeOff: workHolidays(
+          workingDates.filter((d) =>
+            daysOff.map((o) => o.getTime()).includes(d.getTime())
+          )
+        ),
+      },
+    };
+  });
+  buildHtmlResultTeachersConfirmations(teacherResults);
   buildHtmlResultLevelsConfirmations(lessonLevelResults);
 }
 
-function buildHtmlResultTeachersConfirmations(
-  teachers,
-  selectedDates,
-  numberDays,
-  lessonDuration
-) {
-  const regularTimes = selectedDates
-    .filter((date) => date.type === "regular")
-    .map((date) => date.date.getTime());
+function buildHtmlResultTeachersConfirmations(teacherResults) {
   const div = document.getElementById("teachers-result-confirmation");
   while (div.firstChild) {
     div.removeChild(div.firstChild);
   }
   const ul = putElementIn("ul", div);
-  teachers.forEach((teacher) => {
+  teacherResults.forEach((teacher) => {
     const li = putElementIn("li", ul);
-    li.innerHTML = `${teacher.name}:`;
+    li.innerHTML = `${teacher.teacherName}:`;
     const ul2 = putElementIn("ul", li);
+
     const li2 = putElementIn("li", ul2);
-    li2.innerHTML = `disponible ${
-      teacher.getAvailabilities(selectedDates).length
-    } jours.`;
-    if (teacher.recurrentDaysOff.length > 0) {
-      const recurrentDaysOffText = teacher.recurrentDaysOff
-        .map((d) => getDayText(+d))
-        .join(", ")
-        .replace(/, ([^,]*)$/, " et $1");
-      const li3 = putElementIn("li", ul2);
-      li3.innerHTML = `indispo. récurrente: ${recurrentDaysOffText}.`;
-    }
-    const daysOffFiltered = teacher.daysOff.filter(
-      (d) =>
-        !teacher.recurrentDaysOff
-          .map((d) => +d)
-          .includes(new Date(d).getDay()) &&
-        regularTimes.includes(new Date(d).getTime())
-    );
-    if (daysOffFiltered.length > 0) {
-      const daysOffText = daysOffFiltered
-        .map((date) => printDateFull(new Date(date)))
-        .join(", ")
-        .replace(/, ([^,]*)$/, " et $1");
+    li2.innerHTML = `${teacher.hours.text}`;
+    li2.style.color = teacher.hours.color;
+
+    const li3 = putElementIn("li", ul2);
+    li3.innerHTML = `${teacher.levels.text}`;
+    li3.style.color = teacher.levels.color;
+
+    if (teacher.recurrentDaysOff.true) {
       const li4 = putElementIn("li", ul2);
-      li4.innerHTML = `congés: ${daysOffText}.`;
+      li4.innerHTML = `indispo. récurrente: ${teacher.recurrentDaysOff.text}. `;
+      if (teacher.recurrentDaysOff.workDuringTimeOff.true) {
+        const span = putElementIn("span", li4);
+        span.innerHTML = teacher.recurrentDaysOff.workDuringTimeOff.text;
+        span.style.color = "red";
+      }
     }
-    const li5 = putElementIn("li", ul2);
-    li5.innerHTML = confirmResultHours(
-      teacher.workingHours,
-      numberDays,
-      lessonDuration
-    );
-    if (teacher.preferedLevelNames.length > 0) {
-      const li6 = putElementIn("li", ul2);
-      li6.innerHTML = `niveaux préférés: ${teacher.preferedLevelNames
-        .join(", ")
-        .replace(/, ([^,]*)$/, " et $1")}.`;
+    if (teacher.daysOff.true) {
+      const li5 = putElementIn("li", ul2);
+      li5.innerHTML = `congés: ${teacher.daysOff.text}. `;
+      if (teacher.daysOff.workDuringTimeOff.true) {
+        const span2 = putElementIn("span", li5);
+        span2.innerHTML = teacher.daysOff.workDuringTimeOff.text;
+        span2.style.color = "red";
+      }
     }
   });
 }
@@ -104,26 +187,71 @@ function buildHtmlResultLevelsConfirmations(lessonLevelResults) {
       level.remainingHours === 0
         ? "Toutes les heures ont été placées."
         : `Il reste ${level.remainingHours}h à placer.`;
-    li.innerHTML = `${level.name}: ${message}`;
+    li.innerHTML = `${level.name}: `;
+    const span = putElementIn("span", li);
+    span.innerHTML = message;
+    if (level.remainingHours > 0) {
+      span.style.color = "red";
+    }
   });
 }
 
-function confirmResultHours(workingHours, numberDays, minHour) {
+function confirmResultHours(workingHours, numberDays, minHour, actualHours) {
   const maxHours = numberDays * minHour;
+  let timeMode = "";
+  const result = {
+    text: "",
+    color: "red",
+  };
   if (+workingHours.min === minHour && +workingHours.max === maxHours) {
-    return "volume horaire indéterminé.";
+    timeMode = "volume horaire indéterminé:";
+    result.text = `${timeMode} Travaille ${actualHours}h.`;
+    result.color = "black";
   }
   if (+workingHours.min === +workingHours.max) {
-    return `volume horaire d'exactement ${+workingHours.min}h.`;
+    timeMode = `volume horaire d'exactement ${+workingHours.min}h:`;
+    result.text = `${timeMode} Travaille ${actualHours}h.`;
+    if (+actualHours === +workingHours.min) {
+      result.color = "green";
+    }
   }
   if (+workingHours.min > minHour && +workingHours.max === maxHours) {
-    return `volume horaire minimum de ${+workingHours.min}h.`;
+    timeMode = `volume horaire minimum de ${+workingHours.min}h:`;
+    result.text = `${timeMode} Travaille ${actualHours}h.`;
+    if (+actualHours >= +workingHours.min) {
+      result.color = "green";
+    }
   }
   if (+workingHours.min === minHour && +workingHours.max < maxHours) {
-    return `volume horaire maximum de ${+workingHours.max}h.`;
+    timeMode = `volume horaire maximum de ${+workingHours.max}h:`;
+    result.text = `${timeMode} Travaille ${actualHours}h.`;
+    if (+actualHours <= +workingHours.max) {
+      result.color = "green";
+    }
   }
   if (+workingHours.min > minHour && +workingHours.max < maxHours) {
-    return `volume horaire compris entre ${+workingHours.min}h et ${+workingHours.max}h.`;
+    timeMode = `volume horaire compris entre ${+workingHours.min}h et ${+workingHours.max}h:`;
+    result.text = `${timeMode} Travaille ${actualHours}h.`;
+    if (
+      +actualHours >= +workingHours.min &&
+      +actualHours <= +workingHours.max
+    ) {
+      result.color = "green";
+    }
   }
-  return "";
+  return result;
+}
+
+function workHolidays(dates) {
+  const result = {
+    true: dates.length > 0,
+    text: "",
+  };
+  if (result.true) {
+    result.text = `Mais travaille ${dates
+      .map((d) => printDateFull(d))
+      .join(", ")
+      .replace(/, ([^,]*)$/, " et $1")}.`;
+  }
+  return result;
 }

@@ -17,6 +17,11 @@ function getLessonDate(dateValue) {
   return `${day}/${month}/${year}`;
 }
 
+function toDateInput(dateValue) {
+  const [day, month, year] = dateValue.split("/");
+  return `${year}-${month}-${day}`;
+}
+
 function textDateToInput(d) {
   return `${formatNumberToText(d.getFullYear())}-${formatNumberToText(
     d.getMonth() + 1
