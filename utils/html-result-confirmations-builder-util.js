@@ -89,7 +89,7 @@ function buildHtmlResultConfirmations(
       }
     } else {
       if (actualLevelNames.length > 0) {
-        levelResultColor = "black";
+        levelResultColor = "green";
       }
     }
 
@@ -157,19 +157,21 @@ function buildHtmlResultTeachersConfirmations(teacherResults) {
     if (teacher.recurrentDaysOff.true) {
       const li4 = putElementIn("li", ul2);
       li4.innerHTML = `indispo. récurrente: ${teacher.recurrentDaysOff.text}. `;
+      li4.style.color = "green";
       if (teacher.recurrentDaysOff.workDuringTimeOff.true) {
         const span = putElementIn("span", li4);
         span.innerHTML = teacher.recurrentDaysOff.workDuringTimeOff.text;
-        span.style.color = "red";
+        li4.style.color = "red";
       }
     }
     if (teacher.daysOff.true) {
       const li5 = putElementIn("li", ul2);
       li5.innerHTML = `congés: ${teacher.daysOff.text}. `;
+      li5.style.color = "green";
       if (teacher.daysOff.workDuringTimeOff.true) {
         const span2 = putElementIn("span", li5);
         span2.innerHTML = teacher.daysOff.workDuringTimeOff.text;
-        span2.style.color = "red";
+        li5.style.color = "red";
       }
     }
   });
@@ -190,9 +192,7 @@ function buildHtmlResultLevelsConfirmations(lessonLevelResults) {
     li.innerHTML = `${level.name}: `;
     const span = putElementIn("span", li);
     span.innerHTML = message;
-    if (level.remainingHours > 0) {
-      span.style.color = "red";
-    }
+    span.style.color = level.remainingHours > 0 ? "red" : "green";
   });
 }
 
@@ -206,7 +206,7 @@ function confirmResultHours(workingHours, numberDays, minHour, actualHours) {
   if (+workingHours.min === minHour && +workingHours.max === maxHours) {
     timeMode = "volume horaire indéterminé:";
     result.text = `${timeMode} Travaille ${actualHours}h.`;
-    result.color = "black";
+    result.color = "green";
   }
   if (+workingHours.min === +workingHours.max) {
     timeMode = `volume horaire d'exactement ${+workingHours.min}h:`;
