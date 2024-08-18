@@ -68,9 +68,10 @@ function parameterFormOnsubmit(event) {
     .map((date) => date.date);
   const firstDate = selectedDates.map((date) => date.date)[0];
   const lastDate = regularDates[regularDates.length - 1];
-  teachers = teacherNames.map(
-    (t, index) => new Teacher(t, parameter, colors[index % colors.length])
-  );
+  teachers = teacherNames.map((t, index) => {
+    const color = colors[index % colors.length];
+    return new Teacher(t, color.backgroundColor, color.textColor, parameter);
+  });
   buildHtmlTeachersConditions(
     teachers,
     levelNames,
@@ -229,12 +230,21 @@ function generateLessonListAndBuildHtml() {
     .map((d) => getDateTextFromLocalDate(d.date));
   lessons = getLessonList(
     dates,
-    teachers.map((t) => ({
-      ...t,
-      availabilities: t.getAvailabilities(selectedDates),
-    })),
+    teachers.map(
+      (t) =>
+        new Teacher(
+          t.name,
+          t.backgroundColor,
+          t.textColor,
+          parameter,
+          t.recurrentDaysOff,
+          t.daysOff,
+          t.preferedLevelNames
+        )
+    ),
     levels.filter((l) => l.active).map((l) => ({ ...l })),
-    parameter.lessonDuration
+    parameter.lessonDuration,
+    selectedDates
   );
   buildHtml();
   navigate("lessons-calendar-wrapper");
@@ -242,12 +252,19 @@ function generateLessonListAndBuildHtml() {
 
 // construit la liste des leçons et le calendrier
 function buildHtml() {
-  return buildHtmlLessonListAndCalendar(
+  buildHtmlLessonListAndCalendar(
     lessons,
     selectedDates,
     teachers,
     highlightLesson,
     removeLesson
+  );
+  buildHtmlResultConfirmations(
+    teachers,
+    levels.filter((l) => l.active),
+    selectedDates,
+    parameter.numberDays,
+    parameter.lessonDuration
   );
 }
 

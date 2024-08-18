@@ -1,15 +1,23 @@
 class Teacher {
-  constructor(name, parameter, color) {
+  constructor(
+    name,
+    backgroundColor,
+    textColor,
+    parameter,
+    recurrentDaysOff = [],
+    daysOff = [],
+    preferedLevelNames = []
+  ) {
     this.name = name;
-    this.color = color.backgroundColor;
-    this.textColor = color.textColor;
-    this.recurrentDaysOff = [];
-    this.daysOff = [];
+    this.color = backgroundColor;
+    this.textColor = textColor;
     this.workingHours = {
       min: parameter.lessonDuration,
       max: parameter.lessonDuration * parameter.numberDays,
     };
-    this.preferedLevelNames = [];
+    this.recurrentDaysOff = recurrentDaysOff;
+    this.daysOff = daysOff;
+    this.preferedLevelNames = preferedLevelNames;
   }
 
   getAvailabilities(selectedDates) {

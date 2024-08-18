@@ -471,8 +471,11 @@ table.parameter tbody tr td input {
   display: inline-block;
   vertical-align: top;
 }
-#teachers-wrapper {
+.teachers-wrapper {
   margin-right: 80px;
+}
+.result {
+  margin-top: 80px;
 }
 
 #file-input {

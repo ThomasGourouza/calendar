@@ -86,7 +86,7 @@
       <button onclick="goBackTo('settings-wrapper')">Précédent</button>
       <button onclick="generateTeacherAndLevelConditions()">Suivant</button>
       <div class="date-indication"></div>
-      <div id="teachers-wrapper" class="two-col-layout">
+      <div class="teachers-wrapper two-col-layout">
         <h1>Professeurs</h1>
         <table class="teachers">
           <thead>
@@ -101,7 +101,7 @@
           <tbody id="tbody-teachers"></tbody>
         </table>
       </div>
-      <div id="levels-wrapper" class="two-col-layout">
+      <div class="levels-wrapper two-col-layout">
         <h1>Niveaux</h1>
         <table class="levels">
           <thead>
@@ -124,11 +124,11 @@
       <button onclick="goBackTo('conditions-wrapper')">Précédent</button>
       <button onclick="confirmGenerateCalendar()">Confirmer</button>
       <div class="date-indication"></div>
-      <div id="teachers-wrapper" class="two-col-layout">
+      <div class="teachers-wrapper two-col-layout">
         <h1>Professeurs</h1>
         <div id="teachers-confirmation"></div>
       </div>
-      <div id="levels-wrapper" class="two-col-layout">
+      <div class="levels-wrapper two-col-layout">
         <h1>Niveaux</h1>
         <div id="levels-confirmation"></div>
       </div>
@@ -177,11 +177,23 @@
           </table>
         </form>
       </div>
+      <div class="result">
+        <h1>Vérifications</h1>
+        <div class="teachers-wrapper two-col-layout">
+          <h2>Professeurs</h2>
+          <div id="teachers-result-confirmation"></div>
+        </div>
+        <div class="levels-wrapper two-col-layout">
+          <h2>Niveaux</h2>
+          <div id="levels-result-confirmation"></div>
+        </div>
+      </div>
     </div>
     <!-- Load util files -->
     <script src="utils/common-util.js"></script>
     <script src="utils/html-conditions-builder-util.js"></script>
     <script src="utils/html-confirmations-builder-util.js"></script>
+    <script src="utils/html-result-confirmations-builder-util.js"></script>
     <script src="utils/html-calendar-builder-util.js"></script>
     <script src="utils/create-lessons-logic.js"></script>
     <script src="utils/date-util.js"></script>

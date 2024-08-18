@@ -1,10 +1,10 @@
-function getLessonList(dates, teachers, levels, lessonDuration) {
+function getLessonList(dates, teachers, levels, lessonDuration, selectedDates) {
   const finalLessonList = [];
   randomOrder(dates).forEach((date) => {
     randomOrder(levels).forEach((level) => {
       if (level.hours >= lessonDuration) {
         const availableTeachers = teachers.filter(t =>
-          (t.availabilities.includes(date)) && (!finalLessonList.filter((l) => l.date === date).map((l) => l.teacherName).includes(t.name))
+          (t.getAvailabilities(selectedDates).includes(date)) && (!finalLessonList.filter((l) => l.date === date).map((l) => l.teacherName).includes(t.name))
         );
         const availableLimitedTeachers = availableTeachers.filter(t => {
           const teacherLevels = [...new Set(finalLessonList.filter((l) => l.teacherName === t.name).map((l) => l.levelName))];
