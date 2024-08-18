@@ -69,7 +69,7 @@ function buildHtmlResultConfirmations(
     const preferedText =
       preferedLevelNames.length > 0
         ? `${preferedThe} niveau${preferedX} préféré${preferedS} ${preferedBe} ${preferedLevelNamesText}.`
-        : "Aucun niveau préféré.";
+        : "Sans préférence de niveau.";
     const actualText =
       actualLevelNames.length > 0
         ? `Travaille avec ${actualThe} niveau${actualX} ${actualLevelNamesText}.`
@@ -143,6 +143,7 @@ function buildHtmlResultTeachersConfirmations(teacherResults) {
   const ul = putElementIn("ul", div);
   teacherResults.forEach((teacher) => {
     const li = putElementIn("li", ul);
+    li.className = "main-teacher";
     li.innerHTML = `${teacher.teacherName}:`;
     const ul2 = putElementIn("ul", li);
 
@@ -156,7 +157,7 @@ function buildHtmlResultTeachersConfirmations(teacherResults) {
 
     if (teacher.recurrentDaysOff.true) {
       const li4 = putElementIn("li", ul2);
-      li4.innerHTML = `indispo. récurrente: ${teacher.recurrentDaysOff.text}. `;
+      li4.innerHTML = `Indispo. récurrente: ${teacher.recurrentDaysOff.text}. `;
       li4.style.color = "green";
       if (teacher.recurrentDaysOff.workDuringTimeOff.true) {
         const span = putElementIn("span", li4);
@@ -166,7 +167,7 @@ function buildHtmlResultTeachersConfirmations(teacherResults) {
     }
     if (teacher.daysOff.true) {
       const li5 = putElementIn("li", ul2);
-      li5.innerHTML = `congés: ${teacher.daysOff.text}. `;
+      li5.innerHTML = `Congés: ${teacher.daysOff.text}. `;
       li5.style.color = "green";
       if (teacher.daysOff.workDuringTimeOff.true) {
         const span2 = putElementIn("span", li5);
@@ -185,6 +186,7 @@ function buildHtmlResultLevelsConfirmations(lessonLevelResults) {
   const ul = putElementIn("ul", div);
   lessonLevelResults.forEach((level) => {
     const li = putElementIn("li", ul);
+    li.className = "main";
     const message =
       level.remainingHours === 0
         ? "Toutes les heures ont été placées."
@@ -204,33 +206,33 @@ function confirmResultHours(workingHours, numberDays, minHour, actualHours) {
     color: "red",
   };
   if (+workingHours.min === minHour && +workingHours.max === maxHours) {
-    timeMode = "volume horaire indéterminé:";
+    timeMode = "Volume horaire indéterminé:";
     result.text = `${timeMode} Travaille ${actualHours}h.`;
     result.color = "green";
   }
   if (+workingHours.min === +workingHours.max) {
-    timeMode = `volume horaire d'exactement ${+workingHours.min}h:`;
+    timeMode = `Volume horaire d'exactement ${+workingHours.min}h:`;
     result.text = `${timeMode} Travaille ${actualHours}h.`;
     if (+actualHours === +workingHours.min) {
       result.color = "green";
     }
   }
   if (+workingHours.min > minHour && +workingHours.max === maxHours) {
-    timeMode = `volume horaire minimum de ${+workingHours.min}h:`;
+    timeMode = `Volume horaire minimum de ${+workingHours.min}h:`;
     result.text = `${timeMode} Travaille ${actualHours}h.`;
     if (+actualHours >= +workingHours.min) {
       result.color = "green";
     }
   }
   if (+workingHours.min === minHour && +workingHours.max < maxHours) {
-    timeMode = `volume horaire maximum de ${+workingHours.max}h:`;
+    timeMode = `Volume horaire maximum de ${+workingHours.max}h:`;
     result.text = `${timeMode} Travaille ${actualHours}h.`;
     if (+actualHours <= +workingHours.max) {
       result.color = "green";
     }
   }
   if (+workingHours.min > minHour && +workingHours.max < maxHours) {
-    timeMode = `volume horaire compris entre ${+workingHours.min}h et ${+workingHours.max}h:`;
+    timeMode = `Volume horaire compris entre ${+workingHours.min}h et ${+workingHours.max}h:`;
     result.text = `${timeMode} Travaille ${actualHours}h.`;
     if (
       +actualHours >= +workingHours.min &&

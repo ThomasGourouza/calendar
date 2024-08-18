@@ -504,3 +504,10 @@ table.parameter tbody tr td input {
   top: 55px;
   right: 60px;
 }
+
+li.main {
+  margin-bottom: 15px;
+}
+li.main-teacher {
+  margin-bottom: 20px;
+}
