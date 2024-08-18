@@ -3,8 +3,10 @@ function buildHtmlResultConfirmations(
   levels,
   selectedDates,
   numberDays,
-  lessonDuration
+  lessonDuration,
+  lessons
 ) {
+  // console.log(lessons);
   buildHtmlResultTeachersConfirmations(
     teachers,
     selectedDates,
@@ -87,8 +89,6 @@ function buildHtmlResultLevelsConfirmations(levels) {
 }
 
 function confirmResultHours(workingHours, numberDays, minHour) {
-  console.log(workingHours);
-  
   const maxHours = numberDays * minHour;
   if (+workingHours.min === minHour && +workingHours.max === maxHours) {
     return "volume horaire indéterminé.";

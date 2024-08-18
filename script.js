@@ -264,7 +264,8 @@ function buildHtml() {
     levels.filter((l) => l.active),
     selectedDates,
     parameter.numberDays,
-    parameter.lessonDuration
+    parameter.lessonDuration,
+    lessons
   );
 }
 
