@@ -34,7 +34,7 @@
   /* colonne weekend */
   --table-weekend-width: 25px;
   --table-weekend-color: gray;
-  --table-holiday-color: rgb(206, 206, 206);
+  --table-holiday-color: rgb(200, 200, 200);
 
   /* Lessons */
   --table-lesson-margin-top: 10px;
