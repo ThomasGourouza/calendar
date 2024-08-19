@@ -3,17 +3,18 @@ class Teacher {
     name,
     backgroundColor,
     textColor,
-    parameter,
+    workingHoursMin = parameter.lessonDuration,
+    workingHoursMax = parameter.lessonDuration * parameter.numberDays,
     recurrentDaysOff = [],
     daysOff = [],
     preferedLevelNames = []
   ) {
     this.name = name;
-    this.color = backgroundColor;
+    this.backgroundColor = backgroundColor;
     this.textColor = textColor;
     this.workingHours = {
-      min: parameter.lessonDuration,
-      max: parameter.lessonDuration * parameter.numberDays,
+      min: workingHoursMin,
+      max: workingHoursMax,
     };
     this.recurrentDaysOff = recurrentDaysOff;
     this.daysOff = daysOff;

@@ -72,7 +72,7 @@ function parameterFormOnsubmit(event) {
   const lastDate = regularDates[regularDates.length - 1];
   teachers = teacherNames.map((t, index) => {
     const color = colors[index % colors.length];
-    return new Teacher(t, color.backgroundColor, color.textColor, parameter);
+    return new Teacher(t, color.backgroundColor, color.textColor);
   });
   buildHtmlTeachersConditions(
     teachers,
@@ -230,20 +230,22 @@ function generateLessonListAndBuildHtml() {
   const dates = selectedDates
     .filter((d) => d.type === "regular")
     .map((d) => getDateTextFromLocalDate(d.date));
+  const teacherListCopy = teachers.map(
+    (t) =>
+      new Teacher(
+        t.name,
+        t.backgroundColor,
+        t.textColor,
+        t.workingHours.min,
+        t.workingHours.max,
+        t.recurrentDaysOff,
+        t.daysOff,
+        t.preferedLevelNames
+      )
+  );
   lessons = getLessonList(
     dates,
-    teachers.map(
-      (t) =>
-        new Teacher(
-          t.name,
-          t.backgroundColor,
-          t.textColor,
-          parameter,
-          t.recurrentDaysOff,
-          t.daysOff,
-          t.preferedLevelNames
-        )
-    ),
+    teacherListCopy,
     levels.filter((l) => l.active).map((l) => ({ ...l })),
     parameter.lessonDuration,
     selectedDates

@@ -42,7 +42,7 @@ function buildHtmlTeachersConditions(
     const tr = putElementIn("tr", teachersTbody);
 
     const nameTd = putElementIn("td", tr);
-    fillTdWithTeacherAndDisk(nameTd, teacher.name, teacher.color);
+    fillTdWithTeacherAndDisk(nameTd, teacher.name, teacher.backgroundColor);
 
     const recDaysOffTd = putElementIn("td", tr);
     const recDaysOffSelect = putElementIn("select", recDaysOffTd);

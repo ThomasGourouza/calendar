@@ -209,29 +209,25 @@ function confirmResultHours(workingHours, numberDays, minHour, actualHours) {
     timeMode = "Volume horaire indéterminé:";
     result.text = `${timeMode} Travaille ${actualHours}h.`;
     result.color = "green";
-  }
-  if (+workingHours.min === +workingHours.max) {
+  } else if (+workingHours.min === +workingHours.max) {
     timeMode = `Volume horaire d'exactement ${+workingHours.min}h:`;
     result.text = `${timeMode} Travaille ${actualHours}h.`;
     if (+actualHours === +workingHours.min) {
       result.color = "green";
     }
-  }
-  if (+workingHours.min > minHour && +workingHours.max === maxHours) {
+  } else if (+workingHours.min > minHour && +workingHours.max === maxHours) {
     timeMode = `Volume horaire minimum de ${+workingHours.min}h:`;
     result.text = `${timeMode} Travaille ${actualHours}h.`;
     if (+actualHours >= +workingHours.min) {
       result.color = "green";
     }
-  }
-  if (+workingHours.min === minHour && +workingHours.max < maxHours) {
+  } else if (+workingHours.min === minHour && +workingHours.max < maxHours) {
     timeMode = `Volume horaire maximum de ${+workingHours.max}h:`;
     result.text = `${timeMode} Travaille ${actualHours}h.`;
     if (+actualHours <= +workingHours.max) {
       result.color = "green";
     }
-  }
-  if (+workingHours.min > minHour && +workingHours.max < maxHours) {
+  } else if (+workingHours.min > minHour && +workingHours.max < maxHours) {
     timeMode = `Volume horaire compris entre ${+workingHours.min}h et ${+workingHours.max}h:`;
     result.text = `${timeMode} Travaille ${actualHours}h.`;
     if (

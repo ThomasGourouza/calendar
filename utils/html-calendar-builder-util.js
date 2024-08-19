@@ -26,7 +26,7 @@ function buildHtmlLessonList(lessonList, teachers, remove) {
     fillTdWithTeacherAndDisk(
       teacherTd,
       lesson.teacherName,
-      teachers.find((teacher) => teacher.name === lesson.teacherName)?.color
+      teachers.find((teacher) => teacher.name === lesson.teacherName)?.backgroundColor
     );
     const levelTd = putElementIn("td", tr);
     levelTd.innerHTML = lesson.levelName;
