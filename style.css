@@ -1,4 +1,11 @@
 :root {
+  /* General */
+  --background-color: rgb(230, 245, 250);
+  --table-header-color: rgb(140, 205, 255);
+  --table-header-title-color: rgb(190, 225, 255);
+  --table-content-color: rgb(220, 240, 250);
+  --table-content-color-highlighted: rgb(200, 215, 225);
+  --font-family: "Comic Sans MS", "Comic Sans", cursive;
   /* Calendar */
   --table-margin-top: 20px;
   --box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -7,13 +14,13 @@
   --table-border-thick-color: black;
   --table-border: 1px solid var(--table-border-color);
   --table-border-thick: 1px solid var(--table-border-thick-color);
-  --table-header-title: rgb(255, 255, 239);
-  --table-header-day: rgb(214, 255, 173);
+  --table-header-title: var(--table-header-title-color);
+  --table-header-day: var(--table-header-color);
   /* hauteur des headers des jours */
   --table-header-height: 20px;
-  --table-time: rgb(214, 255, 173);
-  --table-content: rgb(252, 232, 207);
-  --table-content-highlighted: rgb(252, 232, 207);
+  --table-time: var(--table-header-color);
+  --table-content: var(--table-content-color);
+  --table-content-highlighted: var(--table-content-color-highlighted);
   /* longueur des cellules des heures du calendrier */
   --table-time-td-width: 40px;
   /* longueur des cellules du calendrier */
@@ -31,8 +38,8 @@
 
   /* Lessons */
   --table-lesson-margin-top: 10px;
-  --table-lesson-header: rgb(214, 255, 173);
-  --table-lesson-content: rgb(252, 232, 207);
+  --table-lesson-header: var(--table-header-color);
+  --table-lesson-content: var(--table-content-color);
   --table-button-remove: rgb(160, 7, 7);
   --table-button-remove-hover: rgb(247, 5, 5);
   --table-button-add: rgb(0, 91, 12);
@@ -49,8 +56,8 @@
 
   /* Teachers */
   --table-teacher-margin-top: 10px;
-  --table-teacher-header: rgb(214, 255, 173);
-  --table-teacher-content: rgb(252, 232, 207);
+  --table-teacher-header: var(--table-header-color);
+  --table-teacher-content: var(--table-content-color);
   --table-teacher-header-height: 40px;
   --table-teacher-content-td-height: 80px;
   --table-teacher-content-td-width: 120px;
@@ -58,26 +65,32 @@
 
   /* Levels */
   --table-level-margin-top: 10px;
-  --table-level-header: rgb(214, 255, 173);
-  --table-level-content: rgb(252, 232, 207);
+  --table-level-header: var(--table-header-color);
+  --table-level-content: var(--table-content-color);
   --table-level-header-height: 40px;
   --table-level-content-td-height: 30px;
   --table-level-content-td-width: 100px;
 
   /* Parameter */
   --table-parameter-margin-top: 10px;
-  --table-parameter-header: rgb(214, 255, 173);
-  --table-parameter-content: rgb(252, 232, 207);
+  --table-parameter-header: var(--table-header-color);
+  --table-parameter-content: var(--table-content-color);
   --table-parameter-header-height: 40px;
   --table-parameter-content-td-height: 30px;
   --table-parameter-content-td-width: 150px;
 }
 
 body {
-  font-family: Arial, sans-serif;
   overflow: auto;
   margin: 50px;
   height: 100%;
+  background-color: var(--background-color);
+  font-family: var(--font-family);
+}
+button,
+input,
+select {
+  font-family: var(--font-family);
 }
 
 /* Calendar */
