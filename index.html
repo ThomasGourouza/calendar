@@ -86,7 +86,7 @@
       </div>
     </div>
     <div id="conditions-wrapper" class="page" style="display: none">
-      <button onclick="goBackTo('settings-wrapper')">Précédent</button>
+      <button onclick="navigate('settings-wrapper')">Précédent</button>
       <button onclick="generateTeacherAndLevelConditions()">Suivant</button>
       <div class="date-indication"></div>
       <div class="teachers-wrapper two-col-layout">
@@ -124,7 +124,7 @@
       </div>
     </div>
     <div id="confirmation-wrapper" class="page" style="display: none">
-      <button onclick="goBackTo('conditions-wrapper')">Précédent</button>
+      <button onclick="navigate('conditions-wrapper')">Précédent</button>
       <button onclick="confirmGenerateCalendar()">Valider</button>
       <div class="date-indication"></div>
       <div class="teachers-wrapper two-col-layout">
@@ -137,11 +137,10 @@
       </div>
     </div>
     <div id="lessons-calendar-wrapper" class="page" style="display: none">
-      <button
-        onclick="goBackTo('settings-wrapper', 'lessons-calendar-wrapper')"
-      >
-        Recommencer
+      <button onclick="goBackTo('conditions-wrapper')">
+        Modifier les contraintes
       </button>
+      <button onclick="goBackTo('settings-wrapper')">Recommencer</button>
       <button onclick="confirmGenerateCalendar('lessons-calendar-wrapper')">
         Générer un autre calendrier
       </button>

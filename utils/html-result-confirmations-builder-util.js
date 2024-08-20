@@ -60,15 +60,11 @@ function buildHtmlResultConfirmations(
       .join(", ")
       .replace(/, ([^,]*)$/, " et $1");
 
-    const preferedX = preferedLevelNames.length > 1 ? "x" : "";
-    const preferedS = preferedLevelNames.length > 1 ? "s" : "";
-    const preferedBe = preferedLevelNames.length > 1 ? "sont" : "est";
-    const preferedThe = preferedLevelNames.length > 1 ? "Les" : "Le";
-    const actualX = actualLevelNames.length > 1 ? "x" : "";
     const actualThe = actualLevelNames.length > 1 ? "les" : "le";
+    const actualX = actualLevelNames.length > 1 ? "x" : "";
     const preferedText =
       preferedLevelNames.length > 0
-        ? `${preferedThe} niveau${preferedX} préféré${preferedS} ${preferedBe} ${preferedLevelNamesText}.`
+        ? `Niveaux préférés: ${preferedLevelNamesText}.`
         : "Sans préférence de niveau.";
     const actualText =
       actualLevelNames.length > 0
@@ -95,6 +91,7 @@ function buildHtmlResultConfirmations(
 
     return {
       teacherName,
+      numberWorkingDays: currentTeacher.getAvailabilities(selectedDates).length,
       hours: confirmResultHours(
         workingHours,
         numberDays,
@@ -147,34 +144,40 @@ function buildHtmlResultTeachersConfirmations(teacherResults) {
     li.innerHTML = `${teacher.teacherName}:`;
     const ul2 = putElementIn("ul", li);
 
-    const li2 = putElementIn("li", ul2);
-    li2.innerHTML = `${teacher.hours.text}`;
-    li2.style.color = teacher.hours.color;
-
-    const li3 = putElementIn("li", ul2);
-    li3.innerHTML = `${teacher.levels.text}`;
-    li3.style.color = teacher.levels.color;
+    const li1 = putElementIn("li", ul2);
+    li1.innerHTML = `Disponible ${teacher.numberWorkingDays} jour${
+      +teacher.numberWorkingDays > 0 ? "s" : ""
+    }.`;
+    li1.style.color = "green";
 
     if (teacher.recurrentDaysOff.true) {
-      const li4 = putElementIn("li", ul2);
-      li4.innerHTML = `Indispo. récurrente: ${teacher.recurrentDaysOff.text}. `;
-      li4.style.color = "green";
+      const li2 = putElementIn("li", ul2);
+      li2.innerHTML = `Indispo. récurrente: ${teacher.recurrentDaysOff.text}. `;
+      li2.style.color = "green";
       if (teacher.recurrentDaysOff.workDuringTimeOff.true) {
-        const span = putElementIn("span", li4);
+        const span = putElementIn("span", li2);
         span.innerHTML = teacher.recurrentDaysOff.workDuringTimeOff.text;
         li4.style.color = "red";
       }
     }
     if (teacher.daysOff.true) {
-      const li5 = putElementIn("li", ul2);
-      li5.innerHTML = `Congés: ${teacher.daysOff.text}. `;
-      li5.style.color = "green";
+      const li3 = putElementIn("li", ul2);
+      li3.innerHTML = `Congés: ${teacher.daysOff.text}. `;
+      li3.style.color = "green";
       if (teacher.daysOff.workDuringTimeOff.true) {
-        const span2 = putElementIn("span", li5);
+        const span2 = putElementIn("span", li3);
         span2.innerHTML = teacher.daysOff.workDuringTimeOff.text;
-        li5.style.color = "red";
+        li3.style.color = "red";
       }
     }
+
+    const li4 = putElementIn("li", ul2);
+    li4.innerHTML = `${teacher.hours.text}`;
+    li4.style.color = teacher.hours.color;
+
+    const li5 = putElementIn("li", ul2);
+    li5.innerHTML = `${teacher.levels.text}`;
+    li5.style.color = teacher.levels.color;
   });
 }
 

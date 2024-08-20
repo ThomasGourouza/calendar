@@ -57,6 +57,9 @@ function buildHtmlTeachersConditions(
       const daysOffOption = putElementIn("option", recDaysOffSelect);
       daysOffOption.setAttribute("value", weekDay.index);
       daysOffOption.innerHTML = weekDay.name;
+      if (teacher.recurrentDaysOff.includes(weekDay.index)) {
+        daysOffOption.selected = true;
+      }
     });
     recDaysOffSelect.addEventListener("change", (event) =>
       handleRecDaysOffSelectChange(event, teacher)
@@ -66,12 +69,14 @@ function buildHtmlTeachersConditions(
     const daysOffInput = putElementIn("input", daysOffTd);
     daysOffInput.setAttribute("type", "date");
     daysOffInput.setAttribute("placeholder", "Congés");
-    daysOffInput.className = "teacher-days-off";
+    const nameId = teacher.name.replace(/\s+/g, "");
+    daysOffInput.setAttribute("id", `days-off-${nameId}`);
     daysOffInput.style.width = "80%";
-    flatpickr(".teacher-days-off", {
+    const datePicker = flatpickr(`#days-off-${nameId}`, {
       mode: "multiple",
       dateFormat,
     });
+    datePicker.setDate(teacher.daysOff);
     daysOffInput.addEventListener("change", (event) =>
       handleDaysOffInputChange(event, teacher)
     );
@@ -123,6 +128,9 @@ function buildHtmlTeachersConditions(
       const levelOption = putElementIn("option", levelsSelect);
       levelOption.setAttribute("value", name);
       levelOption.innerHTML = name;
+      if (teacher.preferedLevelNames.includes(name)) {
+        levelOption.selected = true;
+      }
     });
     levelsSelect.addEventListener("change", (event) =>
       handleLevelsSelectChange(event, teacher)
@@ -155,6 +163,9 @@ function handleLevelsSelectChange(event, teacher) {
 }
 
 function buildHtmlLevelsConditions(levels) {
+  document.getElementById("levels-checkbox").checked = levels.every(
+    (l) => l.active
+  );
   const levelsTbody = document.getElementById("tbody-levels");
   while (levelsTbody.firstChild) {
     levelsTbody.removeChild(levelsTbody.firstChild);

@@ -72,8 +72,29 @@ function parameterFormOnsubmit(event) {
   const lastDate = regularDates[regularDates.length - 1];
   teachers = teacherNames.map((t, index) => {
     const color = colors[index % colors.length];
-    return new Teacher(t, color.backgroundColor, color.textColor);
+    return new Teacher(
+      t,
+      color.backgroundColor,
+      color.textColor,
+      40,
+      60,
+      ["1", "3"],
+      ["2024-08-20", "2024-08-21", "2024-08-22", "2024-08-28", "2024-08-30"],
+      ["A0", "A1.2"]
+    );
   });
+  // teachers = [
+  //   new Teacher(
+  //     "Pauline",
+  //     "blue",
+  //     "white",
+  //     40,
+  //     60,
+  //     [1, 3],
+  //     ["2024-08-20", "2024-08-21", "2024-08-22", "2024-08-28", "2024-08-30"],
+  //     ["A0", "A1.2"]
+  //   ),
+  // ];
   buildHtmlTeachersConditions(
     teachers,
     levelNames,
@@ -85,8 +106,7 @@ function parameterFormOnsubmit(event) {
       .filter((date) => date.type === "holiday")
       .map((date) => date.date)
   );
-  document.getElementById("levels-checkbox").checked = true;
-  levels = levelNames.map((l) => new Level(l, parameter));
+  levels = levelNames.map((l) => new Level(l));
   buildHtmlLevelsConditions(levels);
   navigate("conditions-wrapper");
 }
@@ -322,7 +342,8 @@ function onLoadData(e, file) {
     fillSelectOptions("teachers", teacherNames);
     localStorage.setItem("levelNames", levelNames.join(","));
     localStorage.setItem("teacherNames", teacherNames.join(","));
-    dataLoaded.innerHTML = `Fichier "${file.name}" importé avec succès.`;
+    localStorage.setItem("importMessage", `Fichier "${file.name}" importé avec succès.`);
+    dataLoaded.innerHTML = localStorage.getItem("importMessage");
     eraseData.style.display = "block";
   } else {
     dataLoaded.innerHTML = "Pas de données.";
@@ -343,20 +364,12 @@ function erase() {
 }
 
 // changer de section
-function goBackTo(page, from = undefined) {
-  if (page === "settings-wrapper") {
-    const message =
-      from === "lessons-calendar-wrapper"
-        ? "Le calendrier actuel sera perdu"
-        : "Vous allez perdre vos modifications";
-    if (
-      !askConfirmation ||
-      (askConfirmation && confirm(`${message}. Continuer?`))
-    ) {
-      init();
-      navigate(page);
-    }
-  } else {
+function goBackTo(page) {
+  const message = "Le calendrier actuel sera perdu";
+  if (
+    !askConfirmation ||
+    (askConfirmation && confirm(`${message}. Continuer?`))
+  ) {
     navigate(page);
   }
 }
@@ -381,7 +394,7 @@ function init() {
   if (levelNames.length > 0 && teacherNames.length > 0) {
     fillSelectOptions("levels", levelNames);
     fillSelectOptions("teachers", teacherNames);
-    dataLoaded.innerHTML = "Données présentes.";
+    dataLoaded.innerHTML = localStorage.getItem("importMessage");
     eraseData.style.display = "block";
   } else {
     dataLoaded.innerHTML = "Pas de données.";
@@ -390,11 +403,9 @@ function init() {
 }
 
 function confirmGenerateCalendar(from = undefined) {
-  const message =
-    from === "lessons-calendar-wrapper"
-      ? "Le calendrier actuel sera perdu"
-      : "Vous ne pourrez plus modifier ces paramètres";
+  const message = "Le calendrier actuel sera perdu";
   if (
+    from !== "lessons-calendar-wrapper" ||
     !askConfirmation ||
     (askConfirmation && confirm(`${message}. Continuer?`))
   ) {
