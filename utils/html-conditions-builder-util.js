@@ -195,3 +195,34 @@ function handleActiveChange(level, value, levels) {
     document.getElementById("levels-checkbox").checked = true;
   }
 }
+
+function downloadConditions() {
+  console.log(teachers);
+  
+  // const rows = table.querySelectorAll("tr");
+  // let csvContent = "";
+  // rows.forEach((row) => {
+  //   const rowContent = Array.from(row.querySelectorAll("th, td")).map(
+  //     (r) => r.textContent
+  //   );
+  //   csvContent += rowContent.join(";") + "\n";
+  // });
+  // const utf8BOM = "\ufeff";
+  // const blob = new Blob([`${utf8BOM}${csvContent}`], {
+  //   type: "text/csv;charset=utf-8;",
+  // });
+  // const link = document.createElement("a");
+  // const url = URL.createObjectURL(blob);
+  // link.setAttribute("href", url);
+  // const today = new Date();
+  // link.setAttribute(
+  //   "download",
+  //   `calendrier_${formatNumberToText(today.getDate())}-${formatNumberToText(
+  //     today.getMonth() + 1
+  //   )}-${formatNumberToText(today.getFullYear())}.csv`
+  // );
+  // link.style.visibility = "hidden";
+  // document.body.appendChild(link);
+  // link.click();
+  // document.body.removeChild(link);
+}

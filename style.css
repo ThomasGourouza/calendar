@@ -56,19 +56,19 @@
   --input-select-width: calc(var(--table-lesson-content-td-width) - 20px);
 
   /* Teachers */
-  --table-teacher-margin-top: 10px;
+  --table-teacher-margin-top: 20px;
   --table-teacher-header: var(--table-header-color);
   --table-teacher-content: var(--table-content-color);
-  --table-teacher-header-height: 40px;
+  --table-teacher-header-height: 51px;
   --table-teacher-content-td-height: 80px;
   --table-teacher-content-td-width: 120px;
   --table-teacher-content-td-width-larger: 200px;
 
   /* Levels */
-  --table-level-margin-top: 10px;
+  --table-level-margin-top: 66px;
   --table-level-header: var(--table-header-color);
   --table-level-content: var(--table-content-color);
-  --table-level-header-height: 40px;
+  --table-level-header-height: 51px;
   --table-level-content-td-height: 30px;
   --table-level-content-td-width: 100px;
 

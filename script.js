@@ -24,20 +24,25 @@ let levels = [];
 let teachers = [];
 let lessons = [];
 
-teachers = teacherNames.map((t, index) => {
-  const color = colors[index % colors.length];
-  return new Teacher(
-    t,
-    color.backgroundColor,
-    color.textColor
-    // 40,
-    // 60,
-    // ["1", "3"],
-    // ["2024-08-20", "2024-08-21", "2024-08-22", "2024-08-28", "2024-08-30"],
-    // ["A0", "A1.2"]
-  );
-});
-levels = levelNames.map((l) => new Level(l));
+fillTeachersAndLevels();
+
+function fillTeachersAndLevels() {
+  teachers = teacherNames.map((t, index) => {
+    const color = colors[index % colors.length];
+    return new Teacher(
+      t,
+      color.backgroundColor,
+      color.textColor
+      // 40,
+      // 60,
+      // ["1", "3"],
+      // ["2024-08-20", "2024-08-21", "2024-08-22", "2024-08-28", "2024-08-30"],
+      // ["A0", "A1.2"]
+    );
+  });
+  levels = levelNames.map((l) => new Level(l));
+}
+
 
 // build HTML
 
@@ -344,6 +349,7 @@ function onLoadData(e, file) {
       `Fichier "${file.name}" importé avec succès.`
     );
     dataLoaded.innerHTML = localStorage.getItem("importMessage");
+    fillTeachersAndLevels();
     eraseData.style.display = "block";
   } else {
     dataLoaded.innerHTML = "Pas de données.";
