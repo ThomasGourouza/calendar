@@ -34,4 +34,11 @@ class Teacher {
       .map((d) => getDateTextFromLocalDate(d.date));
     return availabilities;
   }
+
+  getPeriodDaysOff(selectedDates) {
+    const selectedDatesText = selectedDates
+      .filter((date) => date.type === "regular")
+      .map((d) => textDateToInput(d.date));
+    return this.daysOff.filter((d) => selectedDatesText.includes(d));
+  }
 }

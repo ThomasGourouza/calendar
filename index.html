@@ -12,10 +12,6 @@
     <link rel="icon" type="image/x-icon" href="icon.png" />
   </head>
   <body>
-    <div id="confirmation">
-      <span>Demande de confirmation:</span>
-      <input id="ask-confirmation" type="checkbox" />
-    </div>
     <div id="settings-wrapper" class="page">
       <form name="parameter-form">
         <input type="submit" value="Suivant" />
@@ -87,7 +83,7 @@
     </div>
     <div id="conditions-wrapper" class="page" style="display: none">
       <button onclick="navigate('settings-wrapper')">Précédent</button>
-      <button onclick="generateTeacherAndLevelConditions()">Suivant</button>
+      <button onclick="confirmGenerateCalendar()">Générer un calendrier</button>
       <div class="date-indication"></div>
       <div class="teachers-wrapper two-col-layout">
         <h1>Professeurs</h1>
@@ -123,27 +119,13 @@
         </table>
       </div>
     </div>
-    <div id="confirmation-wrapper" class="page" style="display: none">
-      <button onclick="navigate('conditions-wrapper')">Précédent</button>
-      <button onclick="confirmGenerateCalendar()">Valider</button>
-      <div class="date-indication"></div>
-      <div class="teachers-wrapper two-col-layout">
-        <h1>Professeurs</h1>
-        <div id="teachers-confirmation"></div>
-      </div>
-      <div class="levels-wrapper two-col-layout">
-        <h1>Niveaux</h1>
-        <div id="levels-confirmation"></div>
-      </div>
-    </div>
     <div id="lessons-calendar-wrapper" class="page" style="display: none">
-      <button onclick="goBackTo('conditions-wrapper')">
-        Modifier les contraintes
-      </button>
-      <button onclick="goBackTo('settings-wrapper')">Recommencer</button>
-      <button onclick="confirmGenerateCalendar('lessons-calendar-wrapper')">
-        Générer un autre calendrier
-      </button>
+      <div id="confirmation">
+        <span>Demande de confirmation:</span>
+        <input id="ask-confirmation" type="checkbox" />
+      </div>
+      <button onclick="goBackTo('conditions-wrapper')">Précédent</button>
+      <button onclick="reGenerateCalendar()">Générer un calendrier</button>
       <div class="date-indication"></div>
       <div id="calendar-wrapper"></div>
       <div id="lessons-wrapper">
@@ -194,7 +176,6 @@
     <!-- Load util files -->
     <script src="utils/common-util.js"></script>
     <script src="utils/html-conditions-builder-util.js"></script>
-    <script src="utils/html-confirmations-builder-util.js"></script>
     <script src="utils/html-result-confirmations-builder-util.js"></script>
     <script src="utils/html-calendar-builder-util.js"></script>
     <script src="utils/create-lessons-logic.js"></script>

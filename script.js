@@ -13,12 +13,43 @@ let askConfirmation = ["true", "false"].includes(
   ? localStorage.getItem("askConfirmation") === "true"
   : true;
 
-let parameter;
-let selectedDates;
-let levels;
-let teachers;
-let lessons;
-init();
+let parameter = {
+  startDate: getNextMonday(),
+  numberDays: 20,
+  bankHolidays: [],
+  lessonDuration: 4,
+};
+let selectedDates = [];
+let levels = [];
+let teachers = [];
+let lessons = [];
+
+teachers = teacherNames.map((t, index) => {
+  const color = colors[index % colors.length];
+  return new Teacher(
+    t,
+    color.backgroundColor,
+    color.textColor
+    // 40,
+    // 60,
+    // ["1", "3"],
+    // ["2024-08-20", "2024-08-21", "2024-08-22", "2024-08-28", "2024-08-30"],
+    // ["A0", "A1.2"]
+  );
+});
+levels = levelNames.map((l) => new Level(l));
+
+// build HTML
+
+if (levelNames.length > 0 && teacherNames.length > 0) {
+  fillSelectOptions("levels", levelNames);
+  fillSelectOptions("teachers", teacherNames);
+  dataLoaded.innerHTML = localStorage.getItem("importMessage");
+  eraseData.style.display = "block";
+} else {
+  dataLoaded.innerHTML = "Pas de données.";
+  eraseData.style.display = "none";
+}
 
 const askConfirmationCheckbox = document.getElementById("ask-confirmation");
 askConfirmationCheckbox.checked = askConfirmation;
@@ -70,31 +101,6 @@ function parameterFormOnsubmit(event) {
     .map((date) => date.date);
   const firstDate = selectedDates.map((date) => date.date)[0];
   const lastDate = regularDates[regularDates.length - 1];
-  teachers = teacherNames.map((t, index) => {
-    const color = colors[index % colors.length];
-    return new Teacher(
-      t,
-      color.backgroundColor,
-      color.textColor,
-      40,
-      60,
-      ["1", "3"],
-      ["2024-08-20", "2024-08-21", "2024-08-22", "2024-08-28", "2024-08-30"],
-      ["A0", "A1.2"]
-    );
-  });
-  // teachers = [
-  //   new Teacher(
-  //     "Pauline",
-  //     "blue",
-  //     "white",
-  //     40,
-  //     60,
-  //     [1, 3],
-  //     ["2024-08-20", "2024-08-21", "2024-08-22", "2024-08-28", "2024-08-30"],
-  //     ["A0", "A1.2"]
-  //   ),
-  // ];
   buildHtmlTeachersConditions(
     teachers,
     levelNames,
@@ -106,7 +112,6 @@ function parameterFormOnsubmit(event) {
       .filter((date) => date.type === "holiday")
       .map((date) => date.date)
   );
-  levels = levelNames.map((l) => new Level(l));
   buildHtmlLevelsConditions(levels);
   navigate("conditions-wrapper");
 }
@@ -193,56 +198,38 @@ function highlightLesson(date, levelName) {
   }
 }
 
-// génère le récapitulatif des conditions
-function generateTeacherAndLevelConditions() {
-  if (
-    teachers
-      .map((teacher) => teacher.workingHours)
-      .every((workingHours) =>
-        isValideHour(
-          workingHours,
-          parameter.lessonDuration,
-          parameter.numberDays
-        )
+// confirme les conditions
+function confirmGenerateCalendar() {
+  const invalidTeachers = teachers.filter(
+    (t) =>
+      !isValideHour(
+        t.workingHours,
+        parameter.lessonDuration,
+        parameter.numberDays
       )
-  ) {
-    if (levels.some((l) => l.active)) {
-      buildHtmlConfirmations(
-        teachers,
-        levels.filter((l) => l.active),
-        selectedDates,
-        parameter.numberDays,
-        parameter.lessonDuration
-      );
-      navigate("confirmation-wrapper");
-    } else {
-      alert("Aucun niveau sélectionné.");
-      return;
-    }
-  } else {
-    const invalidTeachers = teachers
-      .filter(
-        (t) =>
-          !isValideHour(
-            t.workingHours,
-            parameter.lessonDuration,
-            parameter.numberDays
-          )
-      )
+  );
+  if (invalidTeachers.length > 0) {
+    const invalidTeacherNames = invalidTeachers
       .map((t) => t.name)
       .join(", ")
       .replace(/, ([^,]*)$/, " et $1");
     alert(
-      `Volume horaire incorrect pour ${invalidTeachers}. min ≥ ${
+      `${invalidTeacherNames}: Le Volume horaire doit être compris entre ${
         parameter.lessonDuration
-      }, max ≤ ${
+      } et ${
         parameter.lessonDuration * parameter.numberDays
-      } min ≤ max et le min et le max doivent être des multiples de ${
+      }, et les bornes doivent être des multiples de ${
         parameter.lessonDuration
       }.`
     );
     return;
   }
+  if (!levels.some((l) => l.active)) {
+    alert("Aucun niveau sélectionné.");
+    return;
+  }
+  generateLessonListAndBuildHtml();
+  navigate("lessons-calendar-wrapper");
 }
 
 // génère les données des leçons et du calendrier
@@ -266,12 +253,22 @@ function generateLessonListAndBuildHtml() {
   lessons = getLessonList(
     dates,
     teacherListCopy,
-    levels.filter((l) => l.active).map((l) => ({ ...l })),
+    levels.filter((l) => l.active).map((l) => new Level(l.name, l.active)),
     parameter.lessonDuration,
     selectedDates
   );
   buildHtml();
   navigate("lessons-calendar-wrapper");
+}
+
+function reGenerateCalendar() {
+  const message = "Le calendrier actuel sera perdu";
+  if (
+    !askConfirmation ||
+    (askConfirmation && confirm(`${message}. Continuer?`))
+  ) {
+    generateLessonListAndBuildHtml();
+  }
 }
 
 // construit la liste des leçons et le calendrier
@@ -342,7 +339,10 @@ function onLoadData(e, file) {
     fillSelectOptions("teachers", teacherNames);
     localStorage.setItem("levelNames", levelNames.join(","));
     localStorage.setItem("teacherNames", teacherNames.join(","));
-    localStorage.setItem("importMessage", `Fichier "${file.name}" importé avec succès.`);
+    localStorage.setItem(
+      "importMessage",
+      `Fichier "${file.name}" importé avec succès.`
+    );
     dataLoaded.innerHTML = localStorage.getItem("importMessage");
     eraseData.style.display = "block";
   } else {
@@ -378,37 +378,4 @@ function navigate(page) {
     p.style.display = "none";
   });
   document.getElementById(page).style.display = "block";
-}
-
-function init() {
-  parameter = {
-    startDate: getNextMonday(),
-    numberDays: 20,
-    bankHolidays: [],
-    lessonDuration: 4,
-  };
-  selectedDates = [];
-  levels = [];
-  teachers = [];
-  lessons = [];
-  if (levelNames.length > 0 && teacherNames.length > 0) {
-    fillSelectOptions("levels", levelNames);
-    fillSelectOptions("teachers", teacherNames);
-    dataLoaded.innerHTML = localStorage.getItem("importMessage");
-    eraseData.style.display = "block";
-  } else {
-    dataLoaded.innerHTML = "Pas de données.";
-    eraseData.style.display = "none";
-  }
-}
-
-function confirmGenerateCalendar(from = undefined) {
-  const message = "Le calendrier actuel sera perdu";
-  if (
-    from !== "lessons-calendar-wrapper" ||
-    !askConfirmation ||
-    (askConfirmation && confirm(`${message}. Continuer?`))
-  ) {
-    generateLessonListAndBuildHtml();
-  }
 }
