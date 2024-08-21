@@ -1,6 +1,6 @@
 :root {
   /* General */
-  --background-color: rgb(230, 245, 250);
+  --background-color: rgb(240, 250, 255);
   --text-color: rgb(15, 24, 70);
   --table-header-color: rgb(180, 225, 255);
   --table-header-title-color: rgb(210, 240, 255);
@@ -45,12 +45,8 @@
   --table-button-remove-hover: rgb(247, 5, 5);
   --table-button-add: rgb(0, 91, 12);
   --table-button-add-hover: rgb(0, 187, 25);
-  --table-lesson-header-height: calc(
-    var(--table-lesson-content-td-height) + 10px
-  );
-  --table-lesson-content-td-height: calc(
-    var(--table-lesson-content-td-width) / 5
-  );
+  --table-lesson-header-height: 30px;
+  --table-lesson-content-td-height: 50px;
   --table-lesson-action-td-width: 100px;
   --table-lesson-content-td-width: 150px;
   --input-select-width: calc(var(--table-lesson-content-td-width) - 20px);
@@ -59,24 +55,24 @@
   --table-teacher-margin-top: 20px;
   --table-teacher-header: var(--table-header-color);
   --table-teacher-content: var(--table-content-color);
-  --table-teacher-header-height: 51px;
+  --table-teacher-header-height: 40px;
   --table-teacher-content-td-height: 80px;
-  --table-teacher-content-td-width: 120px;
+  --table-teacher-content-td-width: 130px;
   --table-teacher-content-td-width-larger: 200px;
 
   /* Levels */
   --table-level-margin-top: 66px;
   --table-level-header: var(--table-header-color);
   --table-level-content: var(--table-content-color);
-  --table-level-header-height: 51px;
-  --table-level-content-td-height: 30px;
-  --table-level-content-td-width: 100px;
+  --table-level-header-height: var(--table-teacher-header-height);
+  --table-level-content-td-height: 40px;
+  --table-level-content-td-width: 120px;
 
   /* Parameter */
   --table-parameter-margin-top: 10px;
   --table-parameter-header: var(--table-header-color);
   --table-parameter-content: var(--table-content-color);
-  --table-parameter-header-height: 40px;
+  --table-parameter-header-height: 30px;
   --table-parameter-content-td-height: 50px;
   --table-parameter-content-td-width: 150px;
 }
