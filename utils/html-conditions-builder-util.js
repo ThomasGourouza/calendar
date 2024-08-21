@@ -20,7 +20,7 @@ function buildHtmlTeachersConditions(
     .join(", ")
     .replace(/, ([^,]*)$/, " et $1");
 
-  Array.from(document.getElementsByClassName("date-indication")).forEach(
+  Array.from(document.getElementsByClassName("period-info")).forEach(
     (dateIndication) =>
       (dateIndication.innerHTML = `
         <ul>
