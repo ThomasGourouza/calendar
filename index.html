@@ -25,6 +25,7 @@
                 <th>Jours fériés</th>
                 <th>Durée d'une leçon</th>
                 <th>Profs et niveaux</th>
+                <th>Contraintes</th>
               </tr>
             </thead>
             <tbody>
@@ -71,25 +72,29 @@
                   >
                   <input type="file" id="file-input" />
                 </td>
+                <td>
+                  <label for="file-input-constraints" class="custom-file-input"
+                    >Importer csv</label
+                  >
+                  <input type="file" id="file-input-constraints" />
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </form>
-      <div id="data-loaded"></div>
-      <div id="erase-data" style="display: none">
-        <button onclick="erase()">Effacer</button>
+      <div class="flex">
+        <div id="data-loaded"></div>
+        <div id="erase-data" style="display: none">
+          <button onclick="erase()">Effacer</button>
+        </div>
       </div>
-
-      <label for="file-input-constraints" class="custom-file-input constraint"
-        >Importer contraintes csv</label
-      >
-      <input type="file" id="file-input-constraints" />
-      <div id="constraints-loaded"></div>
-      <div id="erase-constraints" style="display: none">
-        <button onclick="eraseConstraints()">Effacer les contraintes</button>
+      <div class="flex">
+        <div id="constraints-loaded"></div>
+        <div id="erase-constraints" style="display: none">
+          <button onclick="eraseConstraints()">Effacer</button>
+        </div>
       </div>
-
     </div>
     <div id="conditions-wrapper" class="page" style="display: none">
       <button onclick="navigate('settings-wrapper')">Précédent</button>
