@@ -36,7 +36,7 @@ function buildHtmlLessonList(lessonList, teachers, remove) {
     removeButton.onclick = () => {
       remove(lesson.date, lesson.levelName);
     };
-    removeButton.innerHTML = "-";
+    removeButton.innerHTML = "&nbsp;-&nbsp;";
     removeButton.setAttribute("title", "Supprimer");
   }
 }
