@@ -200,7 +200,9 @@ function downloadConditions() {
   const headers = constraintsHeaders.join(";") + "\n";
   const teacherMapped = teachers.map((t) => ({
     name: t.name,
-    recurrentDaysOff: t.recurrentDaysOff.map((d) => getDayText(+d)).join(","),
+    recurrentDaysOff: t.recurrentDaysOff
+      .map((d) => getDayText(+d).toLocaleLowerCase())
+      .join(","),
     daysOff: t.daysOff.map((d) => getLessonDate(d)).join(","),
     workingHourMin: t.workingHours.min,
     workingHourMax: t.workingHours.max,

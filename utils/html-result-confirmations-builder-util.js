@@ -162,7 +162,7 @@ function buildHtmlResultTeachersConfirmations(teacherResults) {
       if (teacher.recurrentDaysOff.workDuringTimeOff.true) {
         const span = putElementIn("span", li3);
         span.innerHTML = teacher.recurrentDaysOff.workDuringTimeOff.text;
-        li4.style.color = "red";
+        li3.style.color = "red";
       }
     }
     if (teacher.daysOff.true) {

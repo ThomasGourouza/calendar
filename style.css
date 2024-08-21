@@ -48,7 +48,7 @@
   --table-lesson-header-height: 30px;
   --table-lesson-content-td-height: 50px;
   --table-lesson-action-td-width: 100px;
-  --table-lesson-content-td-width: 150px;
+  --table-lesson-content-td-width: 170px;
   --input-select-width: calc(var(--table-lesson-content-td-width) - 20px);
 
   /* Teachers */
