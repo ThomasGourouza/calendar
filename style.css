@@ -513,12 +513,11 @@ table.parameter tbody tr td input {
   background-color: rgb(205, 205, 205);
 }
 
-#constraints-loaded {
-  margin-top: 20px;
-}
-
-#data-loaded {
+#data-loaded-wrapper {
   margin-top: 60px;
+}
+#constraints-loaded-wrapper {
+  margin-top: 20px;
 }
 
 #confirmation {
@@ -537,6 +536,12 @@ li.main-teacher {
 .flex {
   display: flex;
   align-items: end;
+  margin-left: 15px;
+}
+
+.little-title {
+  font-size: larger;
+  margin-right: 10px;
 }
 
 #erase-data,

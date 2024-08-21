@@ -84,13 +84,23 @@
         </div>
       </form>
       <div class="flex">
-        <div id="data-loaded"></div>
+        <div id="data-loaded-wrapper">
+          <li>
+            <span class="little-title">Profs/niveaux:</span>
+            <span id="data-loaded"></span>
+          </li>
+        </div>
         <div id="erase-data" style="display: none">
           <button onclick="erase()">Effacer</button>
         </div>
       </div>
       <div class="flex">
-        <div id="constraints-loaded"></div>
+        <div id="constraints-loaded-wrapper">
+          <li>
+            <span class="little-title">Contraintes:</span>
+            <span id="constraints-loaded"></span>
+          </li>
+        </div>
         <div id="erase-constraints" style="display: none">
           <button onclick="eraseConstraints()">Effacer</button>
         </div>

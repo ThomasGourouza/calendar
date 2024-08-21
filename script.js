@@ -38,12 +38,8 @@ const constraintsHeaders = [
   "Niveaux préférés",
 ];
 
-const teachersLevelsTitle = "Profs/niveaux";
-const constraintsTitle = "Contraintes";
-const noDataMessage = "Pas de données";
-const successImportMessage = "importé avec succès";
-const teachersLevelsDataMessage = `${teachersLevelsTitle}: ${noDataMessage}.`;
-const contraintesDataMessage = `${constraintsTitle}: ${noDataMessage}.`;
+const noDataMessage = "Pas de données.";
+const successImportMessage = "importé avec succès.";
 
 // build HTML
 
@@ -53,7 +49,7 @@ if (levelNames.length > 0 && teacherNames.length > 0) {
   dataLoaded.innerHTML = localStorage.getItem("importMessage");
   eraseDataButton.style.display = "block";
 } else {
-  dataLoaded.innerHTML = teachersLevelsDataMessage;
+  dataLoaded.innerHTML = noDataMessage;
   eraseDataButton.style.display = "none";
 }
 if (constraints.length > 0) {
@@ -62,7 +58,7 @@ if (constraints.length > 0) {
   );
   eraseConstraintsButton.style.display = "block";
 } else {
-  constraintsLoaded.innerHTML = contraintesDataMessage;
+  constraintsLoaded.innerHTML = noDataMessage;
   eraseConstraintsButton.style.display = "none";
 }
 
@@ -361,14 +357,14 @@ function onLoadTeachersLevels(e, file) {
     localStorage.setItem("teacherNames", teacherNames.join(","));
     localStorage.setItem(
       "importMessage",
-      `${teachersLevelsTitle}: "${file.name}" ${successImportMessage}.`
+      `"${file.name}" ${successImportMessage}`
     );
     dataLoaded.innerHTML = localStorage.getItem("importMessage");
     levels = levelNames.map((l) => new Level(l));
     teachers = getTeachers(teacherNames, constraints, levelNames);
     eraseDataButton.style.display = "block";
   } else {
-    dataLoaded.innerHTML = teachersLevelsDataMessage;
+    dataLoaded.innerHTML = noDataMessage;
     eraseDataButton.style.display = "none";
   }
 }
@@ -431,7 +427,7 @@ function onLoadConstraints(e, file) {
     localStorage.setItem("constraints", JSON.stringify(results));
     localStorage.setItem(
       "importConstraintsMessage",
-      `${constraintsTitle}: "${file.name}" ${successImportMessage}.`
+      `"${file.name}" ${successImportMessage}`
     );
     constraintsLoaded.innerHTML = localStorage.getItem(
       "importConstraintsMessage"
@@ -440,7 +436,7 @@ function onLoadConstraints(e, file) {
     constraints = JSON.parse(localStorage.getItem("constraints"));
     teachers = getTeachers(teacherNames, constraints, levelNames);
   } else {
-    constraintsLoaded.innerHTML = contraintesDataMessage;
+    constraintsLoaded.innerHTML = noDataMessage;
     eraseConstraintsButton.style.display = "none";
   }
 }
@@ -452,7 +448,7 @@ function erase() {
   levelNames = [];
   teachers = [];
   levels = [];
-  dataLoaded.innerHTML = teachersLevelsDataMessage;
+  dataLoaded.innerHTML = noDataMessage;
   eraseDataButton.style.display = "none";
 }
 
@@ -460,7 +456,7 @@ function eraseConstraints() {
   localStorage.removeItem("constraints");
   constraints = [];
   teachers = getTeachers(teacherNames, constraints, levelNames);
-  constraintsLoaded.innerHTML = contraintesDataMessage;
+  constraintsLoaded.innerHTML = noDataMessage;
   eraseConstraintsButton.style.display = "none";
 }
 
