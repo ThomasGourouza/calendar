@@ -57,7 +57,10 @@ function buildHtmlResultConfirmations(
       (d) =>
         !recurrentDaysOffDates.map((r) => r.getTime()).includes(d.getTime())
     );
-    const preferedLevelNames = currentTeacher?.preferedLevelNames ?? [];
+    const preferedLevelNames =
+      currentTeacher?.preferedLevelNames.filter((n) =>
+        levelNames.includes(n)
+      ) ?? [];
     const preferedLevelNamesText = preferedLevelNames
       .join(", ")
       .replace(/, ([^,]*)$/, " et $1");

@@ -2,7 +2,9 @@ const colName1 = "prof";
 const colName2 = "niv";
 const dateFormat = "Y-m-d";
 const dataLoaded = document.getElementById("data-loaded");
-const eraseData = document.getElementById("erase-data");
+const constraintsLoaded = document.getElementById("constraints-loaded");
+const eraseDataButton = document.getElementById("erase-data");
+const eraseConstraintsButton = document.getElementById("erase-constraints");
 
 // récupère du localStorage
 let teacherNames = localStorage.getItem("teacherNames")?.split(",") ?? [];
@@ -12,37 +14,28 @@ let askConfirmation = ["true", "false"].includes(
 )
   ? localStorage.getItem("askConfirmation") === "true"
   : true;
+let constraints = JSON.parse(localStorage.getItem("constraints")) ?? [];
 
+let levels = levelNames.map((l) => new Level(l));
+let teachers = getTeachers(teacherNames, constraints, levelNames);
+
+let selectedDates = [];
+let lessons = [];
 let parameter = {
   startDate: getNextMonday(),
   numberDays: 20,
   bankHolidays: [],
   lessonDuration: 4,
 };
-let selectedDates = [];
-let levels = [];
-let teachers = [];
-let lessons = [];
 
-fillTeachersAndLevels();
-
-function fillTeachersAndLevels() {
-  teachers = teacherNames.map((t, index) => {
-    const color = colors[index % colors.length];
-    return new Teacher(
-      t,
-      color.backgroundColor,
-      color.textColor
-      // 40,
-      // 60,
-      // ["1", "3"],
-      // ["2024-08-20", "2024-08-21", "2024-08-22", "2024-08-28", "2024-08-30"],
-      // ["A0", "A1.2"]
-    );
-  });
-  levels = levelNames.map((l) => new Level(l));
-}
-
+const constraintsHeaders = [
+  "Nom",
+  "Indispos réc.",
+  "Congés",
+  "Volume horaire min",
+  "Vol horaire max",
+  "Niveaux préférés",
+];
 
 // build HTML
 
@@ -50,10 +43,19 @@ if (levelNames.length > 0 && teacherNames.length > 0) {
   fillSelectOptions("levels", levelNames);
   fillSelectOptions("teachers", teacherNames);
   dataLoaded.innerHTML = localStorage.getItem("importMessage");
-  eraseData.style.display = "block";
+  eraseDataButton.style.display = "block";
 } else {
   dataLoaded.innerHTML = "Pas de données.";
-  eraseData.style.display = "none";
+  eraseDataButton.style.display = "none";
+}
+if (constraints.length > 0) {
+  constraintsLoaded.innerHTML = localStorage.getItem(
+    "importConstraintsMessage"
+  );
+  eraseConstraintsButton.style.display = "block";
+} else {
+  constraintsLoaded.innerHTML = "Pas de données.";
+  eraseConstraintsButton.style.display = "none";
 }
 
 const askConfirmationCheckbox = document.getElementById("ask-confirmation");
@@ -78,7 +80,11 @@ setForm(parameterForm, parameter);
 
 // input de chargement des données
 const fileInput = document.getElementById("file-input");
-fileInput.addEventListener("change", readSingleFile);
+fileInput.addEventListener("change", loadTeachersAndLevels);
+
+// input de chargement des données de contraintes
+const fileInputConstraint = document.getElementById("file-input-constraints");
+fileInputConstraint.addEventListener("change", loadConstraints);
 
 // le formulaire des leçons (dernière page)
 const addLessonForm = document.forms["addLesson-form"];
@@ -252,7 +258,7 @@ function generateLessonListAndBuildHtml() {
         t.workingHours.max,
         t.recurrentDaysOff,
         t.daysOff,
-        t.preferedLevelNames
+        t.preferedLevelNames.filter((n) => levelNames.includes(n))
       )
   );
   lessons = getLessonList(
@@ -302,12 +308,12 @@ function selectOrUnselectAll(value) {
 }
 
 // importer données CSV
-function readSingleFile(event) {
+function loadTeachersAndLevels(event) {
   const file = event.target.files[0];
   if (file) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      onLoadData(e, file);
+      onLoadTeachersLevels(e, file);
     };
     reader.onerror = (e) => {
       alert("Une erreur est survenue.", e);
@@ -317,7 +323,7 @@ function readSingleFile(event) {
 }
 
 // créer les listes de profs et niveaux
-function onLoadData(e, file) {
+function onLoadTeachersLevels(e, file) {
   const nameList = file.name.split(".");
   const data = csvToArray(e.target.result);
   const keys = Object.keys(data[0]);
@@ -349,24 +355,103 @@ function onLoadData(e, file) {
       `Fichier "${file.name}" importé avec succès.`
     );
     dataLoaded.innerHTML = localStorage.getItem("importMessage");
-    fillTeachersAndLevels();
-    eraseData.style.display = "block";
+    levels = levelNames.map((l) => new Level(l));
+    teachers = getTeachers(teacherNames, constraints, levelNames);
+    eraseDataButton.style.display = "block";
   } else {
     dataLoaded.innerHTML = "Pas de données.";
-    eraseData.style.display = "none";
+    eraseDataButton.style.display = "none";
+  }
+}
+
+// importer données CSV
+function loadConstraints(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      onLoadConstraints(e, file);
+    };
+    reader.onerror = (e) => {
+      alert("Une erreur est survenue.", e);
+    };
+    reader.readAsText(file, "UTF-8");
+  }
+}
+
+// créer les listes des contraintes
+function onLoadConstraints(e, file) {
+  const nameList = file.name.split(".");
+  const data = csvToArray(e.target.result);
+  const keys = Object.keys(data[0]);
+  checkDataCsv(file, nameList, data, keys);
+  const entries = data.map((entry) => Object.entries(entry));
+  const results = [];
+  entries.forEach((entry) => {
+    const item = {};
+    entry.forEach((e) => {
+      switch (e[0]) {
+        case "Nom":
+          item.name = e[1];
+          break;
+        case "Indispos réc.":
+          item.recurrentDaysOff = e[1];
+          break;
+        case "Congés":
+          item.daysOff = e[1];
+          break;
+        case "Volume horaire min":
+          item.workingHourMin = e[1];
+          break;
+        case "Vol horaire max":
+          item.workingHourMax = e[1];
+          break;
+        case "Niveaux préférés":
+          item.preferedLevelNames = e[1];
+          break;
+        default:
+          break;
+      }
+    });
+    if (!!item.name) {
+      results.push(item);
+    }
+  });
+  if (results.length > 0) {
+    localStorage.setItem("constraints", JSON.stringify(results));
+    localStorage.setItem(
+      "importConstraintsMessage",
+      `Fichier "${file.name}" importé avec succès.`
+    );
+    constraintsLoaded.innerHTML = localStorage.getItem(
+      "importConstraintsMessage"
+    );
+    eraseConstraintsButton.style.display = "block";
+    constraints = JSON.parse(localStorage.getItem("constraints"));
+    teachers = getTeachers(teacherNames, constraints, levelNames);
+  } else {
+    constraintsLoaded.innerHTML = "Pas de données.";
+    eraseConstraintsButton.style.display = "none";
   }
 }
 
 function erase() {
-  const message = "Effacer la liste des professeurs et des niveaux ?";
-  if (!askConfirmation || (askConfirmation && confirm(message))) {
-    localStorage.removeItem("levelNames");
-    localStorage.removeItem("teacherNames");
-    teacherNames = [];
-    levelNames = [];
-    dataLoaded.innerHTML = "Pas de données.";
-    eraseData.style.display = "none";
-  }
+  localStorage.removeItem("levelNames");
+  localStorage.removeItem("teacherNames");
+  teacherNames = [];
+  levelNames = [];
+  teachers = [];
+  levels = [];
+  dataLoaded.innerHTML = "Pas de données.";
+  eraseDataButton.style.display = "none";
+}
+
+function eraseConstraints() {
+  localStorage.removeItem("constraints");
+  constraints = [];
+  teachers = getTeachers(teacherNames, constraints, levelNames);
+  constraintsLoaded.innerHTML = "Pas de données.";
+  eraseConstraintsButton.style.display = "none";
 }
 
 // changer de section

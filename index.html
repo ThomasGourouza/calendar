@@ -80,6 +80,16 @@
       <div id="erase-data" style="display: none">
         <button onclick="erase()">Effacer</button>
       </div>
+
+      <label for="file-input-constraints" class="custom-file-input constraint"
+        >Importer contraintes csv</label
+      >
+      <input type="file" id="file-input-constraints" />
+      <div id="constraints-loaded"></div>
+      <div id="erase-constraints" style="display: none">
+        <button onclick="eraseConstraints()">Effacer les contraintes</button>
+      </div>
+
     </div>
     <div id="conditions-wrapper" class="page" style="display: none">
       <button onclick="navigate('settings-wrapper')">Précédent</button>
@@ -87,7 +97,10 @@
       <div class="date-indication"></div>
       <div class="teachers-wrapper two-col-layout">
         <h1>Professeurs</h1>
-        <button id="teachers-conditions-download" onclick="downloadConditions()">
+        <button
+          id="teachers-conditions-download"
+          onclick="downloadConditions()"
+        >
           Télécharger
         </button>
         <table class="teachers">

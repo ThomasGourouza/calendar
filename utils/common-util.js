@@ -102,7 +102,7 @@ function csvToArray(str, delimiter = ";") {
   });
 }
 
-function checkData(file, nameList, data, keys) {
+function checkDataCsv(file, nameList, data, keys) {
   if (
     nameList.length < 0 ||
     nameList[1] !== "csv" ||
@@ -115,15 +115,29 @@ function checkData(file, nameList, data, keys) {
     alert("Aucune donnée chargée.");
     return;
   }
-  if (keys.length < 2) {
+  if (keys.length !== constraintsHeaders.length) {
     alert("Aucune donnée chargée.");
     return;
   }
-  if (
-    !keys.some((header) => header.toLocaleLowerCase().includes(colName1)) ||
-    !keys.some((header) => header.toLocaleLowerCase().includes(colName2))
-  ) {
-    alert("Nom de colonne incorrect.");
+  if (keys.some((header) => !constraintsHeaders.includes(header))) {
+    alert(`Nom de colonne incorrect. Correct: ${constraintsHeaders.join(", ")}.`);
     return;
   }
+}
+
+function getTeachers(teacherNames, constraints, levelNames) {
+  console.log(constraints);
+  return teacherNames.map((t, index) => {
+    const color = colors[index % colors.length];
+    return new Teacher(
+      t,
+      color.backgroundColor,
+      color.textColor
+      // 40,
+      // 60,
+      // ["1", "3"],
+      // ["2024-08-20", "2024-08-21", "2024-08-22", "2024-08-28", "2024-08-30"],
+      // ["A0", "A1.2"]
+    );
+  });
 }

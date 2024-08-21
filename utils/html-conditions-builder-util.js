@@ -197,32 +197,35 @@ function handleActiveChange(level, value, levels) {
 }
 
 function downloadConditions() {
-  console.log(teachers);
-  
-  // const rows = table.querySelectorAll("tr");
-  // let csvContent = "";
-  // rows.forEach((row) => {
-  //   const rowContent = Array.from(row.querySelectorAll("th, td")).map(
-  //     (r) => r.textContent
-  //   );
-  //   csvContent += rowContent.join(";") + "\n";
-  // });
-  // const utf8BOM = "\ufeff";
-  // const blob = new Blob([`${utf8BOM}${csvContent}`], {
-  //   type: "text/csv;charset=utf-8;",
-  // });
-  // const link = document.createElement("a");
-  // const url = URL.createObjectURL(blob);
-  // link.setAttribute("href", url);
-  // const today = new Date();
-  // link.setAttribute(
-  //   "download",
-  //   `calendrier_${formatNumberToText(today.getDate())}-${formatNumberToText(
-  //     today.getMonth() + 1
-  //   )}-${formatNumberToText(today.getFullYear())}.csv`
-  // );
-  // link.style.visibility = "hidden";
-  // document.body.appendChild(link);
-  // link.click();
-  // document.body.removeChild(link);
+  const headers = constraintsHeaders.join(";") + "\n";
+  const teacherMapped = teachers.map((t) => ({
+    name: t.name,
+    recurrentDaysOff: t.recurrentDaysOff.map((d) => getDayText(+d)).join(","),
+    daysOff: t.daysOff.map((d) => getLessonDate(d)).join(","),
+    workingHourMin: t.workingHours.min,
+    workingHourMax: t.workingHours.max,
+    preferedLevelNames: t.preferedLevelNames.join(","),
+  }));
+  let csvContent = headers;
+  teacherMapped.forEach((t) => {
+    csvContent += Object.values(t).join(";") + "\n";
+  });
+  const utf8BOM = "\ufeff";
+  const blob = new Blob([`${utf8BOM}${csvContent}`], {
+    type: "text/csv;charset=utf-8;",
+  });
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+  link.setAttribute("href", url);
+  const today = new Date();
+  link.setAttribute(
+    "download",
+    `contraintes_${formatNumberToText(today.getDate())}-${formatNumberToText(
+      today.getMonth() + 1
+    )}-${formatNumberToText(today.getFullYear())}.csv`
+  );
+  link.style.visibility = "hidden";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
