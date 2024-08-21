@@ -117,26 +117,20 @@ function checkData(file, nameList, data) {
   }
 }
 function checkDataTeachersLevels(keys) {
-  if (keys.length < 2) {
-    alert("Aucune donnée chargée.");
-    return;
-  }
   if (
     !keys.some((header) => header.toLocaleLowerCase().includes(colName1)) ||
     !keys.some((header) => header.toLocaleLowerCase().includes(colName2))
   ) {
-    alert("Nom de colonne incorrect.");
+    alert(`Nom de colonne incorrect. Correct: "${colName1}" et "${colName2}".`);
     return;
   }
 }
 function checkDataConstraints(keys) {
-  if (keys.length !== constraintsHeaders.length) {
-    alert("Aucune donnée chargée.");
-    return;
-  }
   if (keys.some((header) => !constraintsHeaders.includes(header))) {
     alert(
-      `Nom de colonne incorrect. Correct: ${constraintsHeaders.join(", ")}.`
+      `Nom de colonne incorrect. Correct: ${constraintsHeaders
+        .map((h) => `"${h}"`)
+        .join(", ")}.`
     );
     return;
   }
@@ -150,7 +144,9 @@ function getTeachers(teacherNames, constraints, levelNames) {
     name: c.name,
     workingHourMin: +c.workingHourMin,
     workingHourMax: +c.workingHourMax,
-    recurrentDaysOff: c.recurrentDaysOff.split(",").map(d => `${getDayNumber(d)}`),
+    recurrentDaysOff: c.recurrentDaysOff
+      .split(",")
+      .map((d) => `${getDayNumber(d)}`),
     daysOff: c.daysOff.split(",").map((d) => toDateInput(d)),
     preferedLevelNames: c.preferedLevelNames
       .split(",")
