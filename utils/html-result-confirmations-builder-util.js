@@ -7,7 +7,7 @@ function buildHtmlResultConfirmations(
   lessons
 ) {
   // Vérifie les heures de cours pour chaque niveau
-  const lessonLevelNames = lessons.map((l) => l.levelName);
+  const lessonLevelNames = [...new Set(lessons.map((l) => l.levelName))];
   const lessonLevelMap = lessonLevelNames.reduce((acc, levelName) => {
     acc[levelName] = (acc[levelName] || 0) + 1;
     return acc;
@@ -59,7 +59,7 @@ function buildHtmlResultConfirmations(
     );
     const preferedLevelNames =
       currentTeacher?.preferedLevelNames.filter((n) =>
-        levelNames.includes(n)
+        lessonLevelNames.includes(n)
       ) ?? [];
     const preferedLevelNamesText = preferedLevelNames
       .join(", ")

@@ -262,7 +262,12 @@ function generateLessonListAndBuildHtml() {
         t.workingHours.max,
         t.recurrentDaysOff,
         t.daysOff,
-        t.preferedLevelNames.filter((n) => levelNames.includes(n))
+        t.preferedLevelNames.filter((n) =>
+          levels
+            .filter((l) => l.active)
+            .map((l) => l.name)
+            .includes(n)
+        )
       )
   );
   lessons = getLessonList(
