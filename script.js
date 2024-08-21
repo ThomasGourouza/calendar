@@ -6,6 +6,13 @@ const constraintsLoaded = document.getElementById("constraints-loaded");
 const eraseDataButton = document.getElementById("erase-data");
 const eraseConstraintsButton = document.getElementById("erase-constraints");
 
+const parameter = {
+  startDate: getNextMonday(),
+  numberDays: 20,
+  bankHolidays: [],
+  lessonDuration: 4,
+};
+
 // récupère du localStorage
 let teacherNames = localStorage.getItem("teacherNames")?.split(",") ?? [];
 let levelNames = localStorage.getItem("levelNames")?.split(",") ?? [];
@@ -21,12 +28,6 @@ let teachers = getTeachers(teacherNames, constraints, levelNames);
 
 let selectedDates = [];
 let lessons = [];
-let parameter = {
-  startDate: getNextMonday(),
-  numberDays: 20,
-  bankHolidays: [],
-  lessonDuration: 4,
-};
 
 const constraintsHeaders = [
   "Nom",
@@ -327,7 +328,8 @@ function onLoadTeachersLevels(e, file) {
   const nameList = file.name.split(".");
   const data = csvToArray(e.target.result);
   const keys = Object.keys(data[0]);
-  checkData(file, nameList, data, keys);
+  checkData(file, nameList, data);
+  checkDataTeachersLevels(keys);
   teacherNames = [];
   levelNames = [];
   const entries = data.map((entry) => Object.entries(entry));
@@ -384,7 +386,8 @@ function onLoadConstraints(e, file) {
   const nameList = file.name.split(".");
   const data = csvToArray(e.target.result);
   const keys = Object.keys(data[0]);
-  checkDataCsv(file, nameList, data, keys);
+  checkData(file, nameList, data);
+  checkDataConstraints(keys);
   const entries = data.map((entry) => Object.entries(entry));
   const results = [];
   entries.forEach((entry) => {

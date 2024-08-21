@@ -102,7 +102,7 @@ function csvToArray(str, delimiter = ";") {
   });
 }
 
-function checkDataCsv(file, nameList, data, keys) {
+function checkData(file, nameList, data) {
   if (
     nameList.length < 0 ||
     nameList[1] !== "csv" ||
@@ -115,29 +115,64 @@ function checkDataCsv(file, nameList, data, keys) {
     alert("Aucune donnée chargée.");
     return;
   }
+}
+function checkDataTeachersLevels(keys) {
+  if (keys.length < 2) {
+    alert("Aucune donnée chargée.");
+    return;
+  }
+  if (
+    !keys.some((header) => header.toLocaleLowerCase().includes(colName1)) ||
+    !keys.some((header) => header.toLocaleLowerCase().includes(colName2))
+  ) {
+    alert("Nom de colonne incorrect.");
+    return;
+  }
+}
+function checkDataConstraints(keys) {
   if (keys.length !== constraintsHeaders.length) {
     alert("Aucune donnée chargée.");
     return;
   }
   if (keys.some((header) => !constraintsHeaders.includes(header))) {
-    alert(`Nom de colonne incorrect. Correct: ${constraintsHeaders.join(", ")}.`);
+    alert(
+      `Nom de colonne incorrect. Correct: ${constraintsHeaders.join(", ")}.`
+    );
     return;
   }
 }
 
 function getTeachers(teacherNames, constraints, levelNames) {
-  console.log(constraints);
+  if (teacherNames.length === 0) {
+    return [];
+  }
+  const constraintsMapped = constraints.map((c) => ({
+    name: c.name,
+    workingHourMin: +c.workingHourMin,
+    workingHourMax: +c.workingHourMax,
+    recurrentDaysOff: c.recurrentDaysOff.split(",").map(d => `${getDayNumber(d)}`),
+    daysOff: c.daysOff.split(",").map((d) => toDateInput(d)),
+    preferedLevelNames: c.preferedLevelNames
+      .split(",")
+      .filter((n) => levelNames.includes(n)),
+  }));
   return teacherNames.map((t, index) => {
     const color = colors[index % colors.length];
+    const teacherConstraint = constraintsMapped.find(
+      (c) => c.name.trim().toLocaleLowerCase() === t.trim().toLocaleLowerCase()
+    );
+    if (!teacherConstraint) {
+      return new Teacher(t, color.backgroundColor, color.textColor);
+    }
     return new Teacher(
       t,
       color.backgroundColor,
-      color.textColor
-      // 40,
-      // 60,
-      // ["1", "3"],
-      // ["2024-08-20", "2024-08-21", "2024-08-22", "2024-08-28", "2024-08-30"],
-      // ["A0", "A1.2"]
+      color.textColor,
+      teacherConstraint.workingHourMin,
+      teacherConstraint.workingHourMax,
+      teacherConstraint.recurrentDaysOff,
+      teacherConstraint.daysOff,
+      teacherConstraint.preferedLevelNames
     );
   });
 }

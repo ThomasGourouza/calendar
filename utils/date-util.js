@@ -68,8 +68,8 @@ function getNextMonday() {
   return textDateToInput(nextMonday);
 }
 
-function getDayText(day) {
-  switch (day) {
+function getDayText(number) {
+  switch (number) {
     case 1:
       return "Lundi";
     case 2:
@@ -116,4 +116,12 @@ function getMonthText(month) {
     default:
       return "";
   }
+}
+
+function getDayNumber(dayText) {
+  return [1, 2, 3, 4, 5, 6, 7].find(
+    (n) =>
+      getDayText(n).trim().toLocaleLowerCase() ===
+      dayText.trim().toLocaleLowerCase()
+  );
 }
