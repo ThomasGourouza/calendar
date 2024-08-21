@@ -37,9 +37,7 @@ const constraintsHeaders = [
   "Vol horaire max",
   "Niveaux préférés",
 ];
-
 const noDataMessage = "Pas de données.";
-const successImportMessage = "importé avec succès.";
 
 // build HTML
 
@@ -360,10 +358,7 @@ function onLoadTeachersLevels(e, file) {
     fillSelectOptions("teachers", teacherNames);
     localStorage.setItem("levelNames", levelNames.join(","));
     localStorage.setItem("teacherNames", teacherNames.join(","));
-    localStorage.setItem(
-      "importMessage",
-      `"${file.name}" ${successImportMessage}`
-    );
+    localStorage.setItem("importMessage", "file.name");
     dataLoaded.innerHTML = localStorage.getItem("importMessage");
     levels = levelNames.map((l) => new Level(l));
     teachers = getTeachers(teacherNames, constraints, levelNames);
@@ -430,10 +425,7 @@ function onLoadConstraints(e, file) {
   });
   if (results.length > 0) {
     localStorage.setItem("constraints", JSON.stringify(results));
-    localStorage.setItem(
-      "importConstraintsMessage",
-      `"${file.name}" ${successImportMessage}`
-    );
+    localStorage.setItem("importConstraintsMessage", "file.name");
     constraintsLoaded.innerHTML = localStorage.getItem(
       "importConstraintsMessage"
     );
