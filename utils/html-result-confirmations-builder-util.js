@@ -148,6 +148,7 @@ function buildHtmlResultTeachersConfirmations(teacherResults) {
     li.className = "main-teacher";
     li.innerHTML = `${teacher.teacherName}:`;
     const ul2 = putElementIn("ul", li);
+    ul2.className = "info";
 
     const li2 = putElementIn("li", ul2);
     li2.innerHTML = `Disponible ${teacher.numberWorkingDays} jour${

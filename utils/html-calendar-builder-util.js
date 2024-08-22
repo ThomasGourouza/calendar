@@ -156,7 +156,8 @@ function fillAddForm(date, level, td) {
 function createDownloadButton(wrapper, table) {
   const downloadButton = putElementIn("button", wrapper);
   downloadButton.setAttribute("id", "download-button");
-  downloadButton.innerHTML = "Télécharger";
+  downloadButton.innerHTML = "Exporter csv";
+  downloadButton.className = "csv";
   downloadButton.addEventListener("click", () => downloadCalendar(table));
 }
 

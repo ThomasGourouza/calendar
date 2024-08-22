@@ -6,6 +6,25 @@ const weekDays = [
   { name: "Vendredi", index: "5" },
 ];
 
+function buildConstraintsTableForm(selectedDates, parameter) {
+  const regularDates = selectedDates
+    .filter((date) => date.type === "regular")
+    .map((date) => date.date);
+  const firstDate = selectedDates.map((date) => date.date)[0];
+  const lastDate = regularDates[regularDates.length - 1];
+  buildHtmlTeachersConditions(
+    teachers,
+    levelNames,
+    printDateFull(firstDate),
+    printDateFull(lastDate),
+    parameter.lessonDuration,
+    parameter.numberDays,
+    selectedDates
+      .filter((date) => date.type === "holiday")
+      .map((date) => date.date)
+  );
+}
+
 function buildHtmlTeachersConditions(
   teachers,
   levelNames,
@@ -23,11 +42,11 @@ function buildHtmlTeachersConditions(
   Array.from(document.getElementsByClassName("period-info")).forEach(
     (dateIndication) =>
       (dateIndication.innerHTML = `
-        <ul>
+        <ul class="period">
           <li>La période va du ${startDate} au ${endDate} et comporte ${numberDays} jours de travail.</li>
           <li>${
             !holidays
-              ? "Il n'y a pas de jours fériés."
+              ? "Il n'y a pas de jours fériés"
               : "Les jours fériés sont "
           } ${!holidays ? "" : holidays}.</li>
           <li>Chaque leçon dure ${lessonDuration}h.</li>

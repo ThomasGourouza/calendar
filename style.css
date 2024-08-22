@@ -76,9 +76,17 @@
   --table-parameter-content-td-height: 50px;
   --table-parameter-content-td-width: 150px;
 
-  /* buttons */
-  --button-color: white;
-  --button-color-hover: rgb(229, 229, 229);
+  /* Info */
+  --info-color: rgb(250, 254, 255);
+  /* inputs and buttons */
+  --input-color: white;
+  --input-color-hover: rgb(229, 229, 229);
+
+  --button-color: rgb(207, 233, 255);
+  --button-color-hover: rgb(175, 218, 255);
+
+  --navigation-button-color: rgb(255, 225, 186);
+  --navigation-button-color-hover: rgb(255, 204, 137);
 }
 
 body {
@@ -96,20 +104,22 @@ select {
   display: inline-block;
   border: var(--table-border);
   color: var(--text-color);
-  background-color: var(--button-color);
   border-radius: 5px;
   cursor: pointer;
   font-weight: 500;
+}
+input,
+select {
+  background-color: var(--input-color);
 }
 button,
 input,
 select.bigger {
   padding: 4px 8px;
 }
-button:hover,
 input:hover,
 select.bigger:hover {
-  background-color: var(--button-color-hover);
+  background-color: var(--input-color-hover);
 }
 select:not(.bigger):hover {
   background-color: rgb(245, 245, 245);
@@ -117,6 +127,9 @@ select:not(.bigger):hover {
 #file-input-constraints,
 #file-input {
   display: none;
+}
+.margin {
+  margin-right: 15px;
 }
 .custom-file-input {
   display: inline-block;
@@ -130,6 +143,31 @@ select:not(.bigger):hover {
 }
 .custom-file-input:hover {
   background-color: var(--button-color-hover);
+}
+.csv {
+  width: 100px;
+}
+button:not(.csv),
+input[type="submit"]:not(.add) {
+  width: 156px;
+}
+button,
+input[type="submit"]:not(.add) {
+  height: 30px;
+  margin-right: 30px;
+  background-color: var(--button-color);
+}
+button:hover,
+input[type="submit"]:not(.add):hover {
+  background-color: var(--button-color-hover);
+}
+button.navigation,
+input[type="submit"].navigation {
+  background-color: var(--navigation-button-color);
+}
+button.navigation:hover,
+input[type="submit"].navigation:hover {
+  background-color: var(--navigation-button-color-hover);
 }
 
 /* Calendar */
@@ -466,6 +504,12 @@ table.levels tbody tr:last-child td:first-child {
 }
 
 /* Parameter */
+h1.parameters {
+  margin-top: 80px;
+}
+h1.teachers-levels {
+  margin-top: 110px;
+}
 table.parameter {
   margin-top: var(--table-parameter-margin-top);
   border-collapse: separate;
@@ -524,18 +568,14 @@ table.parameter tbody tr td input {
   display: inline-block;
   vertical-align: top;
 }
-.teachers-wrapper {
+.first-col {
   margin-right: 80px;
+}
+.first-col-more {
+  margin-right: 200px;
 }
 .result {
   margin-top: 80px;
-}
-
-#data-loaded-wrapper {
-  margin-top: 60px;
-}
-#constraints-loaded-wrapper {
-  margin-top: 20px;
 }
 
 #confirmation {
@@ -553,16 +593,26 @@ li.main-teacher {
 
 .flex {
   display: flex;
-  align-items: end;
-  margin-left: 15px;
-}
-
-.little-title {
-  font-size: larger;
-  margin-right: 10px;
 }
 
 #erase-data,
 #erase-constraints {
   margin-left: 15px;
+}
+
+ul:not(.info) {
+  background-color: var(--info-color);
+  border-radius: var(--table-border-radius);
+  padding-top: 15px;
+  padding-bottom: 10px;
+  padding-right: 20px;
+  border: var(--table-border);
+}
+.period-info {
+  width: 1100px;
+}
+ul:not(.period):not(.info) {
+  height: 500px;
+  width: 110%;
+  overflow-y: auto;
 }

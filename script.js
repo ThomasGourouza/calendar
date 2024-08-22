@@ -109,22 +109,7 @@ function parameterFormOnsubmit(event) {
     parameter.numberDays,
     parameter.bankHolidays
   );
-  const regularDates = selectedDates
-    .filter((date) => date.type === "regular")
-    .map((date) => date.date);
-  const firstDate = selectedDates.map((date) => date.date)[0];
-  const lastDate = regularDates[regularDates.length - 1];
-  buildHtmlTeachersConditions(
-    teachers,
-    levelNames,
-    printDateFull(firstDate),
-    printDateFull(lastDate),
-    parameter.lessonDuration,
-    parameter.numberDays,
-    selectedDates
-      .filter((date) => date.type === "holiday")
-      .map((date) => date.date)
-  );
+  buildConstraintsTableForm(selectedDates, parameter);
   buildHtmlLevelsConditions(levels);
   navigate("conditions-wrapper");
 }
@@ -432,9 +417,7 @@ function onLoadConstraints(e, file) {
     eraseConstraintsButton.style.display = "block";
     constraints = JSON.parse(localStorage.getItem("constraints"));
     teachers = getTeachers(teacherNames, constraints, levelNames);
-  } else {
-    constraintsLoaded.innerHTML = noDataMessage;
-    eraseConstraintsButton.style.display = "none";
+    buildConstraintsTableForm(selectedDates, parameter);
   }
 }
 
@@ -455,6 +438,7 @@ function eraseConstraints() {
   teachers = getTeachers(teacherNames, constraints, levelNames);
   constraintsLoaded.innerHTML = noDataMessage;
   eraseConstraintsButton.style.display = "none";
+  buildConstraintsTableForm(selectedDates, parameter);
 }
 
 // changer de section
