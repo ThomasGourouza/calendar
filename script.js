@@ -4,7 +4,9 @@ const dateFormat = "Y-m-d";
 const dataLoaded = document.getElementById("data-loaded");
 const constraintsLoaded = document.getElementById("constraints-loaded");
 const eraseDataButton = document.getElementById("erase-data");
+const notEraseDataButton = document.getElementById("not-erase-data");
 const eraseConstraintsButton = document.getElementById("erase-constraints");
+const notEraseConstraintsButton = document.getElementById("not-erase-constraints");
 
 const parameter = {
   startDate: getNextMonday(),
@@ -46,18 +48,22 @@ if (levelNames.length > 0 && teacherNames.length > 0) {
   fillSelectOptions("teachers", teacherNames);
   dataLoaded.innerHTML = localStorage.getItem("importMessage");
   eraseDataButton.style.display = "block";
+  notEraseDataButton.style.display = "none";
 } else {
   dataLoaded.innerHTML = noDataMessage;
   eraseDataButton.style.display = "none";
+  notEraseDataButton.style.display = "block";
 }
 if (constraints.length > 0) {
   constraintsLoaded.innerHTML = localStorage.getItem(
     "importConstraintsMessage"
   );
   eraseConstraintsButton.style.display = "block";
+  notEraseConstraintsButton.style.display = "none";
 } else {
   constraintsLoaded.innerHTML = noDataMessage;
   eraseConstraintsButton.style.display = "none";
+  notEraseConstraintsButton.style.display = "block";
 }
 
 const askConfirmationCheckbox = document.getElementById("ask-confirmation");
@@ -348,9 +354,11 @@ function onLoadTeachersLevels(e, file) {
     levels = levelNames.map((l) => new Level(l));
     teachers = getTeachers(teacherNames, constraints, levelNames);
     eraseDataButton.style.display = "block";
+    notEraseDataButton.style.display = "none";
   } else {
     dataLoaded.innerHTML = noDataMessage;
     eraseDataButton.style.display = "none";
+    notEraseDataButton.style.display = "block";
   }
 }
 
@@ -415,6 +423,7 @@ function onLoadConstraints(e, file) {
       "importConstraintsMessage"
     );
     eraseConstraintsButton.style.display = "block";
+    notEraseConstraintsButton.style.display = "none";
     constraints = JSON.parse(localStorage.getItem("constraints"));
     teachers = getTeachers(teacherNames, constraints, levelNames);
     buildConstraintsTableForm(selectedDates, parameter);
@@ -430,6 +439,7 @@ function erase() {
   levels = [];
   dataLoaded.innerHTML = noDataMessage;
   eraseDataButton.style.display = "none";
+  notEraseDataButton.style.display = "block";
 }
 
 function eraseConstraints() {
@@ -438,6 +448,7 @@ function eraseConstraints() {
   teachers = getTeachers(teacherNames, constraints, levelNames);
   constraintsLoaded.innerHTML = noDataMessage;
   eraseConstraintsButton.style.display = "none";
+  notEraseConstraintsButton.style.display = "block";
   buildConstraintsTableForm(selectedDates, parameter);
 }
 

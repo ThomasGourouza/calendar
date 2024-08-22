@@ -82,11 +82,11 @@
   --input-color: white;
   --input-color-hover: rgb(229, 229, 229);
 
-  --button-color: rgb(207, 233, 255);
-  --button-color-hover: rgb(175, 218, 255);
+  --button-color: rgb(225, 241, 255);
+  --button-color-hover: rgb(202, 230, 255);
 
-  --navigation-button-color: rgb(255, 225, 186);
-  --navigation-button-color-hover: rgb(255, 204, 137);
+  --navigation-button-color: white;
+  --navigation-button-color-hover: rgb(245, 245, 245);
 }
 
 body {
@@ -595,11 +595,6 @@ li.main-teacher {
   display: flex;
 }
 
-#erase-data,
-#erase-constraints {
-  margin-left: 15px;
-}
-
 ul:not(.info) {
   background-color: var(--info-color);
   border-radius: var(--table-border-radius);
@@ -615,4 +610,15 @@ ul:not(.period):not(.info) {
   height: 500px;
   width: 110%;
   overflow-y: auto;
+}
+
+#not-erase-data,
+#erase-data,
+#not-erase-constraints,
+#erase-constraints {
+  width: 120px;
+}
+
+.export {
+  margin-right: 60px
 }
