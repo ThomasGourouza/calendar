@@ -5,193 +5,239 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calendrier</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" type="image/x-icon" href="icon.png">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <link rel="icon" type="image/x-icon" href="icon.png" />
   </head>
   <body>
     <div id="settings-wrapper" class="page">
-      <form name="parameter-form">
-        <h1>Paramètres</h1>
-        <div class="two-col-layout">
+      <div class="two-col-layout first-col">
+        <form name="parameter-form">
+          <input
+            type="submit"
+            class="navigation"
+            value="Suivant &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; →"
+          />
+          <h1 class="parameters">Paramètres</h1>
           <div>
-            <h2>Calendrier (Avancé)</h2>
-            <label>Langue:</label>
-            <select name="lang" required>
-              <option value="en">English</option>
-              <option value="fr">Français</option>
-            </select>
-            <br /><br />
-            <label>Heure du début des cours:</label>
-            <select name="minTime" required>
-              <option value="6">06:00</option>
-              <option value="7">07:00</option>
-              <option value="8">08:00</option>
-              <option value="9">09:00</option>
-              <option value="10">10:00</option>
-            </select>
-            <br /><br />
-            <label>Heure de fin des cours:</label>
-            <select name="maxTime" required>
-              <option class="test" value="16">16:00</option>
-              <option value="17">17:00</option>
-              <option value="18">18:00</option>
-              <option value="19">19:00</option>
-              <option value="20">20:00</option>
-            </select>
-            <br /><br />
-            <label>Heure du début de la pause midi:</label>
-            <select name="minLunchTime" required>
-              <option value="11">11:00</option>
-              <option value="11.5">11:30</option>
-              <option value="12">12:00</option>
-              <option value="12.5">12:30</option>
-              <option value="13">13:00</option>
-            </select>
-            <br /><br />
-            <label>Heure de fin de la pause midi:</label>
-            <select name="maxLunchTime" required>
-              <option value="13">13:00</option>
-              <option value="13.5">13:30</option>
-              <option value="14">14:00</option>
-              <option value="14.5">14:30</option>
-              <option value="15">15:00</option>
-            </select>
-            <br /><br />
-            <label>Durée minimale d'une leçon:</label>
-            <select name="minLessonTime" required>
-              <option value="15">15 min</option>
-              <option value="30">30 min</option>
-              <option value="45">45 min</option>
-              <option value="60">1h</option>
-            </select>
-            <br /><br />
-            <label>Durée maximale d'une leçon:</label>
-            <select name="maxLessonTime" required>
-              <option value="60">1h</option>
-              <option value="90">1h30</option>
-              <option value="120">2h</option>
-              <option value="150">2h30</option>
-              <option value="180">3h</option>
-              <option value="240">4h</option>
-            </select>
-            <br /><br />
-            <label>Nombres de jours maximum:</label>
-            <input
-              type="number"
-              name="maxDays"
-              min="1"
-              style="width: 50px"
-              required
-            />
-            <br /><br />
-            <label>Colorer les leçons par:</label>
-            <select name="colorLessonBy" required>
-              <option value="teacherName">Professeur</option>
-              <option value="levelName">Niveau</option>
-            </select>
-            <br /><br />
-            <h2>Leçons</h2>
-            <label>Visibilité des leçons:</label>
-            <select name="visibility" required>
-              <option value="all">Toutes les leçons</option>
-              <option value="selected">
-                Leçons entre les dates sélectionnées
-              </option>
-            </select>
+            <table class="parameter">
+              <thead>
+                <tr>
+                  <th>Date de début</th>
+                  <th>Nombre de jours</th>
+                  <th>Jours fériés</th>
+                  <th>Durée d'une leçon</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <input
+                      type="date"
+                      id="startDate"
+                      name="startDate"
+                      placeholder="Date de début"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      name="numberDays"
+                      min="1"
+                      style="width: 50px"
+                      required
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="date"
+                      id="bankHolidays"
+                      name="bankHolidays"
+                      placeholder="Jours fériés"
+                    />
+                  </td>
+                  <td>
+                    <select class="bigger" name="lessonDuration" required>
+                      <option value="1">1h</option>
+                      <option value="1.5">1h30</option>
+                      <option value="2">2h</option>
+                      <option value="2.5">2h30</option>
+                      <option value="3">3h</option>
+                      <option value="3.5">3h30</option>
+                      <option value="4">4h</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </div>
+
+      <div class="two-col-layout">
+        <h1 class="teachers-levels">Professeurs et niveaux</h1>
+        <div class="flex">
+          <div id="not-erase-data">
+            <label for="file-input" class="custom-file-input margin"
+              >Importer csv</label
+            >
+            <input type="file" id="file-input" />
+          </div>
+          <div id="erase-data" style="display: none">
+            <button class="csv" onclick="erase()">Effacer</button>
           </div>
           <div>
-            <h2>Calendrier (Basic)</h2>
-            <label>Start Date:</label>
-            <input type="date" name="startDate" required />
-            <br /><br />
-            <label>End Date:</label>
-            <input type="date" name="endDate" required />
-            <br /><br />
-            <input type="submit" value="Suivant" />
+            <span id="data-loaded"></span>
           </div>
         </div>
-      </form>
+      </div>
+    </div>
+    <div id="conditions-wrapper" class="page" style="display: none">
+      <button class="navigation" onclick="navigate('settings-wrapper')">
+        ← &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Précédent
+      </button>
+      <button class="navigation" onclick="confirmGenerateCalendar()">
+        Générer un calendrier
+      </button>
+      <div class="period-info"></div>
+      <div class="first-col two-col-layout">
+        <h1>Contraintes des professeurs</h1>
+        <div class="flex">
+          <button class="csv export" onclick="downloadConditions()">
+            Exporter csv
+          </button>
+          <div id="not-erase-constraints">
+            <label for="file-input-constraints" class="custom-file-input margin"
+              >Importer csv</label
+            >
+            <input type="file" id="file-input-constraints" />
+          </div>
+          <div id="erase-constraints" style="display: none">
+            <button class="csv" onclick="eraseConstraints()">Effacer</button>
+          </div>
+          <div>
+            <span id="constraints-loaded"></span>
+          </div>
+        </div>
+        <table class="teachers">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Indispo. réc.</th>
+              <th>Congés</th>
+              <th>Volume horaire (h)</th>
+              <th>Niv. préférés</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-teachers"></tbody>
+        </table>
+      </div>
+      <div class="levels-wrapper two-col-layout">
+        <h1>Niveaux</h1>
+        <table class="levels">
+          <thead>
+            <tr>
+              <th>
+                <input
+                  id="levels-checkbox"
+                  type="checkbox"
+                  onchange="selectOrUnselectAll(this.checked)"
+                />
+              </th>
+              <th>Nom</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-levels"></tbody>
+        </table>
+      </div>
     </div>
     <div id="lessons-calendar-wrapper" class="page" style="display: none">
-      <button onclick="navigate('settings-wrapper')">Précédent</button>
+      <div id="confirmation">
+        <span>Demande de confirmation:</span>
+        <input id="ask-confirmation" type="checkbox" />
+      </div>
+      <button class="navigation" onclick="goBackTo('conditions-wrapper')">
+        ← &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Précédent
+      </button>
+      <button class="navigation" onclick="reGenerateCalendar()">
+        Générer un calendrier
+      </button>
+      <div class="period-info"></div>
+      <div id="calendar-wrapper"></div>
       <div id="lessons-wrapper">
         <form name="addLesson-form">
-          <h1>Leçons</h1>
+          <h2>Ajouter/Supprimer des leçons</h2>
           <table class="lessons">
             <thead>
               <tr>
                 <th>Date</th>
-                <th>Heure de début</th>
-                <th>Heure de fin</th>
-                <th>Salle</th>
-                <th>Enseignant</th>
+                <th>Professeur</th>
                 <th>Niveau</th>
-                <th colspan="2">Action</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody id="lessons">
               <tr>
                 <td>
-                  <input type="date" name="date" required />
+                  <input id="date" type="date" name="date" required />
+                </td>
+                <td>
+                  <select
+                    class="bigger"
+                    id="teachers"
+                    name="teacherName"
+                    required
+                  >
+                    <option value=""></option>
+                  </select>
+                </td>
+                <td>
+                  <select class="bigger" id="levels" name="levelName" required>
+                    <option value=""></option>
+                  </select>
                 </td>
                 <td>
                   <input
-                    type="time"
-                    name="startTime"
-                    min="08:00"
-                    max="19:45"
-                    required
+                    type="submit"
+                    value="&nbsp;+&nbsp;"
+                    class="add"
+                    title="Ajouter"
                   />
-                </td>
-                <td>
-                  <input
-                    type="time"
-                    name="endTime"
-                    min="08:15"
-                    max="20:00"
-                    required
-                  />
-                </td>
-                <td>
-                  <select id="rooms" name="roomName" required>
-                    <option value=""></option>
-                  </select>
-                </td>
-                <td>
-                  <select id="teachers" name="teacherName" required>
-                    <option value=""></option>
-                  </select>
-                </td>
-                <td>
-                  <select id="levels" name="levelName" required>
-                    <option value=""></option>
-                  </select>
-                </td>
-                <td><input type="submit" value="+" /></td>
-                <td>
-                  <div class="button filter" onclick="filterLessons()">
-                    Filtrer
-                  </div>
                 </td>
               </tr>
             </tbody>
           </table>
         </form>
       </div>
-      <div id="calendar-wrapper"></div>
+      <div class="result">
+        <h1>Vérifications</h1>
+        <div class="first-col-more two-col-layout">
+          <h2>Contraintes des professeurs</h2>
+          <div id="teachers-result-confirmation"></div>
+        </div>
+        <div class="levels-wrapper two-col-layout">
+          <h2>Niveaux</h2>
+          <div id="levels-result-confirmation"></div>
+        </div>
+      </div>
     </div>
-
     <!-- Load util files -->
-    <script src="utils/settings-util.js"></script>
-    <script src="utils/condition-util.js"></script>
-    <script src="utils/filter-sort-util.js"></script>
-    <script src="utils/form-util.js"></script>
-    <script src="utils/html-util.js"></script>
-    <script src="utils/html-builder-util.js"></script>
-    <script src="utils/time-private-util.js"></script>
-    <script src="utils/time-public-util.js"></script>
-    <script src="utils/data-util.js"></script>
+    <script src="utils/common-util.js"></script>
+    <script src="utils/html-conditions-builder-util.js"></script>
+    <script src="utils/html-result-confirmations-builder-util.js"></script>
+    <script src="utils/html-calendar-builder-util.js"></script>
+    <script src="utils/create-lessons-logic.js"></script>
+    <script src="utils/date-util.js"></script>
     <!-- Load models -->
     <script src="models/lesson.js"></script>
+    <script src="models/teacher.js"></script>
+    <script src="models/level.js"></script>
+    <!-- Load colors -->
+    <script src="teachers-colors.js"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <!-- Load script -->
     <script src="script.js"></script>
   </body>

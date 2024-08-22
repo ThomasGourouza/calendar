@@ -1,71 +1,182 @@
 :root {
+  /* General */
+  --background-color: rgb(240, 250, 255);
+  --text-color: rgb(15, 24, 70);
+  --table-header-color: rgb(180, 225, 255);
+  --table-header-title-color: rgb(210, 240, 255);
+  --table-content-color: rgb(220, 240, 250);
+  --table-content-color-highlighted: rgb(200, 215, 225);
+  --font-family: "Comic Sans MS", "Comic Sans", cursive;
   /* Calendar */
-  --table-margin-top: 30px;
+  --table-margin-top: 20px;
   --box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   --table-border-radius: 15px;
   --table-border-color: rgb(105, 105, 105);
-  --table-border-dashed-color: rgb(154, 154, 154);
   --table-border-thick-color: black;
   --table-border: 1px solid var(--table-border-color);
   --table-border-thick: 1px solid var(--table-border-thick-color);
-  --table-border-dashed: 1px dashed var(--table-border-dashed-color);
-  --table-header-title: beige;
-  --table-header-day-odd: rgb(105, 208, 2);
-  --table-header-day-even: chartreuse;
+  --table-header-title: var(--table-header-title-color);
+  --table-header-day: var(--table-header-color);
   /* hauteur des headers des jours */
-  --table-header-day-height: calc(var(--table-header-room-height) + 10px);
-  /* hauteur des headers des salles */
-  --table-header-room-height: calc(var(--table-content-td-height) + 15px);
-  --table-time: rgb(242, 196, 60);
-  --table-content-odd: burlywood;
-  --table-content-even: rgb(245, 202, 147);
-  --table-lunch-odd: rgb(171, 181, 193);
-  --table-lunch-even: rgb(209, 219, 231);
+  --table-header-height: 20px;
+  --table-time: var(--table-header-color);
+  --table-content: var(--table-content-color);
+  --table-content-highlighted: var(--table-content-color-highlighted);
   /* longueur des cellules des heures du calendrier */
-  --table-time-td-width: 70px;
+  --table-time-td-width: 40px;
   /* longueur des cellules du calendrier */
-  --table-content-td-width: 100px;
+  --table-content-td-width: 60px;
   /* hauteur des cellules du calendrier */
-  --table-content-td-height: calc(var(--table-content-td-width) / 10);
+  --table-content-td-height: calc(var(--table-content-td-width) / 2);
   /* Largeur de la page -> modifié dynamiquement avec JS */
   --page-width: 0px;
   /* lorsqu'on selectionne une leçon dans le calendrier */
   --highlighted-lesson-opacity: 0.5;
+  /* colonne weekend */
+  --table-weekend-width: 25px;
+  --table-weekend-color: gray;
+  --table-holiday-color: rgb(200, 200, 200);
 
   /* Lessons */
   --table-lesson-margin-top: 10px;
-  --table-lesson-header: rgb(214, 255, 173);
-  --table-lesson-content: rgb(252, 232, 207);
-  --table-lesson-content-highlighted: rgb(255, 201, 135);
+  --table-lesson-header: var(--table-header-color);
+  --table-lesson-content: var(--table-content-color);
   --table-button-remove: rgb(160, 7, 7);
   --table-button-remove-hover: rgb(247, 5, 5);
-  --table-button-filter: rgb(0, 75, 195);
-  --table-button-filter-hover: rgb(0, 162, 255);
   --table-button-add: rgb(0, 91, 12);
   --table-button-add-hover: rgb(0, 187, 25);
-  --table-lesson-header-height: calc(
-    var(--table-lesson-content-td-height) + 10px
-  );
-  --table-lesson-content-td-height: calc(
-    var(--table-lesson-content-td-width) / 5
-  );
+  --table-lesson-header-height: 30px;
+  --table-lesson-content-td-height: 50px;
   --table-lesson-action-td-width: 100px;
-  --table-lesson-content-td-width: 150px;
-  --input-select-width: calc(var(--table-lesson-content-td-width) - 20px);
+  --table-lesson-content-td-width: 170px;
+  --input-select-width: 80%;
+
+  /* Teachers */
+  --table-teacher-margin-top: 20px;
+  --table-teacher-header: var(--table-header-color);
+  --table-teacher-content: var(--table-content-color);
+  --table-teacher-header-height: 40px;
+  --table-teacher-content-td-height: 80px;
+  --table-teacher-content-td-width: 130px;
+  --table-teacher-content-td-width-larger: 200px;
+
+  /* Levels */
+  --table-level-margin-top: 66px;
+  --table-level-header: var(--table-header-color);
+  --table-level-content: var(--table-content-color);
+  --table-level-header-height: var(--table-teacher-header-height);
+  --table-level-content-td-height: 40px;
+  --table-level-content-td-width: 120px;
+
+  /* Parameter */
+  --table-parameter-margin-top: 10px;
+  --table-parameter-header: var(--table-header-color);
+  --table-parameter-content: var(--table-content-color);
+  --table-parameter-header-height: 30px;
+  --table-parameter-content-td-height: 50px;
+  --table-parameter-content-td-width: 150px;
+
+  /* Info */
+  --info-color: rgb(250, 254, 255);
+  /* inputs and buttons */
+  --input-color: white;
+  --input-color-hover: rgb(229, 229, 229);
+
+  --button-color: rgb(225, 241, 255);
+  --button-color-hover: rgb(202, 230, 255);
+
+  --navigation-button-color: white;
+  --navigation-button-color-hover: rgb(245, 245, 245);
 }
 
 body {
-  font-family: Arial, sans-serif;
   overflow: auto;
   margin: 50px;
   height: 100%;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+}
+
+button,
+input,
+select {
+  display: inline-block;
+  border: var(--table-border);
+  color: var(--text-color);
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+input,
+select {
+  background-color: var(--input-color);
+}
+button,
+input,
+select.bigger {
+  padding: 4px 8px;
+}
+input:hover,
+select.bigger:hover {
+  background-color: var(--input-color-hover);
+}
+select:not(.bigger):hover {
+  background-color: rgb(245, 245, 245);
+}
+#file-input-constraints,
+#file-input {
+  display: none;
+}
+.margin {
+  margin-right: 15px;
+}
+.custom-file-input {
+  display: inline-block;
+  padding: 4px 8px;
+  border: var(--table-border);
+  color: var(--text-color);
+  background-color: var(--button-color);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: small;
+}
+.custom-file-input:hover {
+  background-color: var(--button-color-hover);
+}
+.csv {
+  width: 100px;
+}
+button:not(.csv),
+input[type="submit"]:not(.add) {
+  width: 156px;
+}
+button,
+input[type="submit"]:not(.add) {
+  height: 30px;
+  margin-right: 30px;
+  background-color: var(--button-color);
+}
+button:hover,
+input[type="submit"]:not(.add):hover {
+  background-color: var(--button-color-hover);
+}
+button.navigation,
+input[type="submit"].navigation {
+  background-color: var(--navigation-button-color);
+}
+button.navigation:hover,
+input[type="submit"].navigation:hover {
+  background-color: var(--navigation-button-color-hover);
 }
 
 /* Calendar */
-div#calendar-wrapper,
+div#calendar-wrapper {
+  margin-top: 38px;
+  min-width: var(--page-width);
+}
 div#lessons-wrapper {
   margin-top: 50px;
-  min-width: var(--page-width);
 }
 table.calendar {
   margin-top: var(--table-margin-top);
@@ -74,42 +185,53 @@ table.calendar {
   border-radius: var(--table-border-radius);
   box-shadow: var(--box-shadow);
 }
-table.calendar thead tr:first-child th {
-  height: var(--table-header-day-height);
+table.calendar thead tr th {
+  height: var(--table-header-height);
 }
+/* Titre du tableau */
 table.calendar thead tr:first-child th:first-child {
-  /* Titre du tableau */
   border-radius: var(--table-border-radius) 0 0 0;
   background-color: var(--table-header-title);
+  border-left: var(--table-border);
+}
+table.calendar thead tr:last-child th:first-child {
+  background-color: var(--table-header-title);
+  border-left: var(--table-border);
+  border-right: var(--table-border);
+  border-bottom: var(--table-border);
 }
 table.calendar thead tr:first-child th:last-child {
   border-radius: 0 var(--table-border-radius) 0 0;
 }
-table.calendar thead tr:first-child th:not(:first-child) {
+table.calendar thead tr {
+  font-size: x-small;
+}
+table.calendar thead tr:first-child th:not(:first-child):not(.weekend) {
   /* Les jours */
   border-left: none;
-  border-bottom: none;
-}
-table.calendar thead tr:first-child th:not(:first-child):nth-child(2n) {
-  background-color: var(--table-header-day-odd);
-}
-table.calendar thead tr:first-child th:not(:first-child):nth-child(2n + 1) {
-  background-color: var(--table-header-day-even);
-}
-table.calendar thead tr:not(:first-child) th {
-  /* Les salles */
-  height: var(--table-header-room-height);
-  border-left: none;
-  border-bottom: var(--table-border-thick);
-}
-table.calendar thead tr th {
-  border: var(--table-border);
-}
-table.calendar tbody tr:nth-child(4n) td {
   border-bottom: var(--table-border);
 }
-table.calendar tbody tr:nth-child(2n) td {
-  border-bottom: var(--table-border-dashed);
+table.calendar thead tr:last-child th:not(:first-child):not(.weekend) {
+  border-right: var(--table-border);
+  border-bottom: var(--table-border-thick);
+}
+table.calendar thead tr th:not(:first-child):not(.weekend):not(.holiday) {
+  background-color: var(--table-header-day);
+}
+table.calendar thead tr:first-child th {
+  border-top: var(--table-border);
+}
+table.calendar thead tr:first-child th:not(.weekend) {
+  border-right: var(--table-border);
+}
+table.calendar tbody tr {
+  font-size: x-small;
+}
+table.calendar tbody tr td:first-child {
+  border-right: var(--table-border-thick);
+}
+table.calendar tbody tr td {
+  border-bottom: var(--table-border);
 }
 table.calendar tbody tr:last-child td {
   border-bottom: var(--table-border);
@@ -129,24 +251,41 @@ table.calendar tbody tr td:first-child {
   background-color: var(--table-time);
   width: var(--table-time-td-width);
   min-width: var(--table-time-td-width);
-  font-size: small;
-  text-align: left;
-  padding-left: 5px;
-  vertical-align: top;
   border-left: var(--table-border);
+  font-weight: bold;
 }
 /* Le contenu */
-table.calendar tbody tr td:not(:first-child) {
+table.calendar tbody tr td:not(:first-child):not(.weekend) {
   width: var(--table-content-td-width);
   min-width: var(--table-content-td-width);
   border-right: var(--table-border);
-  font-size: small;
 }
-table.calendar tbody tr td:not(:first-child).booked {
+table.calendar .booked,
+table.calendar .free {
   cursor: pointer;
 }
 table.calendar tbody tr td:not(:first-child).booked.highlighted-lesson {
   opacity: var(--highlighted-lesson-opacity);
+}
+
+table.calendar th.weekend,
+table.calendar td.weekend {
+  background-color: var(--table-weekend-color);
+  border-bottom: none;
+  width: var(--table-weekend-width);
+  min-width: var(--table-weekend-width);
+}
+
+table.calendar th.holiday,
+table.calendar td.holiday {
+  background-color: var(--table-holiday-color);
+}
+
+table.calendar
+  tbody
+  tr
+  td:not(:first-child):not(.booked):not(.weekend):not(.holiday) {
+  background-color: var(--table-content);
 }
 
 /* Lessons */
@@ -163,6 +302,14 @@ table.lessons thead tr th {
   border-bottom: var(--table-border-thick);
   background-color: var(--table-lesson-header);
 }
+table.lessons thead tr th:not(:last-child) {
+  width: var(--table-lesson-content-td-width);
+  min-width: var(--table-lesson-content-td-width);
+}
+table.lessons thead tr th:last-child {
+  width: var(--table-lesson-action-td-width);
+  min-width: var(--table-lesson-action-td-width);
+}
 table.lessons thead tr th:first-child {
   border-radius: var(--table-border-radius) 0 0 0;
 }
@@ -172,34 +319,22 @@ table.lessons thead tr th:not(:first-child) {
 table.lessons thead tr th:last-child {
   border-radius: 0 var(--table-border-radius) 0 0;
 }
-table.lessons tbody tr {
-  cursor: pointer;
+table.lessons tbody tr:not(:first-child) td:first-child {
+  text-align: left;
+  padding-left: 15px;
 }
 table.lessons tbody tr form {
   border-left: var(--table-border);
 }
-table.lessons tbody tr:not(.highlightedRow) td {
+table.lessons tbody tr td {
   background-color: var(--table-lesson-content);
-}
-table.lessons tbody tr.highlightedRow td {
-  background-color: var(--table-lesson-content-highlighted);
 }
 table.lessons tbody tr td {
   height: var(--table-lesson-content-td-height);
   text-align: center;
-  width: var(--table-lesson-content-td-width);
-  min-width: var(--table-lesson-content-td-width);
   border-right: var(--table-border);
   border-bottom: var(--table-border);
   font-size: small;
-}
-table.lessons tbody tr:first-child td:nth-last-child(2) {
-  border-right: none;
-}
-table.lessons tbody tr:first-child td:nth-last-child(2),
-table.lessons tbody tr:first-child td:last-child {
-  width: calc(var(--table-lesson-content-td-width) / 2);
-  min-width: calc(var(--table-lesson-content-td-width) / 2);
 }
 table.lessons tbody tr td:first-child {
   border-left: var(--table-border);
@@ -207,17 +342,13 @@ table.lessons tbody tr td:first-child {
 table.lessons tbody tr td:not(:first-child) {
   border-left: none;
 }
-table.lessons tbody tr td:last-child {
-  width: var(--table-lesson-action-td-width);
-  min-width: var(--table-lesson-action-td-width);
-}
 table.lessons tbody tr:last-child td:last-child {
   border-radius: 0 0 var(--table-border-radius) 0;
 }
 table.lessons tbody tr:last-child td:first-child {
   border-radius: 0 0 0 var(--table-border-radius);
 }
-table.lessons input:not([type="time"]):not([type="submit"]),
+table.lessons input:not([type="submit"]),
 table.lessons select {
   width: var(--input-select-width);
   min-width: var(--input-select-width);
@@ -239,28 +370,11 @@ table.lessons input[type="submit"] {
 table.lessons input[type="submit"]:hover {
   background-color: var(--table-button-add-hover);
 }
-table.lessons div.button:not(.filter) {
+table.lessons div.button {
   background-color: var(--table-button-remove);
 }
-table.lessons div.button:not(.filter):hover {
+table.lessons div.button:hover {
   background-color: var(--table-button-remove-hover);
-}
-table.lessons div.button.filter {
-  background-color: var(--table-button-filter);
-}
-table.lessons div.button.filter:hover {
-  background-color: var(--table-button-filter-hover);
-}
-
-/* pour les deux formulaires en haut de page */
-
-.two-col-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.two-col-layout div {
-  padding: 10px;
 }
 
 /* Dans le tableau des leçons */
@@ -271,11 +385,240 @@ td div.two-col-td {
   align-items: center;
 }
 td div.two-col-td div:first-child {
-  margin-left: 25px;
+  margin-left: 20px;
 }
 td div.two-col-td div:last-child {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  margin-right: 25px;
+  margin-right: 15px;
+}
+
+/* Teachers */
+table.teachers {
+  margin-top: var(--table-teacher-margin-top);
+  border-collapse: separate;
+  border-spacing: 0px;
+  border-radius: var(--table-border-radius);
+  box-shadow: var(--box-shadow);
+}
+table.teachers thead tr th {
+  height: var(--table-teacher-header-height);
+  border: var(--table-border);
+  border-bottom: var(--table-border-thick);
+  background-color: var(--table-teacher-header);
+}
+table.teachers thead tr th:first-child {
+  border-radius: var(--table-border-radius) 0 0 0;
+}
+table.teachers thead tr th:not(:first-child) {
+  border-left: none;
+}
+table.teachers thead tr th:last-child {
+  border-radius: 0 var(--table-border-radius) 0 0;
+}
+table.teachers tbody tr form {
+  border-left: var(--table-border);
+}
+table.teachers tbody tr td {
+  background-color: var(--table-teacher-content);
+}
+table.teachers tbody tr td {
+  height: var(--table-teacher-content-td-height);
+  text-align: center;
+  border-right: var(--table-border);
+  border-bottom: var(--table-border);
+  font-size: small;
+}
+table.teachers tbody tr td:not(:nth-child(4)) {
+  width: var(--table-teacher-content-td-width);
+  min-width: var(--table-teacher-content-td-width);
+}
+table.teachers tbody tr td:nth-child(4) {
+  width: var(--table-teacher-content-td-width-larger);
+  min-width: var(--table-teacher-content-td-width-larger);
+}
+table.teachers tbody tr td:first-child {
+  border-left: var(--table-border);
+}
+table.teachers tbody tr td:not(:first-child) {
+  border-left: none;
+}
+table.teachers tbody tr:last-child td:last-child {
+  border-radius: 0 0 var(--table-border-radius) 0;
+}
+table.teachers tbody tr:last-child td:first-child {
+  border-radius: 0 0 0 var(--table-border-radius);
+}
+
+/* Levels */
+table.levels {
+  margin-top: var(--table-level-margin-top);
+  border-collapse: separate;
+  border-spacing: 0px;
+  border-radius: var(--table-border-radius);
+  box-shadow: var(--box-shadow);
+}
+table.levels thead tr th {
+  height: var(--table-level-header-height);
+  border: var(--table-border);
+  border-bottom: var(--table-border-thick);
+  background-color: var(--table-level-header);
+}
+table.levels thead tr th:first-child {
+  border-radius: var(--table-border-radius) 0 0 0;
+}
+table.levels thead tr th:not(:first-child) {
+  border-left: none;
+}
+table.levels thead tr th:last-child {
+  border-radius: 0 var(--table-border-radius) 0 0;
+}
+table.levels tbody tr form {
+  border-left: var(--table-border);
+}
+table.levels tbody tr td {
+  background-color: var(--table-level-content);
+}
+table.levels tbody tr td {
+  height: var(--table-level-content-td-height);
+  text-align: center;
+  border-right: var(--table-border);
+  border-bottom: var(--table-border);
+  font-size: small;
+  width: var(--table-level-content-td-width);
+  min-width: var(--table-level-content-td-width);
+}
+
+table.levels tbody tr td:first-child {
+  border-left: var(--table-border);
+}
+table.levels tbody tr td:not(:first-child) {
+  border-left: none;
+}
+table.levels tbody tr:last-child td:last-child {
+  border-radius: 0 0 var(--table-border-radius) 0;
+}
+table.levels tbody tr:last-child td:first-child {
+  border-radius: 0 0 0 var(--table-border-radius);
+}
+
+/* Parameter */
+h1.parameters {
+  margin-top: 80px;
+}
+h1.teachers-levels {
+  margin-top: 110px;
+}
+table.parameter {
+  margin-top: var(--table-parameter-margin-top);
+  border-collapse: separate;
+  border-spacing: 0px;
+  border-radius: var(--table-border-radius);
+  box-shadow: var(--box-shadow);
+}
+table.parameter thead tr th {
+  height: var(--table-parameter-header-height);
+  border: var(--table-border);
+  border-bottom: var(--table-border-thick);
+  background-color: var(--table-parameter-header);
+}
+table.parameter thead tr th:first-child {
+  border-radius: var(--table-border-radius) 0 0 0;
+}
+table.parameter thead tr th:not(:first-child) {
+  border-left: none;
+}
+table.parameter thead tr th:last-child {
+  border-radius: 0 var(--table-border-radius) 0 0;
+}
+table.parameter tbody tr form {
+  border-left: var(--table-border);
+}
+table.parameter tbody tr td {
+  background-color: var(--table-parameter-content);
+}
+table.parameter tbody tr td {
+  height: var(--table-parameter-content-td-height);
+  text-align: center;
+  border-right: var(--table-border);
+  border-bottom: var(--table-border);
+  font-size: small;
+  width: var(--table-parameter-content-td-width);
+  min-width: var(--table-parameter-content-td-width);
+}
+
+table.parameter tbody tr td:first-child {
+  border-left: var(--table-border);
+}
+table.parameter tbody tr td:not(:first-child) {
+  border-left: none;
+}
+table.parameter tbody tr:last-child td:last-child {
+  border-radius: 0 0 var(--table-border-radius) 0;
+}
+table.parameter tbody tr:last-child td:first-child {
+  border-radius: 0 0 0 var(--table-border-radius);
+}
+table.parameter tbody tr td input {
+  width: 60%;
+}
+
+.two-col-layout {
+  display: inline-block;
+  vertical-align: top;
+}
+.first-col {
+  margin-right: 80px;
+}
+.first-col-more {
+  margin-right: 200px;
+}
+.result {
+  margin-top: 80px;
+}
+
+#confirmation {
+  position: absolute;
+  top: 55px;
+  right: 60px;
+}
+
+li.main {
+  margin-bottom: 15px;
+}
+li.main-teacher {
+  margin-bottom: 20px;
+}
+
+.flex {
+  display: flex;
+}
+
+ul:not(.info) {
+  background-color: var(--info-color);
+  border-radius: var(--table-border-radius);
+  padding-top: 15px;
+  padding-bottom: 10px;
+  padding-right: 20px;
+  border: var(--table-border);
+}
+.period-info {
+  width: 1100px;
+}
+ul:not(.period):not(.info) {
+  height: 500px;
+  width: 110%;
+  overflow-y: auto;
+}
+
+#not-erase-data,
+#erase-data,
+#not-erase-constraints,
+#erase-constraints {
+  width: 120px;
+}
+
+.export {
+  margin-right: 60px
 }
