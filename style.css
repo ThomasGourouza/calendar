@@ -107,6 +107,7 @@ select {
   border-radius: 5px;
   cursor: pointer;
   font-weight: 500;
+  font-family: var(--font-family);
 }
 input,
 select {
@@ -147,9 +148,12 @@ select:not(.bigger):hover {
 .csv {
   width: 100px;
 }
-button:not(.csv),
+button:not(.csv):not(.generate),
 input[type="submit"]:not(.add) {
-  width: 156px;
+  width: 140px;
+}
+button.generate {
+  width: 200px;
 }
 button,
 input[type="submit"]:not(.add) {
@@ -164,6 +168,7 @@ input[type="submit"]:not(.add):hover {
 button.navigation,
 input[type="submit"].navigation {
   background-color: var(--navigation-button-color);
+  font-size: medium;
 }
 button.navigation:hover,
 input[type="submit"].navigation:hover {
@@ -608,7 +613,7 @@ ul:not(.info) {
 }
 ul:not(.period):not(.info) {
   height: 500px;
-  width: 110%;
+  width: 105%;
   overflow-y: auto;
 }
 
