@@ -29,6 +29,10 @@ function buildHtmlResultConfirmations(
     acc[teacherName].push({ date, levelName });
     return acc;
   }, {});
+  const workingTeachers = Object.keys(groupedTeachers);
+  const notWorkingTeachers = teachers
+    .map((t) => t.name)
+    .filter((t) => !workingTeachers.includes(t));
   const teacherResults = Object.keys(groupedTeachers).map((teacherName) => {
     const workingDates = groupedTeachers[teacherName].map(
       (i) => new Date(toDateInput(i.date))
@@ -131,11 +135,14 @@ function buildHtmlResultConfirmations(
       },
     };
   });
-  buildHtmlResultTeachersConfirmations(teacherResults);
+  buildHtmlResultTeachersConfirmations(teacherResults, notWorkingTeachers);
   buildHtmlResultLevelsConfirmations(lessonLevelResults);
 }
 
-function buildHtmlResultTeachersConfirmations(teacherResults) {
+function buildHtmlResultTeachersConfirmations(
+  teacherResults,
+  notWorkingTeachers
+) {
   const div = document.getElementById("teachers-result-confirmation");
   while (div.firstChild) {
     div.removeChild(div.firstChild);
@@ -183,6 +190,16 @@ function buildHtmlResultTeachersConfirmations(teacherResults) {
     li6.innerHTML = `${teacher.levels.text}`;
     li6.style.color = teacher.levels.color;
   });
+  if (notWorkingTeachers.length > 0) {
+    notWorkingTeachers.forEach((teacher) => {
+      const li = putElementIn("li", ul);
+      li.className = "main-teacher";
+      li.innerHTML = `${teacher}: `;
+      const span = putElementIn("span", li);
+      span.innerHTML = "Ne travaille pas.";
+      span.style.color = "red";
+    });
+  }
 }
 
 function buildHtmlResultLevelsConfirmations(lessonLevelResults) {

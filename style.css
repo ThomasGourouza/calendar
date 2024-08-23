@@ -609,6 +609,7 @@ ul:not(.info) {
   border: var(--table-border);
 }
 .period-info {
+  margin-top: 50px;
   width: 1100px;
 }
 ul:not(.period):not(.info) {

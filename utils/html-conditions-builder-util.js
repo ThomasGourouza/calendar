@@ -46,9 +46,9 @@ function buildHtmlTeachersConditions(
           <li>La période va du ${startDate} au ${endDate} et comporte ${numberDays} jours de travail.</li>
           <li>${
             !holidays
-              ? "Il n'y a pas de jours fériés"
-              : "Les jours fériés sont "
-          } ${!holidays ? "" : holidays}.</li>
+              ? "Il n'y a pas de jours fériés."
+              : "Jours fériés: "
+          } ${!holidays ? "" : holidays + "."}</li>
           <li>Chaque leçon dure ${lessonDuration}h.</li>
         </ul>
       `)
