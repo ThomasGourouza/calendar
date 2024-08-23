@@ -613,7 +613,7 @@ ul:not(.info) {
 }
 ul:not(.period):not(.info) {
   height: 500px;
-  width: 105%;
+  width: 100%;
   overflow-y: auto;
 }
 
