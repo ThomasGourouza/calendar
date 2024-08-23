@@ -139,15 +139,15 @@ function buildHtmlCalendar(lessonList, dates, highlight) {
 // selectionner un créneau
 function fillAddForm(date, level, td) {
   const secondClick =
-    td.style.backgroundColor === getStyle("--table-content-highlighted");
+    td.style.backgroundColor === getStyle("--table-content-calendar-highlighted");
   Array.from(document.getElementsByClassName("free")).forEach(
-    (e) => (e.style.backgroundColor = getStyle("--table-content"))
+    (e) => (e.style.backgroundColor = getStyle("--table-content-calendar"))
   );
   if (secondClick) {
     document.getElementById("date").value = "";
     document.getElementById("levels").value = "";
   } else {
-    td.style.backgroundColor = getStyle("--table-content-highlighted");
+    td.style.backgroundColor = getStyle("--table-content-calendar-highlighted");
     document.getElementById("date").value = textDateToInput(date);
     document.getElementById("levels").value = level;
   }

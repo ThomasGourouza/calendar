@@ -6,6 +6,8 @@
   --table-header-title-color: rgb(210, 240, 255);
   --table-content-color: rgb(220, 240, 250);
   --table-content-color-highlighted: rgb(200, 215, 225);
+  --table-content-calendar-color: rgb(245, 253, 255);
+  --table-content-calendar-color-highlighted: rgb(211, 235, 240);
   --font-family: "Comic Sans MS", "Comic Sans", cursive;
   /* Calendar */
   --table-margin-top: 20px;
@@ -22,6 +24,8 @@
   --table-time: var(--table-header-color);
   --table-content: var(--table-content-color);
   --table-content-highlighted: var(--table-content-color-highlighted);
+  --table-content-calendar: var(--table-content-calendar-color);
+  --table-content-calendar-highlighted: var(--table-content-calendar-color-highlighted);
   /* longueur des cellules des heures du calendrier */
   --table-time-td-width: 40px;
   /* longueur des cellules du calendrier */
@@ -291,7 +295,7 @@ table.calendar
   tbody
   tr
   td:not(:first-child):not(.booked):not(.weekend):not(.holiday) {
-  background-color: var(--table-content);
+  background-color: var(--table-content-calendar);
 }
 
 /* Lessons */
