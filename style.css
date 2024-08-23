@@ -182,6 +182,7 @@ div#calendar-wrapper {
 }
 div#lessons-wrapper {
   margin-top: 50px;
+  height: 200px;
 }
 table.calendar {
   margin-top: var(--table-margin-top);
