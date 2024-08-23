@@ -80,6 +80,9 @@ flatpickr("#bankHolidays", {
   mode: "multiple",
   dateFormat,
 });
+flatpickr("#date", {
+  dateFormat,
+});
 
 // le formulaire des paramètres
 const parameterForm = document.forms["parameter-form"];

@@ -18,7 +18,7 @@
           <input
             type="submit"
             class="navigation"
-            value="Suivant &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; →"
+            value="Suivant &nbsp;&nbsp; →"
           />
           <h1 class="parameters">Paramètres</h1>
           <div>
@@ -96,9 +96,9 @@
     </div>
     <div id="conditions-wrapper" class="page" style="display: none">
       <button class="navigation" onclick="navigate('settings-wrapper')">
-        ← &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Précédent
+        ← &nbsp;&nbsp; Précédent
       </button>
-      <button class="navigation" onclick="confirmGenerateCalendar()">
+      <button class="navigation generate" onclick="confirmGenerateCalendar()">
         Générer un calendrier
       </button>
       <div class="period-info"></div>
@@ -159,9 +159,9 @@
         <input id="ask-confirmation" type="checkbox" />
       </div>
       <button class="navigation" onclick="goBackTo('conditions-wrapper')">
-        ← &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Précédent
+        ← &nbsp;&nbsp; Précédent
       </button>
-      <button class="navigation" onclick="reGenerateCalendar()">
+      <button class="navigation generate" onclick="reGenerateCalendar()">
         Générer un calendrier
       </button>
       <div class="period-info"></div>
@@ -181,7 +181,13 @@
             <tbody id="lessons">
               <tr>
                 <td>
-                  <input id="date" type="date" name="date" required />
+                  <input
+                      type="date"
+                      id="date"
+                      name="date"
+                      placeholder="Date de la leçon"
+                      required
+                    />
                 </td>
                 <td>
                   <select
