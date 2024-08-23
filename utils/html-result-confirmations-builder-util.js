@@ -65,16 +65,14 @@ function buildHtmlResultConfirmations(
       .join(", ")
       .replace(/, ([^,]*)$/, " et $1");
 
-    const actualThe = actualLevelNames.length > 1 ? "les" : "le";
-    const actualX = actualLevelNames.length > 1 ? "x" : "";
     const preferedText =
       preferedLevelNames.length > 0
         ? `Niveaux préférés: ${preferedLevelNamesText}.`
         : "Sans préférence de niveau.";
     const actualText =
       actualLevelNames.length > 0
-        ? `Travaille avec ${actualThe} niveau${actualX} ${actualLevelNamesText}.`
-        : "Ne travaille avec aucun niveau.";
+        ? `Travaille avec ${actualLevelNamesText}.`
+        : "Aucun niveau.";
     const levelResultText = `${preferedText} ${actualText}`;
 
     let levelResultColor = "red";
