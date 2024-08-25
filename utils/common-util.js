@@ -37,8 +37,9 @@ function setParameters(form, param) {
   param.lessonDuration = +form.lessonDuration.value;
 }
 
-function setForm(form, param) {
-  form.startDate.value = param.startDate;
+function setForm(form, param, startDateInput, bankHolidaysInput) {
+  startDateInput.setDate(param.startDate);
+  bankHolidaysInput.setDate(param.bankHolidays);
   form.numberDays.value = param.numberDays;
   form.lessonDuration.value = param.lessonDuration;
 }

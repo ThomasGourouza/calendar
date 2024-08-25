@@ -9,10 +9,10 @@ const eraseConstraintsButton = document.getElementById("erase-constraints");
 const notEraseConstraintsButton = document.getElementById("not-erase-constraints");
 
 const parameter = {
-  startDate: getNextMonday(),
-  numberDays: 20,
-  bankHolidays: [],
-  lessonDuration: 4,
+  startDate: localStorage.getItem("startDate") ?? getNextMonday(),
+  numberDays: +localStorage.getItem("numberDays") ?? 20,
+  bankHolidays: JSON.parse(localStorage.getItem("bankHolidays")) ?? [],
+  lessonDuration: +localStorage.getItem("lessonDuration") ?? 4,
 };
 
 // récupère du localStorage
@@ -73,21 +73,21 @@ askConfirmationCheckbox.addEventListener("change", (event) => {
   localStorage.setItem("askConfirmation", askConfirmation);
 });
 
-flatpickr("#startDate", {
+const startDateInput = flatpickr("#startDate", {
   dateFormat,
 });
-flatpickr("#bankHolidays", {
+const bankHolidaysInput = flatpickr("#bankHolidays", {
   mode: "multiple",
   dateFormat,
 });
-flatpickr("#date", {
+const addRemoveLessonDateInput = flatpickr("#date", {
   dateFormat,
 });
 
 // le formulaire des paramètres
 const parameterForm = document.forms["parameter-form"];
 parameterForm.onsubmit = parameterFormOnsubmit;
-setForm(parameterForm, parameter);
+setForm(parameterForm, parameter, startDateInput, bankHolidaysInput);
 
 // input de chargement des données
 const fileInput = document.getElementById("file-input");
@@ -113,6 +113,11 @@ function parameterFormOnsubmit(event) {
     return;
   }
   setParameters(this, parameter);
+  localStorage.setItem("startDate", parameter.startDate);
+  localStorage.setItem("numberDays", parameter.numberDays);
+  localStorage.setItem("lessonDuration", parameter.lessonDuration);
+  localStorage.setItem("bankHolidays", JSON.stringify(parameter.bankHolidays));
+
   selectedDates = getSelectedDates(
     parameter.startDate,
     parameter.numberDays,
