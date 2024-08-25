@@ -148,10 +148,14 @@ function getTeachers(teacherNames, constraints, levelNames) {
     recurrentDaysOff: c.recurrentDaysOff
       .split(",")
       .map((d) => `${getDayNumber(d)}`),
-    daysOff: c.daysOff.split(",").map((d) => toDateInput(d)),
+    daysOff: c.daysOff
+      .split(",")
+      .map((d) => toDateInput(d))
+      .filter((d) => !d.includes("undefined")),
     preferedLevelNames: c.preferedLevelNames
       .split(",")
       .filter((n) => levelNames.includes(n)),
+    priority: c.priority,
   }));
   return teacherNames.map((t, index) => {
     const color = colors[index % colors.length];
@@ -169,7 +173,8 @@ function getTeachers(teacherNames, constraints, levelNames) {
       teacherConstraint.workingHourMax,
       teacherConstraint.recurrentDaysOff,
       teacherConstraint.daysOff,
-      teacherConstraint.preferedLevelNames
+      teacherConstraint.preferedLevelNames,
+      teacherConstraint.priority
     );
   });
 }

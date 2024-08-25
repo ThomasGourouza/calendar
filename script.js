@@ -6,7 +6,9 @@ const constraintsLoaded = document.getElementById("constraints-loaded");
 const eraseDataButton = document.getElementById("erase-data");
 const notEraseDataButton = document.getElementById("not-erase-data");
 const eraseConstraintsButton = document.getElementById("erase-constraints");
-const notEraseConstraintsButton = document.getElementById("not-erase-constraints");
+const notEraseConstraintsButton = document.getElementById(
+  "not-erase-constraints"
+);
 
 const parameter = {
   startDate: localStorage.getItem("startDate") ?? getNextMonday(),
@@ -33,11 +35,12 @@ let lessons = [];
 
 const constraintsHeaders = [
   "Nom",
-  "Indispos réc.",
+  "Indispos récurrente",
   "Congés",
   "Volume horaire min",
-  "Vol horaire max",
+  "Volume horaire max",
   "Niveaux préférés",
+  "Priorité sur niveau",
 ];
 const noDataMessage = "Pas de données.";
 
@@ -264,7 +267,8 @@ function generateLessonListAndBuildHtml() {
             .filter((l) => l.active)
             .map((l) => l.name)
             .includes(n)
-        )
+        ),
+        t.priority
       )
   );
   lessons = getLessonList(
@@ -401,7 +405,7 @@ function onLoadConstraints(e, file) {
         case "Nom":
           item.name = e[1];
           break;
-        case "Indispos réc.":
+        case "Indispos récurrente":
           item.recurrentDaysOff = e[1];
           break;
         case "Congés":
@@ -410,11 +414,14 @@ function onLoadConstraints(e, file) {
         case "Volume horaire min":
           item.workingHourMin = e[1];
           break;
-        case "Vol horaire max":
+        case "Volume horaire max":
           item.workingHourMax = e[1];
           break;
         case "Niveaux préférés":
           item.preferedLevelNames = e[1];
+          break;
+        case "Priorité sur niveau":
+          item.priority = e[1] === "oui";
           break;
         default:
           break;

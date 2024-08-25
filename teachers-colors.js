@@ -43,4 +43,40 @@ const colors = [
     backgroundColor: "olive",
     textColor: "black",
   },
+  {
+    backgroundColor: "brown",
+    textColor: "white",
+  },
+  {
+    backgroundColor: "violet",
+    textColor: "black",
+  },
+  {
+    backgroundColor: "darkkhaki",
+    textColor: "black",
+  },
+  {
+    backgroundColor: "darkslategrey",
+    textColor: "white",
+  },
+  {
+    backgroundColor: "lightgreen",
+    textColor: "black",
+  },
+  {
+    backgroundColor: "lightseagreen",
+    textColor: "white",
+  },
+  {
+    backgroundColor: "mediumturquoise",
+    textColor: "black",
+  },
+  {
+    backgroundColor: "sandybrown",
+    textColor: "black",
+  },
+  {
+    backgroundColor: "thistle",
+    textColor: "black",
+  },
 ];

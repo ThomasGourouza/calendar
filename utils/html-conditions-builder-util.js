@@ -95,7 +95,7 @@ function buildHtmlTeachersConditions(
       mode: "multiple",
       dateFormat,
     });
-    datePicker.setDate(teacher.daysOff.filter(d => !d.includes("undefined")));
+    datePicker.setDate(teacher.daysOff);
     daysOffInput.addEventListener("change", (event) =>
       handleDaysOffInputChange(event, teacher)
     );
@@ -155,20 +155,16 @@ function buildHtmlTeachersConditions(
     const priorityTd = putElementIn("td", tr);
     const priorityChecbox = putElementIn("input", priorityTd);
     priorityChecbox.setAttribute("type", "checkbox");
-    priorityChecbox.checked = false;
+    
+    priorityChecbox.checked = teacher.priority;
     priorityChecbox.addEventListener("change", (event) =>
-      handlePriorityChange(teacher, event.target.checked)
+      teacher.priority = event.target.checked
     );
 
     levelsSelect.addEventListener("change", (event) =>
       handleLevelsSelectChange(event, teacher)
     );
   });
-}
-
-function handlePriorityChange(teacher, priorityChecked) {
-  console.log(teacher);
-  console.log(priorityChecked);
 }
 
 function handleRecDaysOffSelectChange(event, teacher) {
@@ -240,6 +236,7 @@ function downloadConditions() {
     workingHourMin: t.workingHours.min,
     workingHourMax: t.workingHours.max,
     preferedLevelNames: t.preferedLevelNames.join(","),
+    priority: t.priority ? "oui" : "non",
   }));
   let csvContent = headers;
   teacherMapped.forEach((t) => {

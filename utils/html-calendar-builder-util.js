@@ -210,7 +210,7 @@ function fillTdWithTeacherAndDisk(td, teacherName, teacherColor) {
   const wrapper = putElementIn("div", td);
   wrapper.className = "two-col-td";
   const divName = putElementIn("div", wrapper);
-  divName.innerHTML = teacherName;
+  divName.innerHTML = `${teacherName}&nbsp;&nbsp;`;
   const divDisk = putElementIn("div", wrapper);
   divDisk.style.backgroundColor = teacherColor;
   divDisk.style.border = getStyle("--table-border");

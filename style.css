@@ -6,8 +6,8 @@
   --table-header-title-color: rgb(210, 240, 255);
   --table-content-color: rgb(220, 240, 250);
   --table-content-color-highlighted: rgb(200, 215, 225);
-  --table-content-calendar-color: rgb(245, 253, 255);
-  --table-content-calendar-color-highlighted: rgb(211, 235, 240);
+  --table-content-calendar-color: rgb(205, 210, 210);
+  --table-content-calendar-color-highlighted: rgb(161, 182, 205);
   --font-family: "Comic Sans MS", "Comic Sans", cursive;
   /* Calendar */
   --table-margin-top: 20px;
@@ -63,7 +63,7 @@
   --table-teacher-content-td-height: 80px;
   --table-teacher-content-td-width: 130px;
   --table-teacher-content-td-width-larger: 200px;
-  --table-teacher-content-td-width-smaller: 80px;
+  --table-teacher-content-td-width-smaller: 100px;
 
   /* Levels */
   --table-level-margin-top: 66px;
