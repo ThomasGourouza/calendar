@@ -582,7 +582,7 @@ table.parameter tbody tr td input {
   margin-right: 80px;
 }
 .first-col-more {
-  margin-right: 150px;
+  margin-right: 50px;
 }
 .result {
   margin-top: 80px;
@@ -619,8 +619,13 @@ ul:not(.info) {
 }
 ul:not(.period):not(.info) {
   height: 500px;
-  width: 100%;
   overflow-y: auto;
+}
+ul.teachers-ul {
+  width: 650px;
+}
+ul.levels-ul {
+  width: 250px;
 }
 
 #not-erase-data,

@@ -95,7 +95,7 @@ function buildHtmlTeachersConditions(
       mode: "multiple",
       dateFormat,
     });
-    datePicker.setDate(teacher.daysOff);
+    datePicker.setDate(teacher.daysOff.filter(d => !d.includes("undefined")));
     daysOffInput.addEventListener("change", (event) =>
       handleDaysOffInputChange(event, teacher)
     );
