@@ -63,6 +63,7 @@
   --table-teacher-content-td-height: 80px;
   --table-teacher-content-td-width: 130px;
   --table-teacher-content-td-width-larger: 200px;
+  --table-teacher-content-td-width-smaller: 80px;
 
   /* Levels */
   --table-level-margin-top: 66px;
@@ -440,13 +441,21 @@ table.teachers tbody tr td {
   border-bottom: var(--table-border);
   font-size: small;
 }
-table.teachers tbody tr td:not(:nth-child(4)) {
+table.teachers tbody tr td:not(:first-child):not(:nth-child(4)):not(:nth-child(6)) {
   width: var(--table-teacher-content-td-width);
   min-width: var(--table-teacher-content-td-width);
+}
+table.teachers tbody tr td:first-child {
+  width: var(--table-teacher-content-td-width-smaller);
+  min-width: var(--table-teacher-content-td-width-smaller);
 }
 table.teachers tbody tr td:nth-child(4) {
   width: var(--table-teacher-content-td-width-larger);
   min-width: var(--table-teacher-content-td-width-larger);
+}
+table.teachers tbody tr td:nth-child(6) {
+  width: var(--table-teacher-content-td-width-smaller);
+  min-width: var(--table-teacher-content-td-width-smaller);
 }
 table.teachers tbody tr td:first-child {
   border-left: var(--table-border);
@@ -579,7 +588,7 @@ table.parameter tbody tr td input {
   vertical-align: top;
 }
 .first-col {
-  margin-right: 80px;
+  margin-right: 60px;
 }
 .first-col-more {
   margin-right: 50px;

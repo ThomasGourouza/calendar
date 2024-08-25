@@ -151,10 +151,24 @@ function buildHtmlTeachersConditions(
         levelOption.selected = true;
       }
     });
+
+    const priorityTd = putElementIn("td", tr);
+    const priorityChecbox = putElementIn("input", priorityTd);
+    priorityChecbox.setAttribute("type", "checkbox");
+    priorityChecbox.checked = false;
+    priorityChecbox.addEventListener("change", (event) =>
+      handlePriorityChange(teacher, event.target.checked)
+    );
+
     levelsSelect.addEventListener("change", (event) =>
       handleLevelsSelectChange(event, teacher)
     );
   });
+}
+
+function handlePriorityChange(teacher, priorityChecked) {
+  console.log(teacher);
+  console.log(priorityChecked);
 }
 
 function handleRecDaysOffSelectChange(event, teacher) {
