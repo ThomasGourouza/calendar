@@ -40,7 +40,6 @@ const constraintsHeaders = [
   "Volume horaire minimum",
   "Volume horaire maximum",
   "Niveaux préférés",
-  "Priorité sur niveau",
 ];
 const noDataMessage = "Pas de données.";
 
@@ -403,9 +402,6 @@ function onLoadConstraints(e, file) {
           break;
         case "Niveaux préférés":
           item.preferedLevelNames = e[1];
-          break;
-        case "Priorité sur niveau":
-          item.priority = e[1] === "oui";
           break;
         default:
           break;

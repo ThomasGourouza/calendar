@@ -441,7 +441,7 @@ table.teachers tbody tr td {
   border-bottom: var(--table-border);
   font-size: small;
 }
-table.teachers tbody tr td:not(:first-child):not(:nth-child(4)):not(:nth-child(6)) {
+table.teachers tbody tr td:not(:first-child):not(:nth-child(4)) {
   width: var(--table-teacher-content-td-width);
   min-width: var(--table-teacher-content-td-width);
 }
@@ -452,10 +452,6 @@ table.teachers tbody tr td:first-child {
 table.teachers tbody tr td:nth-child(4) {
   width: var(--table-teacher-content-td-width-larger);
   min-width: var(--table-teacher-content-td-width-larger);
-}
-table.teachers tbody tr td:nth-child(6) {
-  width: var(--table-teacher-content-td-width-smaller);
-  min-width: var(--table-teacher-content-td-width-smaller);
 }
 table.teachers tbody tr td:first-child {
   border-left: var(--table-border);

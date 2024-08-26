@@ -78,16 +78,13 @@ function getTeacherResults(
 
     let preferedText =
       preferedLevelNames.length > 0
-        ? `Niveaux préférés: ${preferedLevelNamesText}`
-        : "Sans préférence de niveau";
-    if (preferedLevelNames.length > 0 && currentTeacher.priority) {
-      preferedText += ", avec priorité";
-    }
+        ? `Niveaux préférés: ${preferedLevelNamesText}.`
+        : "Sans préférence de niveau.";
     const actualText =
       actualLevelNames.length > 0
         ? `Travaille avec ${actualLevelNamesText}.`
         : "Aucun niveau.";
-    const levelResultText = `${preferedText}. ${actualText}`;
+    const levelResultText = `${preferedText} ${actualText}`;
 
     let levelResultColor = "red";
     if (preferedLevelNames.length > 0) {
@@ -95,7 +92,6 @@ function getTeacherResults(
         if (actualLevelNames.every((l) => preferedLevelNames.includes(l))) {
           levelResultColor = "green";
         } else if (
-          !currentTeacher.priority &&
           actualLevelNames.some((l) => preferedLevelNames.includes(l))
         ) {
           levelResultColor = "orange";
@@ -144,7 +140,6 @@ function getTeacherResults(
           )
         ),
       },
-      priority: currentTeacher.priority,
     };
   });
   return {

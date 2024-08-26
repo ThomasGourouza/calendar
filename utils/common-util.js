@@ -158,7 +158,6 @@ function getTeachers(teacherNames, constraints, levelNames) {
     preferedLevelNames: c.preferedLevelNames
       .split(",")
       .filter((n) => levelNames.includes(n)),
-    priority: c.priority,
   }));
   return teacherNames.map((t, index) => {
     const color = colors[index % colors.length];
@@ -177,7 +176,7 @@ function getTeachers(teacherNames, constraints, levelNames) {
       teacherConstraint.recurrentDaysOff,
       teacherConstraint.daysOff,
       teacherConstraint.preferedLevelNames,
-      teacherConstraint.priority
+      teacherConstraint.preferedLevelNames.length === 1
     );
   });
 }

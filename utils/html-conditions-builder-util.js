@@ -150,16 +150,6 @@ function buildHtmlTeachersConditions(
       }
     });
 
-    const priorityTd = putElementIn("td", tr);
-    const priorityChecbox = putElementIn("input", priorityTd);
-    priorityChecbox.setAttribute("type", "checkbox");
-
-    priorityChecbox.checked = teacher.priority;
-    priorityChecbox.addEventListener(
-      "change",
-      (event) => (teacher.priority = event.target.checked)
-    );
-
     levelsSelect.addEventListener("change", (event) =>
       handleLevelsSelectChange(event, teacher)
     );
@@ -239,7 +229,6 @@ function downloadConditions() {
     workingHourMin: t.workingHours.min,
     workingHourMax: t.workingHours.max,
     preferedLevelNames: t.preferedLevelNames.join(","),
-    priority: t.priority ? "oui" : "non",
   }));
   let csvContent = headers;
   teacherMapped.forEach((t) => {
