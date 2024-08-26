@@ -55,25 +55,29 @@ function buildHtmlResultConfirmations(
       .join(", ")
       .replace(/, ([^,]*)$/, " et $1");
 
-    const preferedText =
+    let preferedText =
       preferedLevelNames.length > 0
-        ? `Niveaux préférés: ${preferedLevelNamesText}.`
-        : "Sans préférence de niveau.";
+        ? `Niveaux préférés: ${preferedLevelNamesText}`
+        : "Sans préférence de niveau";
+    if (preferedLevelNames.length > 0 && currentTeacher.priority) {
+      preferedText += ", avec priorité";
+    }
     const actualText =
       actualLevelNames.length > 0
         ? `Travaille avec ${actualLevelNamesText}.`
         : "Aucun niveau.";
-    const levelResultText = `${preferedText} ${actualText}`;
+    const levelResultText = `${preferedText}. ${actualText}`;
 
     let levelResultColor = "red";
     if (preferedLevelNames.length > 0) {
       if (actualLevelNames.length > 0) {
         if (actualLevelNames.every((l) => preferedLevelNames.includes(l))) {
           levelResultColor = "green";
-        } else {
-          if (actualLevelNames.some((l) => preferedLevelNames.includes(l))) {
-            levelResultColor = "orange";
-          }
+        } else if (
+          !currentTeacher.priority &&
+          actualLevelNames.some((l) => preferedLevelNames.includes(l))
+        ) {
+          levelResultColor = "orange";
         }
       }
     } else {
@@ -119,6 +123,7 @@ function buildHtmlResultConfirmations(
           )
         ),
       },
+      priority: currentTeacher.priority,
     };
   });
   buildHtmlResultTeachersConfirmations(teacherResults, notWorkingTeachers);

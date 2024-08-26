@@ -35,10 +35,10 @@ let lessons = [];
 
 const constraintsHeaders = [
   "Nom",
-  "Indispos récurrente",
+  "Indispos récurrentes",
   "Congés",
-  "Volume horaire min",
-  "Volume horaire max",
+  "Volume horaire minimum",
+  "Volume horaire maximum",
   "Niveaux préférés",
   "Priorité sur niveau",
 ];
@@ -405,16 +405,16 @@ function onLoadConstraints(e, file) {
         case "Nom":
           item.name = e[1];
           break;
-        case "Indispos récurrente":
+        case "Indispos récurrentes":
           item.recurrentDaysOff = e[1];
           break;
         case "Congés":
           item.daysOff = e[1];
           break;
-        case "Volume horaire min":
+        case "Volume horaire minimum":
           item.workingHourMin = e[1];
           break;
-        case "Volume horaire max":
+        case "Volume horaire maximum":
           item.workingHourMax = e[1];
           break;
         case "Niveaux préférés":
