@@ -1,4 +1,59 @@
-function getLessonList(dates, teachers, levels, lessonDuration, selectedDates) {
+function getLessonList(dates, teachers, levels, numberDays, lessonDuration, selectedDates) {
+  const results = [];
+  for (let i = 0; i < 10; i++) {
+    const teacherListCopy = teachers.map(
+      (t) =>
+        new Teacher(
+          t.name,
+          t.backgroundColor,
+          t.textColor,
+          t.workingHours.min,
+          t.workingHours.max,
+          t.recurrentDaysOff,
+          t.daysOff,
+          t.preferedLevelNames.filter((n) =>
+            levels
+              .filter((l) => l.active)
+              .map((l) => l.name)
+              .includes(n)
+          ),
+          t.priority
+        )
+    );
+    const levelListCopy = levels.filter((l) => l.active).map((l) => new Level(l.name, l.active));
+
+    const finalLessonList = createLessonList(dates, teacherListCopy, levelListCopy, lessonDuration, selectedDates);
+    const teacherResults = getTeacherResults(
+      teachers,
+      selectedDates,
+      numberDays,
+      lessonDuration,
+      finalLessonList
+    );
+    results.push({
+      lessons: [...finalLessonList],
+      teacherResults
+    });
+  }
+  const notWorkingTeachersMinLength = Math.min(...results.map(r => r.teacherResults.notWorkingTeachers.length));
+  const mappedResults = results.filter(r => r.teacherResults.notWorkingTeachers.length === notWorkingTeachersMinLength)
+    .map(r => ({
+      lessons: r.lessons,
+      redHoursNumber: r.teacherResults.workingTeachers.map((tr) => colorCheck(tr.hours.color, "hours")).reduce((acc, currentVal) => acc + currentVal, 0),
+      score: r.teacherResults.workingTeachers.map((tr) => colorCheck(tr.levels.color, "levels")).reduce((acc, currentVal) => acc + currentVal, 0),
+    }));
+  
+  const mappedResultsMinRed = Math.min(...mappedResults.map(r => r.redHoursNumber));
+  const mappedResultsFiltered = mappedResults.filter(r => r.redHoursNumber === mappedResultsMinRed);
+  const mappedResultsMaxScore = Math.max(...mappedResultsFiltered.map(r => r.score));
+  const mappedResultsMaxScoreFiltered = mappedResultsFiltered.filter(r => r.score === mappedResultsMaxScore)
+    .map(r => r.lessons);
+
+  // console.log("end");
+  return mappedResultsMaxScoreFiltered[0];
+}
+
+function createLessonList(dates, teachers, levels, lessonDuration, selectedDates) {
   const finalLessonList = [];
   randomOrder(dates).forEach((date) => {
     randomOrder(levels).forEach((level) => {

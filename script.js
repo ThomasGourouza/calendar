@@ -249,32 +249,15 @@ function confirmGenerateCalendar() {
 
 // génère les données des leçons et du calendrier
 function generateLessonListAndBuildHtml() {
+  // console.log("start");
   const dates = selectedDates
     .filter((d) => d.type === "regular")
     .map((d) => getDateTextFromLocalDate(d.date));
-  const teacherListCopy = teachers.map(
-    (t) =>
-      new Teacher(
-        t.name,
-        t.backgroundColor,
-        t.textColor,
-        t.workingHours.min,
-        t.workingHours.max,
-        t.recurrentDaysOff,
-        t.daysOff,
-        t.preferedLevelNames.filter((n) =>
-          levels
-            .filter((l) => l.active)
-            .map((l) => l.name)
-            .includes(n)
-        ),
-        t.priority
-      )
-  );
   lessons = getLessonList(
     dates,
-    teacherListCopy,
-    levels.filter((l) => l.active).map((l) => new Level(l.name, l.active)),
+    teachers,
+    levels,
+    parameter.numberDays,
     parameter.lessonDuration,
     selectedDates
   );

@@ -6,6 +6,27 @@ function buildHtmlResultConfirmations(
   lessonDuration,
   lessons
 ) {
+  const teacherResults = getTeacherResults(
+    teachers,
+    selectedDates,
+    numberDays,
+    lessonDuration,
+    lessons
+  );
+  buildHtmlResultTeachersConfirmations(
+    teacherResults.workingTeachers,
+    teacherResults.notWorkingTeachers
+  );
+  buildHtmlResultLevelsConfirmations(levels, lessons, lessonDuration);
+}
+
+function getTeacherResults(
+  teachers,
+  selectedDates,
+  numberDays,
+  lessonDuration,
+  lessons
+) {
   const lessonLevelNames = [...new Set(lessons.map((l) => l.levelName))];
   const groupedTeachers = lessons.reduce((acc, item) => {
     const { teacherName, date, levelName } = item;
@@ -126,8 +147,10 @@ function buildHtmlResultConfirmations(
       priority: currentTeacher.priority,
     };
   });
-  buildHtmlResultTeachersConfirmations(teacherResults, notWorkingTeachers);
-  buildHtmlResultLevelsConfirmations(levels, lessons, lessonDuration);
+  return {
+    workingTeachers: teacherResults,
+    notWorkingTeachers,
+  };
 }
 
 function buildHtmlResultTeachersConfirmations(

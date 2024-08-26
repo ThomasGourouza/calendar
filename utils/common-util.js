@@ -181,3 +181,20 @@ function getTeachers(teacherNames, constraints, levelNames) {
     );
   });
 }
+
+function colorCheck(color, type) {
+  if (type === "hours") {
+    if (color === "red") {
+      return 1;
+    }
+    return 0;
+  }
+  switch (color) {
+    case "green":
+      return 2;
+    case "orange":
+      return 1;
+    default:
+      return 0;
+  }
+}
