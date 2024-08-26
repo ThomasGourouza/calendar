@@ -45,9 +45,7 @@ function buildHtmlTeachersConditions(
         <ul class="period">
           <li>La période va du ${startDate} au ${endDate} et comporte ${numberDays} jours de travail.</li>
           <li>${
-            !holidays
-              ? "Il n'y a pas de jours fériés."
-              : "Jours fériés: "
+            !holidays ? "Il n'y a pas de jours fériés." : "Jours fériés: "
           } ${!holidays ? "" : holidays + "."}</li>
           <li>Chaque leçon dure ${lessonDuration}h.</li>
         </ul>
@@ -155,10 +153,11 @@ function buildHtmlTeachersConditions(
     const priorityTd = putElementIn("td", tr);
     const priorityChecbox = putElementIn("input", priorityTd);
     priorityChecbox.setAttribute("type", "checkbox");
-    
+
     priorityChecbox.checked = teacher.priority;
-    priorityChecbox.addEventListener("change", (event) =>
-      teacher.priority = event.target.checked
+    priorityChecbox.addEventListener(
+      "change",
+      (event) => (teacher.priority = event.target.checked)
     );
 
     levelsSelect.addEventListener("change", (event) =>
@@ -230,6 +229,7 @@ function downloadConditions() {
   const teacherMapped = teachers.map((t) => ({
     name: t.name,
     recurrentDaysOff: t.recurrentDaysOff
+      .filter((d) => d > 0 && d < 6)
       .map((d) => getDayText(+d).toLocaleLowerCase())
       .join(","),
     daysOff: t.daysOff.map((d) => getLessonDate(d)).join(","),
