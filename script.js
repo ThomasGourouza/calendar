@@ -249,7 +249,6 @@ function confirmGenerateCalendar() {
 
 // génère les données des leçons et du calendrier
 function generateLessonListAndBuildHtml() {
-  // console.log("start");
   const dates = selectedDates
     .filter((d) => d.type === "regular")
     .map((d) => getDateTextFromLocalDate(d.date));

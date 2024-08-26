@@ -48,8 +48,6 @@ function getLessonList(dates, teachers, levels, numberDays, lessonDuration, sele
   const mappedResultsMaxScore = Math.max(...mappedResultsFiltered.map(r => r.score));
   const mappedResultsMaxScoreFiltered = mappedResultsFiltered.filter(r => r.score === mappedResultsMaxScore)
     .map(r => r.lessons);
-
-  // console.log("end");
   return mappedResultsMaxScoreFiltered[0];
 }
 
@@ -110,13 +108,20 @@ function createLessonList(dates, teachers, levels, lessonDuration, selectedDates
 function chooseTeacher(list, finalLessonList, level) {
   const priorityTeachers = list.filter(t => t.preferedLevelNames.includes(level.name) && t.priority);
   if (priorityTeachers.length > 0) {
-    return priorityTeachers[0];
+    return limitedTeacher(priorityTeachers, finalLessonList, level);
   }
   const minHoursTeachears = list.filter(t => t.workingHours.min > 0);
   if (minHoursTeachears.length > 0) {
-    const limitedminHoursTeachears1 = limited(minHoursTeachears, 1, finalLessonList, level);
-    const limitedminHoursTeachears2 = limited(minHoursTeachears, 2, finalLessonList, level);
-    const limitedminHoursTeachears3 = limited(minHoursTeachears, 3, finalLessonList, level);
+    return limitedTeacher(minHoursTeachears, finalLessonList, level);
+  } else {
+    return limitedTeacher(minHoursTeachears, finalLessonList, level);
+  }
+}
+
+function limitedTeacher(teacherList, finalLessonList, level) {
+  const limitedminHoursTeachears1 = limited(teacherList, 1, finalLessonList, level);
+    const limitedminHoursTeachears2 = limited(teacherList, 2, finalLessonList, level);
+    const limitedminHoursTeachears3 = limited(teacherList, 3, finalLessonList, level);
     if (limitedminHoursTeachears1.length > 0) {
       return limitedminHoursTeachears1[0];
     }
@@ -126,22 +131,7 @@ function chooseTeacher(list, finalLessonList, level) {
     if (limitedminHoursTeachears3.length > 0) {
       return limitedminHoursTeachears3[0];
     }
-    return minHoursTeachears[0];
-  } else {
-    const limitedTeachers1 = limited(list, 1, finalLessonList, level);
-    const limitedTeachers2 = limited(list, 2, finalLessonList, level);
-    const limitedTeachers3 = limited(list, 3, finalLessonList, level);
-    if (limitedTeachers1.length > 0) {
-      return limitedTeachers1[0];
-    }
-    if (limitedTeachers2.length > 0) {
-      return limitedTeachers2[0];
-    }
-    if (limitedTeachers3.length > 0) {
-      return limitedTeachers3[0];
-    }
-    return list[0];
-  }
+    return teacherList[0];
 }
 
 function limited(list, limit, finalLessonList, level) {
