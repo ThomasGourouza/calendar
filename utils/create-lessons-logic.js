@@ -1,5 +1,6 @@
 function getLessonList(dates, teachers, levels, numberDays, lessonDuration, selectedDates) {
   const results = [];
+  let result;
   for (let i = 0; i < 10; i++) {
     const teacherListCopy = teachers.map(
       (t) =>
@@ -30,10 +31,14 @@ function getLessonList(dates, teachers, levels, numberDays, lessonDuration, sele
       lessonDuration,
       finalLessonList
     );
-    results.push({
+    result = {
       lessons: [...finalLessonList],
       teacherResults
-    });
+    };
+    results.push(result);
+    if(isPerfect(result.teacherResults)) {
+      return result.lessons
+    }
   }
   const notWorkingTeachersMinLength = Math.min(...results.map(r => r.teacherResults.notWorkingTeachers.length));
   const mappedResults = results.filter(r => r.teacherResults.notWorkingTeachers.length === notWorkingTeachersMinLength)
