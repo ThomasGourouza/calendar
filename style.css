@@ -584,9 +584,9 @@ table.parameter tbody tr td input {
   vertical-align: top;
 }
 .first-col {
-  margin-right: 60px;
+  margin-right: 80px;
 }
-.first-col-more {
+.first-col-less {
   margin-right: 50px;
 }
 .result {
