@@ -337,8 +337,9 @@ function onLoadTeachersLevels(e, file) {
   const nameList = file.name.split(".");
   const data = csvToArray(e.target.result);
   const keys = Object.keys(data[0]);
-  checkData(file, nameList, data);
-  checkDataTeachersLevels(keys);
+  if (!checkData(file, nameList, data) || !checkDataTeachersLevels(keys)) {
+    return;
+  }
   teacherNames = [];
   levelNames = [];
   const entries = data.map((entry) => Object.entries(entry));
@@ -394,8 +395,9 @@ function onLoadConstraints(e, file) {
   const nameList = file.name.split(".");
   const data = csvToArray(e.target.result);
   const keys = Object.keys(data[0]);
-  checkData(file, nameList, data);
-  checkDataConstraints(keys);
+  if (!checkData(file, nameList, data) || !checkDataConstraints(keys)) {
+    return;
+  }
   const entries = data.map((entry) => Object.entries(entry));
   const results = [];
   entries.forEach((entry) => {

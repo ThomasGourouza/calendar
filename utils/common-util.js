@@ -110,12 +110,13 @@ function checkData(file, nameList, data) {
     !file.type.includes("csv")
   ) {
     alert("Ce type de fichier n'est pas pris en charge.");
-    return;
+    return false;
   }
   if (data.length < 0) {
     alert("Aucune donnée chargée.");
-    return;
+    return false;
   }
+  return true;
 }
 function checkDataTeachersLevels(keys) {
   if (
@@ -123,8 +124,9 @@ function checkDataTeachersLevels(keys) {
     !keys.some((header) => header.toLocaleLowerCase().includes(colName2))
   ) {
     alert(`Nom de colonne incorrect. Correct: "${colName1}" et "${colName2}".`);
-    return;
+    return false;
   }
+  return true;
 }
 function checkDataConstraints(keys) {
   if (keys.some((header) => !constraintsHeaders.includes(header))) {
@@ -133,8 +135,9 @@ function checkDataConstraints(keys) {
         .map((h) => `"${h}"`)
         .join(", ")}.`
     );
-    return;
+    return false;
   }
+  return true;
 }
 
 function getTeachers(teacherNames, constraints, levelNames) {
