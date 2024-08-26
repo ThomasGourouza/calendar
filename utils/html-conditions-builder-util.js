@@ -232,7 +232,10 @@ function downloadConditions() {
       .filter((d) => d > 0 && d < 6)
       .map((d) => getDayText(+d).toLocaleLowerCase())
       .join(","),
-    daysOff: t.daysOff.map((d) => getLessonDate(d)).join(","),
+    daysOff: t.daysOff
+      .map((d) => getLessonDate(d))
+      .filter((d) => !d.includes("undefined"))
+      .join(","),
     workingHourMin: t.workingHours.min,
     workingHourMax: t.workingHours.max,
     preferedLevelNames: t.preferedLevelNames.join(","),
