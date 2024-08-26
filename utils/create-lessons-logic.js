@@ -80,13 +80,6 @@ function createLessonList(dates, teachers, levels, lessonDuration, selectedDates
             if (noPreferAvailableTeachers.length > 0) {
               // on en choisi un
               selectedTeacher = chooseTeacher(randomOrder(noPreferAvailableTeachers), finalLessonList, level);
-            // Si aucun prof sans preference
-            } else {
-              // on en choisi un au hasard parmi les non prioritaires
-              const noPriorityAvailableTeachers = availableTeachers.filter(t => !t.priority);
-              if (noPriorityAvailableTeachers.length > 0) {
-                selectedTeacher = chooseTeacher(randomOrder(noPriorityAvailableTeachers), finalLessonList, level);
-              }
             }
           }
         }
@@ -106,16 +99,28 @@ function createLessonList(dates, teachers, levels, lessonDuration, selectedDates
 }
 
 function chooseTeacher(list, finalLessonList, level) {
-  const priorityTeachers = list.filter(t => t.preferedLevelNames.includes(level.name) && t.priority);
+  const priorityTeachers = list.filter(t => t.preferedLevelNames.length === 1);
   if (priorityTeachers.length > 0) {
-    return limitedTeacher(priorityTeachers, finalLessonList, level);
+    return minHoursLimitedTeacher(priorityTeachers, finalLessonList, level);
   }
-  const minHoursTeachears = list.filter(t => t.workingHours.min > 0);
-  if (minHoursTeachears.length > 0) {
-    return limitedTeacher(minHoursTeachears, finalLessonList, level);
-  } else {
-    return limitedTeacher(minHoursTeachears, finalLessonList, level);
+  const priorityTeachers2 = list.filter(t => t.preferedLevelNames.length === 2);
+  if (priorityTeachers2.length > 0) {
+    return minHoursLimitedTeacher(priorityTeachers2, finalLessonList, level);
   }
+  const priorityTeachers3 = list.filter(t => t.preferedLevelNames.length === 3);
+  if (priorityTeachers3.length > 0) {
+    return minHoursLimitedTeacher(priorityTeachers3, finalLessonList, level);
+  }
+  return minHoursLimitedTeacher(list, finalLessonList, level);
+}
+
+function minHoursLimitedTeacher(teacherList, finalLessonList, level) {
+  const minHoursTeachears = teacherList.filter(t => t.workingHours.min > 0);
+    if (minHoursTeachears.length > 0) {
+      return limitedTeacher(minHoursTeachears, finalLessonList, level);
+    } else {
+      return limitedTeacher(teacherList, finalLessonList, level);
+    }
 }
 
 function limitedTeacher(teacherList, finalLessonList, level) {
