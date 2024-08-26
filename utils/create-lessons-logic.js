@@ -58,8 +58,8 @@ function getLessonList(dates, teachers, levels, numberDays, lessonDuration, sele
 
 function createLessonList(dates, teachers, levels, lessonDuration, selectedDates) {
   const finalLessonList = [];
-  randomOrder(dates).forEach((date) => {
-    randomOrder(levels).forEach((level) => {
+  dates.forEach((date) => {
+    levels.forEach((level) => {
       if (level.hours >= lessonDuration) {
         const availableTeachers = teachers.filter(t =>
           // dispo en principe ce jour
@@ -69,7 +69,6 @@ function createLessonList(dates, teachers, levels, lessonDuration, selectedDates
           // a encore des heures
           (t.workingHours.max >= lessonDuration)
         );
-
         let selectedTeacher;
         // Si prof dispo
         if (availableTeachers.length > 0) {
