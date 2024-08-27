@@ -145,7 +145,6 @@ function isPerfect(teacherResults) {
   const allTeachersWorkFull = teacherResults.workingTeachers
     .map((t) => t.hours.color)
     .every((t) => t === "green");
-  console.log(allWorkingTeachers && allTeachersWorkFull);
   return allWorkingTeachers && allTeachersWorkFull;
 }
 
