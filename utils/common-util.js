@@ -145,6 +145,7 @@ function isPerfect(teacherResults) {
   const allTeachersWorkFull = teacherResults.workingTeachers
     .map((t) => t.hours.color)
     .every((t) => t === "green");
+  console.log(allWorkingTeachers && allTeachersWorkFull);
   return allWorkingTeachers && allTeachersWorkFull;
 }
 
@@ -181,7 +182,9 @@ function getTeachers(teacherNames, constraints, levelNames) {
       color.textColor,
       teacherConstraint.workingHourMin,
       teacherConstraint.workingHourMax,
-      teacherConstraint.recurrentDaysOff,
+      teacherConstraint.recurrentDaysOff.filter(
+        (d) => !d.includes("undefined")
+      ),
       teacherConstraint.daysOff,
       teacherConstraint.preferedLevelNames,
       teacherConstraint.preferedLevelNames.length === 1
