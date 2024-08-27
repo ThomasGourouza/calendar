@@ -140,14 +140,6 @@ function checkDataConstraints(keys) {
   return true;
 }
 
-function isPerfect(teacherResults) {
-  const allWorkingTeachers = teacherResults.notWorkingTeachers.length === 0;
-  const allTeachersWorkFull = teacherResults.workingTeachers
-    .map((t) => t.hours.color)
-    .every((t) => t === "green");
-  return allWorkingTeachers && allTeachersWorkFull;
-}
-
 function getTeachers(teacherNames, constraints, levelNames) {
   if (teacherNames.length === 0) {
     return [];

@@ -255,7 +255,6 @@ function generateLessonListAndBuildHtml() {
     dates,
     teachers,
     levels,
-    parameter.numberDays,
     parameter.lessonDuration,
     selectedDates
   );

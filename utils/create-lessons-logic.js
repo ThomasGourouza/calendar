@@ -1,59 +1,28 @@
-function getLessonList(dates, teachers, levels, numberDays, lessonDuration, selectedDates) {
-  const results = [];
-  let result;
-  for (let i = 0; i < 1; i++) {
-    const teacherListCopy = teachers.map(
-      (t) =>
-        new Teacher(
-          t.name,
-          t.backgroundColor,
-          t.textColor,
-          t.workingHours.min,
-          t.workingHours.max,
-          t.recurrentDaysOff,
-          t.daysOff,
-          t.preferedLevelNames.filter((n) =>
-            levels
-              .filter((l) => l.active)
-              .map((l) => l.name)
-              .includes(n)
-          ),
-          t.priority
-        )
-    );
-    const levelListCopy = levels.filter((l) => l.active).map((l) => new Level(l.name, l.active));
-
-    const finalLessonList = createLessonList(dates, teacherListCopy, levelListCopy, lessonDuration, selectedDates);
-    const teacherResults = getTeacherResults(
-      teachers,
-      selectedDates,
-      numberDays,
-      lessonDuration,
-      finalLessonList
-    );
-    result = {
-      lessons: [...finalLessonList],
-      teacherResults
-    };
-    results.push(result);
-    if(isPerfect(result.teacherResults)) {
-      return result.lessons
-    }
-  }
-  const notWorkingTeachersMinLength = Math.min(...results.map(r => r.teacherResults.notWorkingTeachers.length));
-  const mappedResults = results.filter(r => r.teacherResults.notWorkingTeachers.length === notWorkingTeachersMinLength)
-    .map(r => ({
-      lessons: r.lessons,
-      redHoursNumber: r.teacherResults.workingTeachers.map((tr) => colorCheck(tr.hours.color, "hours")).reduce((acc, currentVal) => acc + currentVal, 0),
-      score: r.teacherResults.workingTeachers.map((tr) => colorCheck(tr.levels.color, "levels")).reduce((acc, currentVal) => acc + currentVal, 0),
-    }));
+function getLessonList(dates, teachers, levels, lessonDuration, selectedDates) {
+  const teacherListCopy = teachers.map(
+    (t) =>
+      new Teacher(
+        t.name,
+        t.backgroundColor,
+        t.textColor,
+        t.workingHours.min,
+        t.workingHours.max,
+        t.recurrentDaysOff,
+        t.daysOff,
+        t.preferedLevelNames.filter((n) =>
+          levels
+            .filter((l) => l.active)
+            .map((l) => l.name)
+            .includes(n)
+        ),
+        t.priority
+      )
+  );
+  const levelListCopy = levels.filter((l) => l.active).map((l) => new Level(l.name, l.active));
+  const finalLessonList = createLessonList(dates, teacherListCopy, levelListCopy, lessonDuration, selectedDates);
+  console.log(finalLessonList.filter(l => l.levelName === "C1.1"));
   
-  const mappedResultsMinRed = Math.min(...mappedResults.map(r => r.redHoursNumber));
-  const mappedResultsFiltered = mappedResults.filter(r => r.redHoursNumber === mappedResultsMinRed);
-  const mappedResultsMaxScore = Math.max(...mappedResultsFiltered.map(r => r.score));
-  const mappedResultsMaxScoreFiltered = mappedResultsFiltered.filter(r => r.score === mappedResultsMaxScore)
-    .map(r => r.lessons);
-  return mappedResultsMaxScoreFiltered[0];
+  return finalLessonList;
 }
 
 function createLessonList(dates, teachers, levels, lessonDuration, selectedDates) {
@@ -119,45 +88,45 @@ function createLessonList(dates, teachers, levels, lessonDuration, selectedDates
         }
       });
     }
-    dates.forEach((date) => {
-      if (level.hours >= lessonDuration) {
-        const availableTeachers = teachers.filter(t =>
-          // dispo en principe ce jour
-          (t.getAvailabilities(selectedDates).includes(date)) &&
-          // ne travaille pas déjà ce jour
-          (!finalLessonList.filter((l) => l.date === date).map((l) => l.teacherName).includes(t.name)) &&
-          // a encore des heures
-          (t.workingHours.max >= lessonDuration)
-        );
-        let selectedTeacher;
-        // Si prof dispo
-        if (availableTeachers.length > 0) {
-          const preferredAvailableTeachers = availableTeachers.filter(t => t.preferedLevelNames.includes(level.name));
-          // Si prof prefere ce niveau
-          if (preferredAvailableTeachers.length > 0) {
-            // on en choisi un
-            selectedTeacher = chooseTeacher(randomOrder(preferredAvailableTeachers), finalLessonList, level);
-          // Si aucun prof ne prefere ce niveau
-          } else {
-            const noPreferAvailableTeachers = availableTeachers.filter(t => t.preferedLevelNames.length === 0);
-            // Si prof sans preference
-            if (noPreferAvailableTeachers.length > 0) {
-              // on en choisi un
-              selectedTeacher = chooseTeacher(randomOrder(noPreferAvailableTeachers), finalLessonList, level);
-            }
-          }
-        }
+    // dates.forEach((date) => {
+    //   if (level.hours >= lessonDuration) {
+    //     const availableTeachers = teachers.filter(t =>
+    //       // dispo en principe ce jour
+    //       (t.getAvailabilities(selectedDates).includes(date)) &&
+    //       // ne travaille pas déjà ce jour
+    //       (!finalLessonList.filter((l) => l.date === date).map((l) => l.teacherName).includes(t.name)) &&
+    //       // a encore des heures
+    //       (t.workingHours.max >= lessonDuration)
+    //     );
+    //     let selectedTeacher;
+    //     // Si prof dispo
+    //     if (availableTeachers.length > 0) {
+    //       const preferredAvailableTeachers = availableTeachers.filter(t => t.preferedLevelNames.includes(level.name));
+    //       // Si prof prefere ce niveau
+    //       if (preferredAvailableTeachers.length > 0) {
+    //         // on en choisi un
+    //         selectedTeacher = chooseTeacher(randomOrder(preferredAvailableTeachers), finalLessonList, level);
+    //       // Si aucun prof ne prefere ce niveau
+    //       } else {
+    //         const noPreferAvailableTeachers = availableTeachers.filter(t => t.preferedLevelNames.length === 0);
+    //         // Si prof sans preference
+    //         if (noPreferAvailableTeachers.length > 0) {
+    //           // on en choisi un
+    //           selectedTeacher = chooseTeacher(randomOrder(noPreferAvailableTeachers), finalLessonList, level);
+    //         }
+    //       }
+    //     }
 
-        if (!!selectedTeacher) {
-          level.hours -= lessonDuration;
-          selectedTeacher.workingHours.max -= lessonDuration;
-          selectedTeacher.workingHours.min -= lessonDuration;
-          finalLessonList.push(
-            new Lesson(date, selectedTeacher.name, level.name)
-          );
-        }
-      }
-    });
+    //     if (!!selectedTeacher) {
+    //       level.hours -= lessonDuration;
+    //       selectedTeacher.workingHours.max -= lessonDuration;
+    //       selectedTeacher.workingHours.min -= lessonDuration;
+    //       finalLessonList.push(
+    //         new Lesson(date, selectedTeacher.name, level.name)
+    //       );
+    //     }
+    //   }
+    // });
   });
   return finalLessonList;
 }
