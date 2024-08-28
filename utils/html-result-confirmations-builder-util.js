@@ -55,7 +55,7 @@ function getTeacherResults(
       .replace(/, ([^,]*)$/, " et $1");
     const currentTeacher = teachers.find((t) => t.name === teacherName);
     const recurrentDaysOff =
-      currentTeacher?.recurrentDaysOff?.map((d) => +d) ?? [];
+      currentTeacher?.recurrentDaysOff?.map((d) => +d) || [];
     const recurrentDaysOffDates = dates.filter((d) =>
       recurrentDaysOff.includes(d.getDay())
     );
@@ -63,7 +63,7 @@ function getTeacherResults(
     const daysOff = (
       currentTeacher
         ?.getPeriodDaysOff(selectedDates)
-        ?.map((d) => new Date(d)) ?? []
+        ?.map((d) => new Date(d)) || []
     ).filter(
       (d) =>
         !recurrentDaysOffDates.map((r) => r.getTime()).includes(d.getTime())
@@ -71,7 +71,7 @@ function getTeacherResults(
     const preferedLevelNames =
       currentTeacher?.preferedLevelNames.filter((n) =>
         lessonLevelNames.includes(n)
-      ) ?? [];
+      ) || [];
     const preferedLevelNamesText = preferedLevelNames
       .join(", ")
       .replace(/, ([^,]*)$/, " et $1");
