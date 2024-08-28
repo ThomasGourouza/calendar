@@ -643,3 +643,6 @@ ul.levels-ul {
 .export {
   margin-right: 60px
 }
+#score {
+  font-size: large;
+}

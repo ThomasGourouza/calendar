@@ -199,3 +199,86 @@ function colorCheck(color, type) {
       return 0;
   }
 }
+
+function getScore(teacherResults, teachers, groupedTeachers, lessonDuration) {
+  const ponderateNotWorkingTeachers = teacherResults.notWorkingTeachers.map(
+    (t) => {
+      const matchingTeacher = teachers.find((mt) => mt.name === t);
+      return {
+        name: t,
+        hours:
+          (matchingTeacher.workingHours.max +
+            matchingTeacher.workingHours.min) /
+          (2 * lessonDuration),
+      };
+    }
+  );
+  let problemNumber = teacherResults.notWorkingTeachers.length;
+  let total = problemNumber * 4;
+  let negativePoints = ponderateNotWorkingTeachers
+    .map((pt) => 3 + pt.hours)
+    .reduce((acc, currVal) => acc + currVal, 0);
+  teacherResults.workingTeachers.forEach((t) => {
+    const currentTheoryTeacher = teachers.find(
+      (ct) => ct.name === t.teacherName
+    );
+    const currentActualTeacher = Object.entries(groupedTeachers).find(
+      (gt) => gt[0] === t.teacherName
+    )[1];
+    total += 4;
+    if (t.daysOff.workDuringTimeOff.true) {
+      const counter = currentActualTeacher
+        .map((t) => toDateInput(t.date))
+        .filter((d) => currentTheoryTeacher.daysOff.includes(d)).length;
+      negativePoints += counter;
+      problemNumber += 1;
+    }
+    if (t.recurrentDaysOff.workDuringTimeOff.true) {
+      const recDayOffWorkCounter = currentActualTeacher
+        .map((t) => new Date(toDateInput(t.date)))
+        .filter((d) =>
+          currentTheoryTeacher.recurrentDaysOff
+            .map((d) => +d)
+            .includes(d.getDay())
+        ).length;
+      negativePoints += recDayOffWorkCounter;
+      problemNumber += 1;
+    }
+    if (t.hours.color !== "green") {
+      let difference = 0;
+      const actualHoursNumber = currentActualTeacher.length * lessonDuration;
+      if (
+        currentTheoryTeacher.workingHours.min ===
+          currentTheoryTeacher.workingHours.max ||
+        actualHoursNumber < currentTheoryTeacher.workingHours.min
+      ) {
+        difference =
+          Math.abs(actualHoursNumber - currentTheoryTeacher.workingHours.min) /
+          lessonDuration;
+      } else {
+        difference =
+          Math.abs(actualHoursNumber - currentTheoryTeacher.workingHours.max) /
+          lessonDuration;
+      }
+      negativePoints += difference;
+      problemNumber += 1;
+    }
+    if (t.levels.color !== "green") {
+      const notPrefferedLevelsNumber = [
+        ...new Set(currentActualTeacher.map((t) => t.levelName)),
+      ].filter(
+        (l) => !currentTheoryTeacher.preferedLevelNames.includes(l)
+      ).length;
+      negativePoints += notPrefferedLevelsNumber;
+      problemNumber += 1;
+    }
+  });
+  let score = Math.round(((total - negativePoints) * 100) / total);
+  if (score < 0) {
+    score = 0;
+  }
+  return {
+    score,
+    problemNumber,
+  };
+}

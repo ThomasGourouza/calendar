@@ -24,7 +24,7 @@ class Teacher {
   }
 
   getAvailabilities(selectedDates) {
-    const availabilities = selectedDates
+    return selectedDates
       .filter(
         (date) =>
           date.type === "regular" &&
@@ -34,7 +34,6 @@ class Teacher {
             .some((d) => d.getTime() === date.date.getTime())
       )
       .map((d) => getDateTextFromLocalDate(d.date));
-    return availabilities;
   }
 
   getPeriodDaysOff(selectedDates) {

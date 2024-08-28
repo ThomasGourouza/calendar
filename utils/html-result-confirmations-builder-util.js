@@ -6,27 +6,6 @@ function buildHtmlResultConfirmations(
   lessonDuration,
   lessons
 ) {
-  const teacherResults = getTeacherResults(
-    teachers,
-    selectedDates,
-    numberDays,
-    lessonDuration,
-    lessons
-  );
-  buildHtmlResultTeachersConfirmations(
-    teacherResults.workingTeachers,
-    teacherResults.notWorkingTeachers
-  );
-  buildHtmlResultLevelsConfirmations(levels, lessons, lessonDuration);
-}
-
-function getTeacherResults(
-  teachers,
-  selectedDates,
-  numberDays,
-  lessonDuration,
-  lessons
-) {
   const lessonLevelNames = [...new Set(lessons.map((l) => l.levelName))];
   const groupedTeachers = lessons.reduce((acc, item) => {
     const { teacherName, date, levelName } = item;
@@ -36,6 +15,32 @@ function getTeacherResults(
     acc[teacherName].push({ date, levelName });
     return acc;
   }, {});
+
+  const teacherResults = getTeacherResults(
+    teachers,
+    selectedDates,
+    numberDays,
+    lessonDuration,
+    lessonLevelNames,
+    groupedTeachers
+  );
+  const score = getScore(teacherResults, teachers, groupedTeachers, lessonDuration);
+  buildHtmlResultTeachersConfirmations(
+    teacherResults.workingTeachers,
+    teacherResults.notWorkingTeachers,
+    score
+  );
+  buildHtmlResultLevelsConfirmations(levels, lessons, lessonDuration);
+}
+
+function getTeacherResults(
+  teachers,
+  selectedDates,
+  numberDays,
+  lessonDuration,
+  lessonLevelNames,
+  groupedTeachers
+) {
   const workingTeachers = Object.keys(groupedTeachers);
   const notWorkingTeachers = teachers
     .map((t) => t.name)
@@ -67,7 +72,7 @@ function getTeacherResults(
     ).filter(
       (d) =>
         !recurrentDaysOffDates.map((r) => r.getTime()).includes(d.getTime())
-    );
+    ).sort((a, b) => a - b);
     const preferedLevelNames =
       currentTeacher?.preferedLevelNames.filter((n) =>
         lessonLevelNames.includes(n)
@@ -150,8 +155,13 @@ function getTeacherResults(
 
 function buildHtmlResultTeachersConfirmations(
   teacherResults,
-  notWorkingTeachers
+  notWorkingTeachers,
+  score
 ) {
+  const span = document.getElementById("score");
+  const problem = score.problemNumber > 0 ? `(${score.problemNumber} problème${score.problemNumber > 1 ? "s" : ""}).` : "";
+  span.innerHTML = `Score: ${score.score}% ${problem}`;
+  span.style.color = score.score < 100 ? "red" : "green";
   const div = document.getElementById("teachers-result-confirmation");
   while (div.firstChild) {
     div.removeChild(div.firstChild);
