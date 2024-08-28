@@ -154,14 +154,10 @@
       </div>
     </div>
     <div id="lessons-calendar-wrapper" class="page" style="display: none">
-      <div id="confirmation">
-        <span>Demande de confirmation:</span>
-        <input id="ask-confirmation" type="checkbox" />
-      </div>
-      <button class="navigation" onclick="goBackTo('conditions-wrapper')">
+      <button class="navigation" onclick="navigate('conditions-wrapper')">
         ← &nbsp;&nbsp; Précédent
       </button>
-      <button class="navigation generate" onclick="reGenerateCalendar()">
+      <button class="navigation generate" onclick="generateLessonListAndBuildHtml()">
         Générer un calendrier
       </button>
       <div class="period-info"></div>

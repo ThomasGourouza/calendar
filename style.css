@@ -593,12 +593,6 @@ table.parameter tbody tr td input {
   margin-top: 80px;
 }
 
-#confirmation {
-  position: absolute;
-  top: 55px;
-  right: 60px;
-}
-
 li.main {
   margin-bottom: 15px;
 }

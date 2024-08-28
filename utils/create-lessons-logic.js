@@ -1,32 +1,26 @@
 function getLessonList(dates, teachers, levels, lessonDuration, selectedDates) {
-  const finalLessonLists = [];
-  for (let i = 0; i < 50; i++) {
-    const teacherListCopy = teachers.map(
-      (t) =>
-        new Teacher(
-          t.name,
-          t.backgroundColor,
-          t.textColor,
-          t.workingHours.min,
-          t.workingHours.max,
-          t.recurrentDaysOff,
-          t.daysOff,
-          t.preferedLevelNames.filter((n) =>
-            levels
-              .filter((l) => l.active)
-              .map((l) => l.name)
-              .includes(n)
-          ),
-          t.priority
-        )
-    );
-    const levelListCopy = levels.filter((l) => l.active).map((l) => new Level(l.name, l.active));
-    const finalLessonList = createLessonList(dates, teacherListCopy, levelListCopy, lessonDuration, selectedDates);
-    finalLessonLists.push(finalLessonList);
-  }
-  const lengths = finalLessonLists.map(list => list.length);
-  const maxLength = Math.max(...lengths);
-  return finalLessonLists.find(l => l.length === maxLength);
+  const teacherListCopy = teachers.map(
+    (t) =>
+      new Teacher(
+        t.name,
+        t.backgroundColor,
+        t.textColor,
+        t.workingHours.min,
+        t.workingHours.max,
+        t.recurrentDaysOff,
+        t.daysOff,
+        t.preferedLevelNames.filter((n) =>
+          levels
+            .filter((l) => l.active)
+            .map((l) => l.name)
+            .includes(n)
+        ),
+        t.priority
+      )
+  );
+  const levelListCopy = levels.filter((l) => l.active).map((l) => new Level(l.name, l.active));
+  const finalLessonList = createLessonList(dates, teacherListCopy, levelListCopy, lessonDuration, selectedDates);
+  return finalLessonList;
 }
 
 function createLessonList(dates, teachers, levels, lessonDuration, selectedDates) {
@@ -78,7 +72,7 @@ function createLessonList(dates, teachers, levels, lessonDuration, selectedDates
             );
             if (availableTeachers.length > 0) {
               const selectedTeacher = chooseTeacher(
-                randomOrder(teachers.filter(t => availableTeachers.map(at => at.name).includes(t.name))),
+                teachers.filter(t => availableTeachers.map(at => at.name).includes(t.name)),
                 finalLessonList,
                 level
               );
@@ -106,7 +100,7 @@ function createLessonList(dates, teachers, levels, lessonDuration, selectedDates
             );
             // Si prof dispo
             if (availableTeachers.length > 0) {
-              const selectedTeacher = chooseTeacher(randomOrder(availableTeachers), finalLessonList, level);
+              const selectedTeacher = chooseTeacher(availableTeachers, finalLessonList, level);
               level.hours -= lessonDuration;
               selectedTeacher.workingHours.max -= lessonDuration;
               selectedTeacher.workingHours.min -= lessonDuration;
@@ -168,8 +162,4 @@ function limited(list, limit, finalLessonList, level) {
     const lTeachers = [...new Set(finalLessonList.filter((l) => l.levelName === level.name).map((l) => l.teacherName))];
     return (teacherLevels.includes(level.name) || teacherLevels.length < limit) && (lTeachers.includes(t.name) || lTeachers.length < limit);
   });
-}
-
-function randomOrder(list) {
-  return list.sort(() => Math.random() - 0.5);
 }

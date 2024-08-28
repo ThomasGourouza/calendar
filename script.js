@@ -20,11 +20,6 @@ const parameter = {
 // récupère du localStorage
 let teacherNames = localStorage.getItem("teacherNames")?.split(",") || [];
 let levelNames = localStorage.getItem("levelNames")?.split(",") || [];
-let askConfirmation = ["true", "false"].includes(
-  localStorage.getItem("askConfirmation")
-)
-  ? localStorage.getItem("askConfirmation") === "true"
-  : true;
 let constraints = JSON.parse(localStorage.getItem("constraints")) || [];
 
 let levels = levelNames.map((l) => new Level(l));
@@ -67,13 +62,6 @@ if (constraints.length > 0) {
   eraseConstraintsButton.style.display = "none";
   notEraseConstraintsButton.style.display = "block";
 }
-
-const askConfirmationCheckbox = document.getElementById("ask-confirmation");
-askConfirmationCheckbox.checked = askConfirmation;
-askConfirmationCheckbox.addEventListener("change", (event) => {
-  askConfirmation = event.target.checked;
-  localStorage.setItem("askConfirmation", askConfirmation);
-});
 
 const startDateInput = flatpickr("#startDate", {
   dateFormat,
@@ -262,16 +250,6 @@ function generateLessonListAndBuildHtml() {
   navigate("lessons-calendar-wrapper");
 }
 
-function reGenerateCalendar() {
-  const message = "Le calendrier actuel sera perdu";
-  if (
-    !askConfirmation ||
-    (askConfirmation && confirm(`${message}. Continuer?`))
-  ) {
-    generateLessonListAndBuildHtml();
-  }
-}
-
 // construit la liste des leçons et le calendrier
 function buildHtml() {
   buildHtmlLessonListAndCalendar(
@@ -447,15 +425,6 @@ function eraseConstraints() {
 }
 
 // changer de section
-function goBackTo(page) {
-  const message = "Le calendrier actuel sera perdu";
-  if (
-    !askConfirmation ||
-    (askConfirmation && confirm(`${message}. Continuer?`))
-  ) {
-    navigate(page);
-  }
-}
 function navigate(page) {
   document.querySelectorAll(".page").forEach((p) => {
     p.style.display = "none";
