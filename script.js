@@ -11,10 +11,10 @@ const notEraseConstraintsButton = document.getElementById(
 );
 
 const parameter = {
-  startDate: localStorage.getItem("startDate") ?? getNextMonday(),
-  numberDays: +localStorage.getItem("numberDays") ?? 20,
-  bankHolidays: JSON.parse(localStorage.getItem("bankHolidays")) ?? [],
-  lessonDuration: +localStorage.getItem("lessonDuration") ?? 4,
+  startDate: localStorage.getItem("startDate") || getNextMonday(),
+  numberDays: +localStorage.getItem("numberDays") || 20,
+  bankHolidays: JSON.parse(localStorage.getItem("bankHolidays")) || [],
+  lessonDuration: +localStorage.getItem("lessonDuration") || 4,
 };
 
 // récupère du localStorage
