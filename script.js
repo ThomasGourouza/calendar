@@ -18,14 +18,14 @@ const parameter = {
 };
 
 // récupère du localStorage
-let teacherNames = localStorage.getItem("teacherNames")?.split(",") ?? [];
-let levelNames = localStorage.getItem("levelNames")?.split(",") ?? [];
+let teacherNames = localStorage.getItem("teacherNames")?.split(",") || [];
+let levelNames = localStorage.getItem("levelNames")?.split(",") || [];
 let askConfirmation = ["true", "false"].includes(
   localStorage.getItem("askConfirmation")
 )
   ? localStorage.getItem("askConfirmation") === "true"
   : true;
-let constraints = JSON.parse(localStorage.getItem("constraints")) ?? [];
+let constraints = JSON.parse(localStorage.getItem("constraints")) || [];
 
 let levels = levelNames.map((l) => new Level(l));
 let teachers = getTeachers(teacherNames, constraints, levelNames);
