@@ -3,7 +3,12 @@ function getSelectedDates(startDate, numberDays, bankHolidays) {
   const dateFrom = new Date(startDate);
   const holidays = bankHolidays.map((d) => new Date(d));
   while (result.filter((d) => d.type === "regular").length < numberDays) {
-    if (![0, 6].includes(dateFrom.getDay())) {
+    if (
+      openDays
+        .filter((d) => d.active)
+        .map((d) => d.day)
+        .includes(dateFrom.getDay())
+    ) {
       if (holidays.some((d) => d.getTime() === dateFrom.getTime())) {
         result.push({
           date: new Date(dateFrom),
@@ -15,7 +20,13 @@ function getSelectedDates(startDate, numberDays, bankHolidays) {
           type: "regular",
         });
       }
-    } else if (dateFrom.getDay() == 6) {
+    } else if (![0, 6].includes(dateFrom.getDay())) {
+      result.push({
+        date: new Date(dateFrom),
+        type: "closed",
+      });
+    }
+    if (dateFrom.getDay() == 0) {
       result.push({
         date: null,
         type: "weekend",
@@ -206,10 +217,7 @@ function getScore(teacherResults, teachers, groupedTeachers, lessonDuration) {
       const matchingTeacher = teachers.find((mt) => mt.name === t);
       return {
         name: t,
-        hours:
-          (matchingTeacher.workingHours.max +
-            matchingTeacher.workingHours.min) /
-          (2 * lessonDuration),
+        hours: matchingTeacher.workingHours.min / lessonDuration,
       };
     }
   );
@@ -311,10 +319,6 @@ function getCopyLevels(levels) {
 
 function randomOrder(list) {
   return list.sort(() => Math.random() - 0.5);
-}
-
-function getList(list, isRandomOrder) {
-  return isRandomOrder ? randomOrder(list) : list;
 }
 
 function getGroupedTeachers(lessons) {

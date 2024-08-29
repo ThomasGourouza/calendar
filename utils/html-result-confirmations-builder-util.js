@@ -114,7 +114,9 @@ function getTeacherResults(
         color: levelResultColor,
       },
       recurrentDaysOff: {
-        true: recurrentDaysOff.filter((d) => d > 0 && d < 6).length > 0,
+        true: recurrentDaysOff.filter(
+          (day) => openDays.filter(d => d.active).map(d => d.day).includes(day)
+        ).length > 0,
         text: recurrentDaysOff
           .map((d) => getDayText(d))
           .join(", ")

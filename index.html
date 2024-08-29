@@ -73,6 +73,23 @@
               </tbody>
             </table>
           </div>
+          <div>
+            <table class="open-days">
+              <thead>
+                <tr>
+                  <th>
+                    <input
+                      id="open-days-checkbox"
+                      type="checkbox"
+                      onchange="selectOrUnselectAllOpenDays(this.checked)"
+                    />
+                  </th>
+                  <th>Jours ouvrés</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-open-days"></tbody>
+            </table>
+          </div>
         </form>
       </div>
 
@@ -99,7 +116,7 @@
         ← &nbsp;&nbsp; Précédent
       </button>
       <button class="navigation generate" onclick="confirmGenerateCalendar()">
-        Générer le calendrier
+        Générer un calendrier
       </button>
       <div class="period-info"></div>
       <div class="first-col two-col-layout">
@@ -157,11 +174,11 @@
       <button class="navigation" onclick="navigate('conditions-wrapper')">
         ← &nbsp;&nbsp; Précédent
       </button>
-      <button class="navigation generate" onclick="generateLessonListAndBuildHtml(false)">
-        Générer le calendrier
-      </button>
-      <button class="navigation generate" onclick="generateLessonListAndBuildHtml(true)">
-        Regénérer (mix)
+      <button
+        class="navigation generate"
+        onclick="generateLessonListAndBuildHtml()"
+      >
+        Générer un calendrier
       </button>
       <div class="period-info"></div>
       <div id="calendar-wrapper"></div>
@@ -181,12 +198,12 @@
               <tr>
                 <td>
                   <input
-                      type="date"
-                      id="date"
-                      name="date"
-                      placeholder="Date de la leçon"
-                      required
-                    />
+                    type="date"
+                    id="date"
+                    name="date"
+                    placeholder="Date de la leçon"
+                    required
+                  />
                 </td>
                 <td>
                   <select

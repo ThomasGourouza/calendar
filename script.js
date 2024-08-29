@@ -17,6 +17,17 @@ const parameter = {
   lessonDuration: +localStorage.getItem("lessonDuration") || 4,
 };
 
+const openDays = [
+  {day: 1, active: true},
+  {day: 2, active: true},
+  {day: 3, active: true},
+  {day: 4, active: true},
+  {day: 5, active: true},
+  {day: 6, active: false},
+  {day: 0, active: false},
+];
+buildHtmlOpenDays(openDays);
+
 // récupère du localStorage
 let teacherNames = localStorage.getItem("teacherNames")?.split(",") || [];
 let levelNames = localStorage.getItem("levelNames")?.split(",") || [];
@@ -132,11 +143,11 @@ function addLessonFormOnsubmit(event) {
     );
     return;
   }
-  if ([0, 6].includes(new Date(this.date.value).getDay())) {
+  if (openDays.filter(d => !d.active).map(d => d.day).includes(new Date(this.date.value).getDay())) {
     alert(
       `Impossible d'ajouter une leçon. ${printDateFull(
         new Date(this.date.value)
-      )} est un weekend.`
+      )} n'est pas un jour ouvré.`
     );
     return;
   }
@@ -230,12 +241,12 @@ function confirmGenerateCalendar() {
     alert("Aucun niveau sélectionné.");
     return;
   }
-  generateLessonListAndBuildHtml(false);
+  generateLessonListAndBuildHtml();
   navigate("lessons-calendar-wrapper");
 }
 
 // génère les données des leçons et du calendrier
-function generateLessonListAndBuildHtml(isRandomOrder) {
+function generateLessonListAndBuildHtml() {
   const dates = selectedDates
     .filter((d) => d.type === "regular")
     .map((d) => getDateTextFromLocalDate(d.date));
@@ -245,8 +256,7 @@ function generateLessonListAndBuildHtml(isRandomOrder) {
     levels,
     parameter.numberDays,
     parameter.lessonDuration,
-    selectedDates,
-    isRandomOrder
+    selectedDates
   );
   buildHtml();
   navigate("lessons-calendar-wrapper");
@@ -432,4 +442,10 @@ function navigate(page) {
     p.style.display = "none";
   });
   document.getElementById(page).style.display = "block";
+}
+
+// selectionner les jours ouvrés
+function selectOrUnselectAllOpenDays(value) {
+  openDays.forEach((d) => (d.active = value));
+  buildHtmlOpenDays(openDays);
 }

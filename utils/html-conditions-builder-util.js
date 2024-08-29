@@ -1,11 +1,3 @@
-const weekDays = [
-  { name: "Lundi", index: "1" },
-  { name: "Mardi", index: "2" },
-  { name: "Mercredi", index: "3" },
-  { name: "Jeudi", index: "4" },
-  { name: "Vendredi", index: "5" },
-];
-
 function buildConstraintsTableForm(selectedDates, parameter) {
   const regularDates = selectedDates
     .filter((date) => date.type === "regular")
@@ -70,11 +62,11 @@ function buildHtmlTeachersConditions(
       "title",
       "Maintenir la touche Ctrl pour une selection multiple."
     );
-    weekDays.forEach((weekDay) => {
+    openDays.filter(d => d.active).forEach((d) => {
       const daysOffOption = putElementIn("option", recDaysOffSelect);
-      daysOffOption.setAttribute("value", weekDay.index);
-      daysOffOption.innerHTML = weekDay.name;
-      if (teacher.recurrentDaysOff.includes(weekDay.index)) {
+      daysOffOption.setAttribute("value", d.day);
+      daysOffOption.innerHTML = getDayText(d.day);
+      if (teacher.recurrentDaysOff.includes(d.day)) {
         daysOffOption.selected = true;
       }
     });
@@ -214,12 +206,44 @@ function handleActiveChange(level, value, levels) {
   }
 }
 
+function buildHtmlOpenDays(openDays) {
+  document.getElementById("open-days-checkbox").checked = openDays.every(
+    (d) => d.active
+  );
+  const openDaysTbody = document.getElementById("tbody-open-days");
+  while (openDaysTbody.firstChild) {
+    openDaysTbody.removeChild(openDaysTbody.firstChild);
+  }
+  openDays.forEach((openDay) => {
+    const tr = putElementIn("tr", openDaysTbody);
+    const activeTd = putElementIn("td", tr);
+    const activeInput = putElementIn("input", activeTd);
+    activeInput.setAttribute("type", "checkbox");
+    activeInput.checked = openDay.active;
+    activeInput.addEventListener("change", (event) =>
+      handleActiveOpenDayChange(openDay, event.target.checked, openDays)
+    );
+    const nameTd = putElementIn("td", tr);
+    nameTd.innerHTML = getDayText(openDay.day);
+  });
+}
+
+function handleActiveOpenDayChange(openDay, value, openDays) {
+  openDay.active = value;
+  if (!value) {
+    document.getElementById("open-days-checkbox").checked = false;
+  }
+  if (openDays.length === openDays.filter((l) => l.active).length) {
+    document.getElementById("open-days-checkbox").checked = true;
+  }
+}
+
 function downloadConditions() {
   const headers = constraintsHeaders.join(";") + "\n";
   const teacherMapped = teachers.map((t) => ({
     name: t.name,
     recurrentDaysOff: t.recurrentDaysOff
-      .filter((d) => d > 0 && d < 6)
+      .filter((day) => openDays.filter(d => d.active).map(d => d.day).includes(day))
       .map((d) => getDayText(+d).toLocaleLowerCase())
       .join(","),
     daysOff: t.daysOff

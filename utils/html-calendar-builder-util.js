@@ -71,19 +71,20 @@ function buildHtmlCalendar(lessonList, dates, highlight) {
         thDay2.innerHTML = printDate(date.date);
         break;
       }
-      case "holiday": {
-        thDay1.innerHTML = printWeekDay(date.date);
-        thDay1.className = "holiday";
-        thDay2.innerHTML = printDate(date.date);
-        thDay2.className = "holiday";
-        break;
-      }
       case "weekend": {
         thDay1.className = "weekend";
         thDay2.className = "weekend";
         break;
       }
       default:
+        thDay1.innerHTML = printWeekDay(date.date);
+        thDay1.className = date.type;
+        thDay2.innerHTML = printDate(date.date);
+        thDay2.className = date.type;
+        if (date.type === "holiday") {
+          thDay1.setAttribute("title", "Jour férié");
+          thDay2.setAttribute("title", "Jour férié");
+        }
         break;
     }
   });
@@ -94,41 +95,33 @@ function buildHtmlCalendar(lessonList, dates, highlight) {
     td.innerHTML = level;
     dates.forEach((date) => {
       const td = putElementIn("td", tr);
-      switch (date.type) {
-        case "regular": {
-          const lesson = sort(lessonList).find((l) =>
-            isLesson(l, getDateTextFromLocalDate(date.date), level)
-          );
-          if (!!lesson) {
-            td.className = "booked";
-            td.innerHTML = lesson.teacherName;
-            td.style.backgroundColor = lesson.backgroundColor;
-            td.style.color = lesson.textColor;
-            if (lesson.highlight) {
-              td.classList.add("highlighted-lesson");
-            }
-            td.setAttribute("title", lesson.title);
-            td.onclick = () => {
-              highlight(lesson.date, lesson.levelName);
-            };
-          } else {
-            td.className = "free";
-            td.onclick = () => {
-              fillAddForm(date.date, level, td);
-            };
+      if (date.type === "regular") {
+        const lesson = sort(lessonList).find((l) =>
+          isLesson(l, getDateTextFromLocalDate(date.date), level)
+        );
+        if (!!lesson) {
+          td.className = "booked";
+          td.innerHTML = lesson.teacherName;
+          td.style.backgroundColor = lesson.backgroundColor;
+          td.style.color = lesson.textColor;
+          if (lesson.highlight) {
+            td.classList.add("highlighted-lesson");
           }
-          break;
+          td.setAttribute("title", lesson.title);
+          td.onclick = () => {
+            highlight(lesson.date, lesson.levelName);
+          };
+        } else {
+          td.className = "free";
+          td.onclick = () => {
+            fillAddForm(date.date, level, td);
+          };
         }
-        case "holiday": {
-          td.className = "holiday";
-          break;
+      } else {
+        td.className = date.type;
+        if (date.type === "holiday") {
+          td.setAttribute("title", "Jour férié");
         }
-        case "weekend": {
-          td.className = "weekend";
-          break;
-        }
-        default:
-          break;
       }
     });
   });

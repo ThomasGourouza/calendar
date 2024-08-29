@@ -119,7 +119,7 @@ function getMonthText(month) {
 }
 
 function getDayNumber(dayText) {
-  return [1, 2, 3, 4, 5, 6, 7].find(
+  return [0, 1, 2, 3, 4, 5, 6, 7].find(
     (n) =>
       getDayText(n).trim().toLocaleLowerCase() ===
       dayText.trim().toLocaleLowerCase()
