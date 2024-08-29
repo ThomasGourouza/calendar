@@ -72,7 +72,8 @@
   --table-level-content: var(--table-content-color);
   --table-level-header-height: var(--table-teacher-header-height);
   --table-level-content-td-height: 40px;
-  --table-level-content-td-width: 120px;
+  --table-level-content-td-width: 80px;
+  --table-level-content-td-level-width: 120px;
 
   /* Parameter */
   --table-parameter-margin-top: 10px;
@@ -89,7 +90,7 @@
   --table-open-days-content: var(--table-content-color);
   --table-open-days-content-td-height: 30px;
   --table-open-days-content-td-width: 80px;
-  --table-open-days-content-td-days-width: 150px;
+  --table-open-days-content-td-day-width: 150px;
 
   /* Info */
   --info-color: rgb(250, 254, 255);
@@ -251,9 +252,6 @@ table.calendar tbody tr {
 table.calendar tbody tr td:first-child {
   border-right: var(--table-border-thick);
 }
-table.calendar tbody tr td {
-  border-bottom: var(--table-border);
-}
 table.calendar tbody tr:last-child td {
   border-bottom: var(--table-border);
 }
@@ -264,6 +262,7 @@ table.calendar tbody tr:last-child td:first-child {
   border-radius: 0 0 0 var(--table-border-radius);
 }
 table.calendar tbody tr td {
+  border-bottom: var(--table-border);
   height: var(--table-content-td-height);
   text-align: center;
 }
@@ -354,8 +353,6 @@ table.lessons tbody tr form {
 }
 table.lessons tbody tr td {
   background-color: var(--table-lesson-content);
-}
-table.lessons tbody tr td {
   height: var(--table-lesson-content-td-height);
   text-align: center;
   border-right: var(--table-border);
@@ -448,8 +445,6 @@ table.teachers tbody tr form {
 }
 table.teachers tbody tr td {
   background-color: var(--table-teacher-content);
-}
-table.teachers tbody tr td {
   height: var(--table-teacher-content-td-height);
   text-align: center;
   border-right: var(--table-border);
@@ -509,15 +504,19 @@ table.levels tbody tr form {
 }
 table.levels tbody tr td {
   background-color: var(--table-level-content);
-}
-table.levels tbody tr td {
   height: var(--table-level-content-td-height);
   text-align: center;
   border-right: var(--table-border);
   border-bottom: var(--table-border);
   font-size: small;
+}
+table.levels tbody tr td:first-child {
   width: var(--table-level-content-td-width);
   min-width: var(--table-level-content-td-width);
+}
+table.levels tbody tr td:last-child {
+  width: var(--table-level-content-td-level-width);
+  min-width: var(--table-level-content-td-level-width);
 }
 
 table.levels tbody tr td:first-child {
@@ -567,8 +566,6 @@ table.parameter tbody tr form {
 }
 table.parameter tbody tr td {
   background-color: var(--table-parameter-content);
-}
-table.parameter tbody tr td {
   height: var(--table-parameter-content-td-height);
   text-align: center;
   border-right: var(--table-border);
@@ -623,8 +620,6 @@ table.open-days tbody tr form {
 }
 table.open-days tbody tr td {
   background-color: var(--table-open-days-content);
-}
-table.open-days tbody tr td {
   height: var(--table-open-days-content-td-height);
   text-align: center;
   border-right: var(--table-border);
@@ -636,8 +631,8 @@ table.open-days tbody tr td:first-child {
   min-width: var(--table-open-days-content-td-width);
 }
 table.open-days tbody tr td:last-child {
-  width: var(--table-open-days-content-td-days-width);
-  min-width: var(--table-open-days-content-td-days-width);
+  width: var(--table-open-days-content-td-day-width);
+  min-width: var(--table-open-days-content-td-day-width);
 }
 table.open-days tbody tr td:first-child {
   border-left: var(--table-border);
