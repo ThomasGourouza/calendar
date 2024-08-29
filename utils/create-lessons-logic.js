@@ -1,4 +1,4 @@
-function getLessons(dates, teachers, levels, numberDays, lessonDuration, selectedDates) {
+function getLessons(dates, teachers, levels, numberDays, lessonDuration, selectedDates, openDays) {
   const finalLessonLists = [];
   for (let i = 0; i < 25; i++) {
     const list = createLessonList(
@@ -8,7 +8,7 @@ function getLessons(dates, teachers, levels, numberDays, lessonDuration, selecte
       lessonDuration,
       selectedDates
     );
-    const score = getScoreForCalendarGeneration(list, teachers, selectedDates, numberDays, lessonDuration);
+    const score = getScoreForCalendarGeneration(list, teachers, selectedDates, numberDays, lessonDuration, openDays);
     finalLessonLists.push({list, score});
   }
   const maxScore = Math.max(...finalLessonLists.map(item => item.score));

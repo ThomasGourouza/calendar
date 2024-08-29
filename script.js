@@ -18,13 +18,13 @@ const parameter = {
 };
 
 const openDays = [
-  {day: 1, active: true},
-  {day: 2, active: true},
-  {day: 3, active: true},
-  {day: 4, active: true},
-  {day: 5, active: true},
-  {day: 6, active: false},
-  {day: 0, active: false},
+  { day: 1, active: true },
+  { day: 2, active: true },
+  { day: 3, active: true },
+  { day: 4, active: true },
+  { day: 5, active: true },
+  { day: 6, active: false },
+  { day: 0, active: false },
 ];
 buildHtmlOpenDays(openDays);
 
@@ -122,9 +122,10 @@ function parameterFormOnsubmit(event) {
   selectedDates = getSelectedDates(
     parameter.startDate,
     parameter.numberDays,
-    parameter.bankHolidays
+    parameter.bankHolidays,
+    openDays
   );
-  buildConstraintsTableForm(selectedDates, parameter);
+  buildConstraintsTableForm(teachers, levelNames, selectedDates, parameter, openDays);
   buildHtmlLevelsConditions(levels);
   navigate("conditions-wrapper");
 }
@@ -143,7 +144,12 @@ function addLessonFormOnsubmit(event) {
     );
     return;
   }
-  if (openDays.filter(d => !d.active).map(d => d.day).includes(new Date(this.date.value).getDay())) {
+  if (
+    openDays
+      .filter((d) => !d.active)
+      .map((d) => d.day)
+      .includes(new Date(this.date.value).getDay())
+  ) {
     alert(
       `Impossible d'ajouter une leçon. ${printDateFull(
         new Date(this.date.value)
@@ -256,7 +262,8 @@ function generateLessonListAndBuildHtml() {
     levels,
     parameter.numberDays,
     parameter.lessonDuration,
-    selectedDates
+    selectedDates,
+    openDays
   );
   buildHtml();
   navigate("lessons-calendar-wrapper");
@@ -277,7 +284,8 @@ function buildHtml() {
     selectedDates,
     parameter.numberDays,
     parameter.lessonDuration,
-    lessons
+    lessons,
+    openDays
   );
 }
 
@@ -285,6 +293,11 @@ function buildHtml() {
 function selectOrUnselectAll(value) {
   levels.forEach((l) => (l.active = value));
   buildHtmlLevelsConditions(levels);
+}
+
+// importer données CSV
+function downloadConditions() {
+  doDownloadConditions(openDays);
 }
 
 // importer données CSV
@@ -410,7 +423,7 @@ function onLoadConstraints(e, file) {
     notEraseConstraintsButton.style.display = "none";
     constraints = JSON.parse(localStorage.getItem("constraints"));
     teachers = getTeachers(teacherNames, constraints, levelNames);
-    buildConstraintsTableForm(selectedDates, parameter);
+    buildConstraintsTableForm(teachers, levelNames, selectedDates, parameter, openDays);
   }
 }
 
@@ -433,7 +446,7 @@ function eraseConstraints() {
   constraintsLoaded.innerHTML = noDataMessage;
   eraseConstraintsButton.style.display = "none";
   notEraseConstraintsButton.style.display = "block";
-  buildConstraintsTableForm(selectedDates, parameter);
+  buildConstraintsTableForm(teachers, levelNames, selectedDates, parameter, openDays);
 }
 
 // changer de section
@@ -448,4 +461,12 @@ function navigate(page) {
 function selectOrUnselectAllOpenDays(value) {
   openDays.forEach((d) => (d.active = value));
   buildHtmlOpenDays(openDays);
+}
+
+function resetHours() {
+  teachers.forEach((teacher) => {
+    teacher.workingHours.min = parameter.lessonDuration;
+    teacher.workingHours.max = parameter.lessonDuration * parameter.numberDays;
+  });
+  buildConstraintsTableForm(teachers, levelNames, selectedDates, parameter, openDays);
 }

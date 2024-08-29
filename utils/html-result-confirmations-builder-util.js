@@ -4,7 +4,8 @@ function buildHtmlResultConfirmations(
   selectedDates,
   numberDays,
   lessonDuration,
-  lessons
+  lessons,
+  openDays
 ) {
   const lessonLevelNames = [...new Set(lessons.map((l) => l.levelName))];
   const groupedTeachers = getGroupedTeachers(lessons);
@@ -14,7 +15,8 @@ function buildHtmlResultConfirmations(
     numberDays,
     lessonDuration,
     lessonLevelNames,
-    groupedTeachers
+    groupedTeachers,
+    openDays
   );
   const score = getScore(teacherResults, teachers, groupedTeachers, lessonDuration);
   buildHtmlResultTeachersConfirmations(
@@ -31,7 +33,8 @@ function getTeacherResults(
   numberDays,
   lessonDuration,
   lessonLevelNames,
-  groupedTeachers
+  groupedTeachers,
+  openDays
 ) {
   const workingTeachers = Object.keys(groupedTeachers);
   const notWorkingTeachers = teachers
@@ -99,7 +102,6 @@ function getTeacherResults(
         levelResultColor = "green";
       }
     }
-
     return {
       teacherName,
       numberWorkingDays: currentTeacher.getAvailabilities(selectedDates).length,

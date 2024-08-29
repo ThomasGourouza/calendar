@@ -1,4 +1,4 @@
-function buildConstraintsTableForm(selectedDates, parameter) {
+function buildConstraintsTableForm(teachers, levelNames, selectedDates, parameter, openDays) {
   const regularDates = selectedDates
     .filter((date) => date.type === "regular")
     .map((date) => date.date);
@@ -13,7 +13,8 @@ function buildConstraintsTableForm(selectedDates, parameter) {
     parameter.numberDays,
     selectedDates
       .filter((date) => date.type === "holiday")
-      .map((date) => date.date)
+      .map((date) => date.date),
+    openDays
   );
 }
 
@@ -24,7 +25,8 @@ function buildHtmlTeachersConditions(
   endDate,
   lessonDuration,
   numberDays,
-  bankHolidays
+  bankHolidays,
+  openDays
 ) {
   const holidays = bankHolidays
     .map((bh) => printDateFull(bh))
@@ -62,14 +64,16 @@ function buildHtmlTeachersConditions(
       "title",
       "Maintenir la touche Ctrl pour une selection multiple."
     );
-    openDays.filter(d => d.active).forEach((d) => {
-      const daysOffOption = putElementIn("option", recDaysOffSelect);
-      daysOffOption.setAttribute("value", d.day);
-      daysOffOption.innerHTML = getDayText(d.day);
-      if (teacher.recurrentDaysOff.includes(d.day)) {
-        daysOffOption.selected = true;
-      }
-    });
+    openDays
+      .filter((d) => d.active)
+      .forEach((d) => {
+        const daysOffOption = putElementIn("option", recDaysOffSelect);
+        daysOffOption.setAttribute("value", d.day);
+        daysOffOption.innerHTML = getDayText(d.day);
+        if (teacher.recurrentDaysOff.includes(d.day)) {
+          daysOffOption.selected = true;
+        }
+      });
     recDaysOffSelect.addEventListener("change", (event) =>
       handleRecDaysOffSelectChange(event, teacher)
     );
@@ -150,7 +154,7 @@ function buildHtmlTeachersConditions(
 
 function handleRecDaysOffSelectChange(event, teacher) {
   teacher.recurrentDaysOff = Array.from(event.target.selectedOptions).map(
-    (option) => option.value
+    (option) => +option.value
   );
 }
 
@@ -238,12 +242,17 @@ function handleActiveOpenDayChange(openDay, value, openDays) {
   }
 }
 
-function downloadConditions() {
+function doDownloadConditions(openDays) {
   const headers = constraintsHeaders.join(";") + "\n";
   const teacherMapped = teachers.map((t) => ({
     name: t.name,
     recurrentDaysOff: t.recurrentDaysOff
-      .filter((day) => openDays.filter(d => d.active).map(d => d.day).includes(day))
+      .filter((day) =>
+        openDays
+          .filter((d) => d.active)
+          .map((d) => d.day)
+          .includes(day)
+      )
       .map((d) => getDayText(+d).toLocaleLowerCase())
       .join(","),
     daysOff: t.daysOff

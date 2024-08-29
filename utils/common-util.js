@@ -1,4 +1,4 @@
-function getSelectedDates(startDate, numberDays, bankHolidays) {
+function getSelectedDates(startDate, numberDays, bankHolidays, openDays) {
   const result = [];
   const dateFrom = new Date(startDate);
   const holidays = bankHolidays.map((d) => new Date(d));
@@ -178,15 +178,16 @@ function getTeachers(teacherNames, constraints, levelNames) {
     if (!teacherConstraint) {
       return new Teacher(t, color.backgroundColor, color.textColor);
     }
+    const recDaysOff = teacherConstraint.recurrentDaysOff.filter(
+      (d) => !d.includes("undefined")
+    ).map(d => +d);
     return new Teacher(
       t,
       color.backgroundColor,
       color.textColor,
       teacherConstraint.workingHourMin,
       teacherConstraint.workingHourMax,
-      teacherConstraint.recurrentDaysOff.filter(
-        (d) => !d.includes("undefined")
-      ),
+      recDaysOff,
       teacherConstraint.daysOff,
       teacherConstraint.preferedLevelNames,
       teacherConstraint.preferedLevelNames.length === 1
@@ -337,7 +338,8 @@ function getScoreForCalendarGeneration(
   teachers,
   selectedDates,
   numberDays,
-  lessonDuration
+  lessonDuration,
+  openDays
 ) {
   const lessonLevelNames = [...new Set(lessons.map((l) => l.levelName))];
   const groupedTeachers = getGroupedTeachers(lessons);
@@ -347,7 +349,8 @@ function getScoreForCalendarGeneration(
     numberDays,
     lessonDuration,
     lessonLevelNames,
-    groupedTeachers
+    groupedTeachers,
+    openDays
   );
   return getScore(teacherResults, teachers, groupedTeachers, lessonDuration)
     .score;

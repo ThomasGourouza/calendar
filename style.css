@@ -62,8 +62,8 @@
   --table-teacher-content: var(--table-content-color);
   --table-teacher-header-height: 40px;
   --table-teacher-content-td-height: 80px;
-  --table-teacher-content-td-width: 130px;
-  --table-teacher-content-td-width-larger: 200px;
+  --table-teacher-content-td-width: 150px;
+  --table-teacher-content-td-width-larger: 210px;
   --table-teacher-content-td-width-smaller: 100px;
 
   /* Levels */
@@ -129,7 +129,7 @@ input,
 select {
   background-color: var(--input-color);
 }
-button,
+button:not(.reset),
 input,
 select.bigger {
   padding: 4px 8px;
@@ -164,17 +164,20 @@ select:not(.bigger):hover {
 .csv {
   width: 100px;
 }
-button:not(.csv):not(.generate),
+button:not(.csv):not(.generate):not(.reset),
 input[type="submit"]:not(.add) {
   width: 140px;
 }
 button.generate {
   width: 200px;
 }
-button,
+button:not(.reset),
 input[type="submit"]:not(.add) {
   height: 30px;
   margin-right: 30px;
+}
+button,
+input[type="submit"]:not(.add) {
   background-color: var(--button-color);
 }
 button:hover,
@@ -189,6 +192,10 @@ input[type="submit"].navigation {
 button.navigation:hover,
 input[type="submit"].navigation:hover {
   background-color: var(--navigation-button-color-hover);
+}
+button.reset {
+  height: 30px;
+  width: 30px;
 }
 
 /* Calendar */
