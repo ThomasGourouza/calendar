@@ -189,8 +189,7 @@ function getTeachers(teacherNames, constraints, levelNames) {
       teacherConstraint.workingHourMax,
       recDaysOff,
       teacherConstraint.daysOff,
-      teacherConstraint.preferedLevelNames,
-      teacherConstraint.preferedLevelNames.length === 1
+      teacherConstraint.preferedLevelNames
     );
   });
 }
@@ -308,8 +307,7 @@ function getCopyTeachers(teachers, levels) {
             .filter((l) => l.active)
             .map((l) => l.name)
             .includes(n)
-        ),
-        t.priority
+        )
       )
   );
 }

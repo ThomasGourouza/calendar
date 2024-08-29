@@ -7,8 +7,7 @@ class Teacher {
     workingHoursMax = parameter.lessonDuration * parameter.numberDays,
     recurrentDaysOff = [],
     daysOff = [],
-    preferedLevelNames = [],
-    priority = false
+    preferedLevelNames = []
   ) {
     this.name = name;
     this.backgroundColor = backgroundColor;
@@ -20,7 +19,6 @@ class Teacher {
     this.recurrentDaysOff = recurrentDaysOff;
     this.daysOff = daysOff;
     this.preferedLevelNames = preferedLevelNames;
-    this.priority = priority;
   }
 
   getAvailabilities(selectedDates) {

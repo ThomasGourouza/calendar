@@ -33,8 +33,8 @@ let teacherNames = localStorage.getItem("teacherNames")?.split(",") || [];
 let levelNames = localStorage.getItem("levelNames")?.split(",") || [];
 let constraints = JSON.parse(localStorage.getItem("constraints")) || [];
 
-let levels = levelNames.map((l) => new Level(l));
-let teachers = getTeachers(teacherNames, constraints, levelNames);
+let levels = [];
+let teachers = [];
 
 let selectedDates = [];
 let lessons = [];
@@ -125,6 +125,8 @@ function parameterFormOnsubmit(event) {
     parameter.bankHolidays,
     openDays
   );
+  levels = levelNames.map((l) => new Level(l));
+  teachers = getTeachers(teacherNames, constraints, levelNames);
   buildConstraintsTableForm(teachers, levelNames, selectedDates, parameter, openDays);
   buildHtmlLevelsConditions(levels);
   navigate("conditions-wrapper");
@@ -347,8 +349,6 @@ function onLoadTeachersLevels(e, file) {
     localStorage.setItem("teacherNames", teacherNames.join(","));
     localStorage.setItem("importMessage", `"${file.name}"`);
     dataLoaded.innerHTML = localStorage.getItem("importMessage");
-    levels = levelNames.map((l) => new Level(l));
-    teachers = getTeachers(teacherNames, constraints, levelNames);
     eraseDataButton.style.display = "block";
     notEraseDataButton.style.display = "none";
   } else {
@@ -467,6 +467,27 @@ function resetHours() {
   teachers.forEach((teacher) => {
     teacher.workingHours.min = parameter.lessonDuration;
     teacher.workingHours.max = parameter.lessonDuration * parameter.numberDays;
+  });
+  buildConstraintsTableForm(teachers, levelNames, selectedDates, parameter, openDays);
+}
+
+function resetRecDaysOff() {
+  teachers.forEach((teacher) => {
+    teacher.recurrentDaysOff = [];
+  });
+  buildConstraintsTableForm(teachers, levelNames, selectedDates, parameter, openDays);
+}
+
+function resetDaysOff() {
+  teachers.forEach((teacher) => {
+    teacher.daysOff = [];
+  });
+  buildConstraintsTableForm(teachers, levelNames, selectedDates, parameter, openDays);
+}
+
+function resetPreferredLevels() {
+  teachers.forEach((teacher) => {
+    teacher.preferedLevelNames = [];
   });
   buildConstraintsTableForm(teachers, levelNames, selectedDates, parameter, openDays);
 }
