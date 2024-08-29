@@ -282,3 +282,69 @@ function getScore(teacherResults, teachers, groupedTeachers, lessonDuration) {
     problemNumber,
   };
 }
+
+function getCopyTeachers(teachers, levels) {
+  return teachers.map(
+    (t) =>
+      new Teacher(
+        t.name,
+        t.backgroundColor,
+        t.textColor,
+        t.workingHours.min,
+        t.workingHours.max,
+        t.recurrentDaysOff,
+        t.daysOff,
+        t.preferedLevelNames.filter((n) =>
+          levels
+            .filter((l) => l.active)
+            .map((l) => l.name)
+            .includes(n)
+        ),
+        t.priority
+      )
+  );
+}
+
+function getCopyLevels(levels) {
+  return levels.filter((l) => l.active).map((l) => new Level(l.name, l.active));
+}
+
+function randomOrder(list) {
+  return list.sort(() => Math.random() - 0.5);
+}
+
+function getList(list, isRandomOrder) {
+  return isRandomOrder ? randomOrder(list) : list;
+}
+
+function getGroupedTeachers(lessons) {
+  return lessons.reduce((acc, item) => {
+    const { teacherName, date, levelName } = item;
+    if (!acc[teacherName]) {
+      acc[teacherName] = [];
+    }
+    acc[teacherName].push({ date, levelName });
+    return acc;
+  }, {});
+}
+
+function getScoreForCalendarGeneration(
+  lessons,
+  teachers,
+  selectedDates,
+  numberDays,
+  lessonDuration
+) {
+  const lessonLevelNames = [...new Set(lessons.map((l) => l.levelName))];
+  const groupedTeachers = getGroupedTeachers(lessons);
+  const teacherResults = getTeacherResults(
+    teachers,
+    selectedDates,
+    numberDays,
+    lessonDuration,
+    lessonLevelNames,
+    groupedTeachers
+  );
+  return getScore(teacherResults, teachers, groupedTeachers, lessonDuration)
+    .score;
+}

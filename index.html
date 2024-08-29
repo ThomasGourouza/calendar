@@ -157,6 +157,12 @@
       <button class="navigation" onclick="navigate('conditions-wrapper')">
         ← &nbsp;&nbsp; Précédent
       </button>
+      <button class="navigation generate" onclick="generateLessonListAndBuildHtml(false)">
+        Générer le calendrier
+      </button>
+      <button class="navigation generate" onclick="generateLessonListAndBuildHtml(true)">
+        Regénérer (mix)
+      </button>
       <div class="period-info"></div>
       <div id="calendar-wrapper"></div>
       <div id="lessons-wrapper">

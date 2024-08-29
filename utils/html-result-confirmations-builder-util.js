@@ -7,15 +7,7 @@ function buildHtmlResultConfirmations(
   lessons
 ) {
   const lessonLevelNames = [...new Set(lessons.map((l) => l.levelName))];
-  const groupedTeachers = lessons.reduce((acc, item) => {
-    const { teacherName, date, levelName } = item;
-    if (!acc[teacherName]) {
-      acc[teacherName] = [];
-    }
-    acc[teacherName].push({ date, levelName });
-    return acc;
-  }, {});
-
+  const groupedTeachers = getGroupedTeachers(lessons);
   const teacherResults = getTeacherResults(
     teachers,
     selectedDates,

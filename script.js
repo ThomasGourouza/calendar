@@ -230,21 +230,23 @@ function confirmGenerateCalendar() {
     alert("Aucun niveau sélectionné.");
     return;
   }
-  generateLessonListAndBuildHtml();
+  generateLessonListAndBuildHtml(false);
   navigate("lessons-calendar-wrapper");
 }
 
 // génère les données des leçons et du calendrier
-function generateLessonListAndBuildHtml() {
+function generateLessonListAndBuildHtml(isRandomOrder) {
   const dates = selectedDates
     .filter((d) => d.type === "regular")
     .map((d) => getDateTextFromLocalDate(d.date));
-  lessons = getLessonList(
+  lessons = getLessons(
     dates,
     teachers,
     levels,
+    parameter.numberDays,
     parameter.lessonDuration,
-    selectedDates
+    selectedDates,
+    isRandomOrder
   );
   buildHtml();
   navigate("lessons-calendar-wrapper");

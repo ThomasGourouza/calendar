@@ -1,26 +1,28 @@
-function getLessonList(dates, teachers, levels, lessonDuration, selectedDates) {
-  const teacherListCopy = teachers.map(
-    (t) =>
-      new Teacher(
-        t.name,
-        t.backgroundColor,
-        t.textColor,
-        t.workingHours.min,
-        t.workingHours.max,
-        t.recurrentDaysOff,
-        t.daysOff,
-        t.preferedLevelNames.filter((n) =>
-          levels
-            .filter((l) => l.active)
-            .map((l) => l.name)
-            .includes(n)
-        ),
-        t.priority
-      )
+function getLessons(dates, teachers, levels, numberDays, lessonDuration, selectedDates, isRandomOrder) {
+  if (isRandomOrder) {
+    const finalLessonLists = [];
+    for (let i = 0; i < 25; i++) {
+      const list = getLessonList(dates, teachers, levels, lessonDuration, selectedDates, isRandomOrder);
+      const score = getScoreForCalendarGeneration(list, teachers, selectedDates, numberDays, lessonDuration);
+      finalLessonLists.push({list, score});
+    }
+    const maxScore = Math.max(...finalLessonLists.map(item => item.score));
+    return finalLessonLists.find(item => item.score === maxScore).list;
+  } else {
+    return getLessonList(dates, teachers, levels, lessonDuration, selectedDates, isRandomOrder);
+  }
+}
+
+function getLessonList(dates, teachers, levels, lessonDuration, selectedDates, isRandomOrder) {
+  const teacherListCopy = getCopyTeachers(teachers, levels);
+  const levelListCopy = getCopyLevels(levels);
+  return createLessonList(
+    getList(dates, isRandomOrder),
+    getList(teacherListCopy, isRandomOrder),
+    getList(levelListCopy, isRandomOrder),
+    lessonDuration,
+    selectedDates
   );
-  const levelListCopy = levels.filter((l) => l.active).map((l) => new Level(l.name, l.active));
-  const finalLessonList = createLessonList(dates, teacherListCopy, levelListCopy, lessonDuration, selectedDates);
-  return finalLessonList;
 }
 
 function createLessonList(dates, teachers, levels, lessonDuration, selectedDates) {
