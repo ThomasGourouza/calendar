@@ -186,7 +186,8 @@ function buildHtmlLevelsConditions(levels) {
   }
   levels.forEach((level) => {
     const tr = putElementIn("tr", levelsTbody);
-
+    const nameTd = putElementIn("td", tr);
+    nameTd.innerHTML = level.name;
     const activeTd = putElementIn("td", tr);
     const activeInput = putElementIn("input", activeTd);
     activeInput.setAttribute("type", "checkbox");
@@ -194,20 +195,13 @@ function buildHtmlLevelsConditions(levels) {
     activeInput.addEventListener("change", (event) =>
       handleActiveChange(level, event.target.checked, levels)
     );
-
-    const nameTd = putElementIn("td", tr);
-    nameTd.innerHTML = level.name;
   });
 }
 
 function handleActiveChange(level, value, levels) {
   level.active = value;
-  if (!value) {
-    document.getElementById("levels-checkbox").checked = false;
-  }
-  if (levels.length === levels.filter((l) => l.active).length) {
-    document.getElementById("levels-checkbox").checked = true;
-  }
+  const checkbox = document.getElementById("levels-checkbox");
+  checkbox.checked = levels.length === levels.filter((l) => l.active).length;
 }
 
 function buildHtmlOpenDays(openDays) {
@@ -220,6 +214,8 @@ function buildHtmlOpenDays(openDays) {
   }
   openDays.forEach((openDay) => {
     const tr = putElementIn("tr", openDaysTbody);
+    const nameTd = putElementIn("td", tr);
+    nameTd.innerHTML = getDayText(openDay.day);
     const activeTd = putElementIn("td", tr);
     const activeInput = putElementIn("input", activeTd);
     activeInput.setAttribute("type", "checkbox");
@@ -227,19 +223,13 @@ function buildHtmlOpenDays(openDays) {
     activeInput.addEventListener("change", (event) =>
       handleActiveOpenDayChange(openDay, event.target.checked, openDays)
     );
-    const nameTd = putElementIn("td", tr);
-    nameTd.innerHTML = getDayText(openDay.day);
   });
 }
 
 function handleActiveOpenDayChange(openDay, value, openDays) {
   openDay.active = value;
-  if (!value) {
-    document.getElementById("open-days-checkbox").checked = false;
-  }
-  if (openDays.length === openDays.filter((l) => l.active).length) {
-    document.getElementById("open-days-checkbox").checked = true;
-  }
+  const checkbox = document.getElementById("open-days-checkbox");
+  checkbox.checked = openDays.length === openDays.filter((l) => l.active).length;
 }
 
 function doDownloadConditions(openDays) {
