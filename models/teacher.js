@@ -3,8 +3,8 @@ class Teacher {
     name,
     backgroundColor,
     textColor,
-    workingHoursMin = parameter.lessonDuration,
-    workingHoursMax = parameter.lessonDuration * parameter.numberDays,
+    workingHoursMin,
+    workingHoursMax,
     recurrentDaysOff = [],
     daysOff = [],
     preferedLevelNames = []

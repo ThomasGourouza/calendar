@@ -151,7 +151,7 @@ function checkDataConstraints(keys) {
   return true;
 }
 
-function getTeachers(teacherNames, constraints, levelNames) {
+function getTeachers(teacherNames, constraints, levelNames, parameter) {
   if (teacherNames.length === 0) {
     return [];
   }
@@ -176,7 +176,13 @@ function getTeachers(teacherNames, constraints, levelNames) {
       (c) => c.name.trim().toLocaleLowerCase() === t.trim().toLocaleLowerCase()
     );
     if (!teacherConstraint) {
-      return new Teacher(t, color.backgroundColor, color.textColor);
+      return new Teacher(
+        t,
+        color.backgroundColor,
+        color.textColor,
+        parameter.lessonDuration,
+        parameter.lessonDuration * parameter.numberDays
+      );
     }
     const recDaysOff = teacherConstraint.recurrentDaysOff.filter(
       (d) => !d.includes("undefined")
@@ -313,7 +319,7 @@ function getCopyTeachers(teachers, levels) {
 }
 
 function getCopyLevels(levels) {
-  return levels.filter((l) => l.active).map((l) => new Level(l.name, l.active));
+  return levels.filter((l) => l.active).map((l) => new Level(l.name, l.hours, l.active));
 }
 
 function randomOrder(list) {

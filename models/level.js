@@ -1,7 +1,7 @@
 class Level {
-  constructor(name, active = true) {
+  constructor(name, hours, active = true) {
     this.name = name;
+    this.hours = hours;
     this.active = active;
-    this.hours = parameter.numberDays * parameter.lessonDuration;
   }
 }

@@ -125,8 +125,8 @@ function parameterFormOnsubmit(event) {
     parameter.bankHolidays,
     openDays
   );
-  levels = levelNames.map((l) => new Level(l));
-  teachers = getTeachers(teacherNames, constraints, levelNames);
+  levels = levelNames.map((l) => new Level(l, parameter.numberDays * parameter.lessonDuration));
+  teachers = getTeachers(teacherNames, constraints, levelNames, parameter);
   buildConstraintsTableForm(teachers, levelNames, selectedDates, parameter, openDays);
   buildHtmlLevelsConditions(levels);
   navigate("conditions-wrapper");
@@ -422,7 +422,7 @@ function onLoadConstraints(e, file) {
     eraseConstraintsButton.style.display = "block";
     notEraseConstraintsButton.style.display = "none";
     constraints = JSON.parse(localStorage.getItem("constraints"));
-    teachers = getTeachers(teacherNames, constraints, levelNames);
+    teachers = getTeachers(teacherNames, constraints, levelNames, parameter);
     buildConstraintsTableForm(teachers, levelNames, selectedDates, parameter, openDays);
   }
 }
@@ -442,7 +442,7 @@ function erase() {
 function eraseConstraints() {
   localStorage.removeItem("constraints");
   constraints = [];
-  teachers = getTeachers(teacherNames, constraints, levelNames);
+  teachers = getTeachers(teacherNames, constraints, levelNames, parameter);
   constraintsLoaded.innerHTML = noDataMessage;
   eraseConstraintsButton.style.display = "none";
   notEraseConstraintsButton.style.display = "block";
