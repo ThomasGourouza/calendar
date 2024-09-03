@@ -1,6 +1,7 @@
-function getLessons(dates, teachers, levels, numberDays, lessonDuration, selectedDates, openDays) {
+function getLessons(dates, teachers, levels, lessonDuration, selectedDates, openDays) {
+  const numberDays = dates.length;
   const finalLessonLists = [];
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < 20; i++) {
     const list = createLessonList(
       randomOrder(dates),
       randomOrder(getCopyTeachers(teachers, levels)),
@@ -15,14 +16,19 @@ function getLessons(dates, teachers, levels, numberDays, lessonDuration, selecte
   return finalLessonLists.find(item => item.score === maxScore).list;
 }
 
-function createLessonList(dates, teachers, levels, lessonDuration, selectedDates) {
-    const finalLessonList = [];
+function getTeachearsByLevels(levels, teachers, finalLessonList, lessonDuration) {
+  const teachersByLevel = [];
     levels.forEach((level) => {
       const preferredTeachers = teachers.filter(t => t.preferedLevelNames.includes(level.name));
       if (preferredTeachers.length > 0) {
         const allAvailabilities = [];
         preferredTeachers.forEach(t => {
-          allAvailabilities.push(...t.getAvailabilities(selectedDates));
+          const teacherLessons = finalLessonList.filter(l =>
+            l.levelName === level.name && l.teacherName === t.name
+          ).map(l => l.date);
+          allAvailabilities.push(
+            ...t.getAvailabilities(selectedDates).filter(a => !teacherLessons.includes(a))
+          );
         });
         const teacherAndAvailabilities = [];
         [...new Set(allAvailabilities)].forEach(date => {
@@ -31,78 +37,100 @@ function createLessonList(dates, teachers, levels, lessonDuration, selectedDates
             teachers: [],
           };
           preferredTeachers.forEach(t => {
-            if (t.getAvailabilities(selectedDates).includes(date)) {
+            if (t.getAvailabilities(selectedDates).includes(date) &&
+            !finalLessonList.filter((l) => l.date === date).map((l) => l.teacherName).includes(t.name) &&
+            t.workingHours.max >= lessonDuration) {
               teacherAndAvailability.teachers.push(t);
             }
           });
-          teacherAndAvailabilities.push(teacherAndAvailability);
-        });
-        const uniqueOptions = teacherAndAvailabilities.filter(u => u.teachers.length === 1);
-        const severalOptions = teacherAndAvailabilities.filter(u => u.teachers.length > 1);
-        uniqueOptions.forEach((option) => {
-          if (level.hours >= lessonDuration) {
-            const availableTeachers = option.teachers.filter(t =>
-              (!finalLessonList.filter((l) => l.date === option.date).map((l) => l.teacherName).includes(t.name)) &&
-              (t.workingHours.max >= lessonDuration)
-            );
-            if (availableTeachers.length > 0) {
-              const selectedTeacher = teachers.find(t => t.name === availableTeachers[0].name);
-              level.hours -= lessonDuration;
-              selectedTeacher.workingHours.max -= lessonDuration;
-              selectedTeacher.workingHours.min -= lessonDuration;
-              finalLessonList.push(
-                new Lesson(option.date, selectedTeacher.name, level.name)
-              );
-            }
+          if (teacherAndAvailability.teachers.length > 0) {
+            teacherAndAvailabilities.push(teacherAndAvailability);
           }
         });
-        severalOptions.forEach((option) => {
-          if (level.hours >= lessonDuration) {
-            const availableTeachers = option.teachers.filter(t =>
-              (!finalLessonList.filter((l) => l.date === option.date).map((l) => l.teacherName).includes(t.name)) &&
-              (t.workingHours.max >= lessonDuration)
-            );
-            if (availableTeachers.length > 0) {
-              const selectedTeacher = chooseTeacher(
-                teachers.filter(t => availableTeachers.map(at => at.name).includes(t.name)),
-                finalLessonList,
-                level
-              );
-              level.hours -= lessonDuration;
-              selectedTeacher.workingHours.max -= lessonDuration;
-              selectedTeacher.workingHours.min -= lessonDuration;
-              finalLessonList.push(
-                new Lesson(option.date, selectedTeacher.name, level.name)
-              );
-            }
-          }
-        });
-      } else {
-        dates.forEach((date) => {
-          if (level.hours >= lessonDuration) {
-            const availableTeachers = teachers.filter(t =>
-              // dispo en principe ce jour
-              (t.getAvailabilities(selectedDates).includes(date)) &&
-              // ne travaille pas déjà ce jour
-              (!finalLessonList.filter((l) => l.date === date).map((l) => l.teacherName).includes(t.name)) &&
-              // a encore des heures
-              (t.workingHours.max >= lessonDuration) &&
-              // prof sans preference
-              t.preferedLevelNames.length === 0
-            );
-            // Si prof dispo
-            if (availableTeachers.length > 0) {
-              const selectedTeacher = chooseTeacher(availableTeachers, finalLessonList, level);
-              level.hours -= lessonDuration;
-              selectedTeacher.workingHours.max -= lessonDuration;
-              selectedTeacher.workingHours.min -= lessonDuration;
-              finalLessonList.push(
-                new Lesson(date, selectedTeacher.name, level.name)
-              );
-            }
-          }
-        });
+        if (teacherAndAvailabilities.length > 0) {
+          teachersByLevel.push({
+            level: level.name,
+            teachers: teacherAndAvailabilities
+          });
+        }
       }
+    });
+    return teachersByLevel;
+}
+
+function pushInLessons(level, teachersByLevel, finalLessonList, teachers, lessonDuration, length) {
+  const uniqueOptions = teachersByLevel.filter(u => length === 1 ? (u.teachers.length === 1) : (u.teachers.length > 1));
+  uniqueOptions.forEach((option) => {
+    if (level.hours >= lessonDuration) {
+      const availableTeachers = option.teachers.filter(t =>
+        (!finalLessonList.filter((l) => l.date === option.date).map((l) => l.teacherName).includes(t.name)) &&
+        (t.workingHours.max >= lessonDuration)
+      );
+      if (availableTeachers.length > 0) {
+        const selectedTeacher = chooseTeacher(
+          teachers.filter(t => availableTeachers.map(at => at.name).includes(t.name)),
+          finalLessonList,
+          level
+        );
+        level.hours -= lessonDuration;
+        selectedTeacher.workingHours.max -= lessonDuration;
+        selectedTeacher.workingHours.min -= lessonDuration;
+        finalLessonList.push(
+          new Lesson(option.date, selectedTeacher.name, level.name)
+        );
+      }
+    }
+  });
+}
+
+function createLessonList(dates, teachers, levels, lessonDuration, selectedDates) {
+    const finalLessonList = [];
+    // unique option
+    while (getTeachearsByLevels(levels, teachers, finalLessonList, lessonDuration).some(tl => tl.teachers.some(t => t.teachers.length === 1))) {
+      const teachersByLevel = getTeachearsByLevels(levels, teachers, finalLessonList, lessonDuration);
+      levels.forEach((level) => {
+        const teacherByLevel = teachersByLevel.filter(tl => tl.level === level.name);
+        if (teacherByLevel.length > 0) {
+          pushInLessons(level, teacherByLevel[0].teachers, finalLessonList, teachers, lessonDuration, 1);
+        }
+      });
+    } 
+    // several options
+    const teachersByLevel = getTeachearsByLevels(levels, teachers, finalLessonList, lessonDuration);
+    levels.forEach((level) => {
+      const teacherByLevel = teachersByLevel.filter(tl => tl.level === level.name);
+      if (teacherByLevel.length > 0) {
+        pushInLessons(level, teacherByLevel[0].teachers, finalLessonList, teachers, lessonDuration, 2);
+      }
+    });
+    // rest
+    levels.forEach((level) => {
+      dates.forEach((date) => {
+        if (level.hours >= lessonDuration) {
+          const availableTeachers = teachers.filter(t =>
+            // il n'y a pas déjà de cours ce jour
+            (finalLessonList.filter((l) => l.date === date && l.levelName === level.name).length === 0) &&
+            // prof dispo en principe ce jour
+            (t.getAvailabilities(selectedDates).includes(date)) &&
+            // ne travaille pas déjà ce jour
+            (!finalLessonList.filter((l) => l.date === date).map((l) => l.teacherName).includes(t.name)) &&
+            // a encore des heures
+            (t.workingHours.max >= lessonDuration) &&
+            // prof sans preference
+            t.preferedLevelNames.length === 0
+          );
+          // Si prof dispo
+          if (availableTeachers.length > 0) {
+            const selectedTeacher = chooseTeacher(availableTeachers, finalLessonList, level);
+            level.hours -= lessonDuration;
+            selectedTeacher.workingHours.max -= lessonDuration;
+            selectedTeacher.workingHours.min -= lessonDuration;
+            finalLessonList.push(
+              new Lesson(date, selectedTeacher.name, level.name)
+            );
+          }
+        }
+      });
     });
     return finalLessonList;
 }
