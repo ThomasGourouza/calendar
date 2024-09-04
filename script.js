@@ -263,8 +263,7 @@ function generateLessonListAndBuildHtml() {
     teachers,
     levels,
     parameter.lessonDuration,
-    selectedDates,
-    openDays
+    selectedDates
   );
   buildHtml();
   navigate("lessons-calendar-wrapper");

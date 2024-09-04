@@ -1,7 +1,6 @@
-function getLessons(dates, teachers, levels, lessonDuration, selectedDates, openDays) {
-  const numberDays = dates.length;
+function getLessons(dates, teachers, levels, lessonDuration, selectedDates) {
   const finalLessonLists = [];
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 30; i++) {
     const list = createLessonList(
       randomOrder(dates),
       randomOrder(getCopyTeachers(teachers, levels)),
@@ -9,11 +8,10 @@ function getLessons(dates, teachers, levels, lessonDuration, selectedDates, open
       lessonDuration,
       selectedDates
     );
-    const score = getScoreForCalendarGeneration(list, teachers, selectedDates, numberDays, lessonDuration, openDays);
     finalLessonLists.push({list, score});
   }
-  const maxScore = Math.max(...finalLessonLists.map(item => item.score));
-  return finalLessonLists.find(item => item.score === maxScore).list;
+  const maxlength = Math.max(...finalLessonLists.map(item => item.list.length));
+  return finalLessonLists.find(item => item.list.length === maxlength).list;
 }
 
 function getTeachearsByLevels(levels, teachers, finalLessonList, lessonDuration) {
@@ -59,7 +57,7 @@ function getTeachearsByLevels(levels, teachers, finalLessonList, lessonDuration)
 }
 
 function pushInLessons(level, teachersByLevel, finalLessonList, teachers, lessonDuration, length) {
-  const uniqueOptions = teachersByLevel.filter(u => length === 1 ? (u.teachers.length === 1) : (u.teachers.length > 1));
+  const uniqueOptions = teachersByLevel.filter(u => length > 1 || u.teachers.length === length);
   uniqueOptions.forEach((option) => {
     if (level.hours >= lessonDuration) {
       const availableTeachers = option.teachers.filter(t =>
@@ -86,22 +84,16 @@ function pushInLessons(level, teachersByLevel, finalLessonList, teachers, lesson
 function createLessonList(dates, teachers, levels, lessonDuration, selectedDates) {
     const finalLessonList = [];
     // unique option
-    while (getTeachearsByLevels(levels, teachers, finalLessonList, lessonDuration).some(tl => tl.teachers.some(t => t.teachers.length === 1))) {
-      const teachersByLevel = getTeachearsByLevels(levels, teachers, finalLessonList, lessonDuration);
-      levels.forEach((level) => {
-        const teacherByLevel = teachersByLevel.filter(tl => tl.level === level.name);
-        if (teacherByLevel.length > 0) {
-          pushInLessons(level, teacherByLevel[0].teachers, finalLessonList, teachers, lessonDuration, 1);
-        }
+    let i = 0;
+    while (i < 10 && getTeachearsByLevels(levels, teachers, finalLessonList, lessonDuration).some(tl => tl.teachers.some(t => t.teachers.length === 1))) {
+      i++;
+      getTeachearsByLevels(levels, teachers, finalLessonList, lessonDuration).forEach((item) => {
+        pushInLessons(levels.find(l => l.name === item.level), item.teachers, finalLessonList, teachers, lessonDuration, 1);
       });
-    } 
+    }
     // several options
-    const teachersByLevel = getTeachearsByLevels(levels, teachers, finalLessonList, lessonDuration);
-    levels.forEach((level) => {
-      const teacherByLevel = teachersByLevel.filter(tl => tl.level === level.name);
-      if (teacherByLevel.length > 0) {
-        pushInLessons(level, teacherByLevel[0].teachers, finalLessonList, teachers, lessonDuration, 2);
-      }
+    getTeachearsByLevels(levels, teachers, finalLessonList, lessonDuration).forEach((item) => {
+      pushInLessons(levels.find(l => l.name === item.level), item.teachers, finalLessonList, teachers, lessonDuration, 2);
     });
     // rest
     levels.forEach((level) => {
